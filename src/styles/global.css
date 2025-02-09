@@ -1,1 +1,154 @@
 @import "tailwindcss";
+
+
+/* Base */
+
+html {
+    font-family: system-ui, sans-serif;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  
+  /* Transiciones suaves para cambios de tema */
+  html {
+    transition: background-color 0.5s ease;
+  }
+  
+  /* Transiciones para elementos de la interfaz */
+  body, 
+  section,
+  div,
+  header,
+  footer {
+    transition: background-color 0.5s ease,
+                border-color 0.5s ease;
+  }
+  
+  /* Transiciones para textos */
+  h1, h2, h3, h4, h5, h6, 
+  p, span, a, 
+  button,
+  input,
+  textarea {
+    transition: color 0.4s ease,
+                background-color 0.4s ease,
+                border-color 0.4s ease,
+                opacity 0.4s ease;
+  }
+  
+  /* Transiciones para efectos visuales */
+  .shadow-md,
+  .shadow-lg,
+  .hover\:shadow-lg,
+  .transform,
+  .hover\:scale-105 {
+    transition: box-shadow 0.5s ease,
+                transform 0.5s ease;
+  }
+  
+  /* Tema por defecto (verde claro) */
+  :root {
+    --color-primary: #046a53;
+    --color-secondary: #156051;
+    --color-text: #0d1e23;
+    --color-text-light: #ffffff;
+    --color-background: #ffffff;
+  }
+  
+  /* Tema verde oscuro */
+  [data-theme="dark-green"] {
+    --color-primary: #0b443c;
+    --color-secondary: #043c2c;
+    --color-text: #0d1e23;
+    --color-text-light: #ffffff;
+    --color-background: #ffffff;
+  }
+  
+  /* Tema oscuro */
+  [data-theme="dark"] {
+    --color-primary: #0d1e23;
+    --color-secondary: #1c343c;
+    --color-text: #ffffff;
+    --color-text-light: #ffffff;
+    --color-background: #101920;
+  }
+  
+  /* Clases de utilidad para temas */
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+  
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  
+  .text-primary {
+    color: var(--color-primary);
+  }
+  
+  .hover\:bg-secondary:hover {
+    background-color: var(--color-secondary);
+  }
+  
+  .text-theme {
+    color: var(--color-text);
+  }
+  
+  .text-theme-light {
+    color: var(--color-text-light);
+  }
+  
+  /* Ajustes específicos para tema oscuro */
+  [data-theme="dark"] section {
+    background-color: var(--color-background) !important;
+  }
+  
+  [data-theme="dark"] .bg-white {
+    background-color: var(--color-secondary) !important;
+  }
+  
+  [data-theme="dark"] .text-gray-600 {
+    color: var(--color-text-light) !important;
+  }
+  
+  /* Ajustes de hover para cada tema */
+  [data-theme="default"] .hover\:text-primary:hover,
+  [data-theme="dark-green"] .hover\:text-primary:hover {
+    color: var(--color-primary);
+  }
+  
+  [data-theme="dark"] .hover\:text-primary:hover {
+    color: var(--color-text-light);
+  }
+  
+  /* Ajustes de bordes para cada tema */
+  [data-theme="default"] .border-primary\/20,
+  [data-theme="dark-green"] .border-primary\/20 {
+    border-color: rgba(4, 106, 83, 0.2);
+  }
+  
+  [data-theme="dark"] .border-primary\/20 {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Ajustes de hover para bordes */
+  [data-theme="default"] .hover\:border-primary\/30:hover,
+  [data-theme="dark-green"] .hover\:border-primary\/30:hover {
+    border-color: rgba(4, 106, 83, 0.3);
+  }
+  
+  [data-theme="dark"] .hover\:border-primary\/30:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Optimización de rendimiento */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+ 
