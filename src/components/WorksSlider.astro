@@ -1,0 +1,101 @@
+---
+import Image from 'astro/components/Image.astro';
+
+const works = [
+  {
+    image: "https://images.unsplash.com/photo-1484154218962-a197022b5858",
+    title: "Reforma Integral Cocina",
+    description: "Renovación completa con diseño moderno"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae",
+    title: "Instalación Eléctrica",
+    description: "Actualización del sistema eléctrico"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1613545325278-f24b0cae1224",
+    title: "Baño Moderno",
+    description: "Reforma completa de baño"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae",
+    title: "Instalación Eléctrica", 
+    description: "Actualización del sistema eléctrico"
+  }
+  ,
+  
+  {
+    image: "https://img.freepik.com/foto-gratis/instaladores-placas-yeso-hombres-montando-falso-techo-paneles-yeso-renovacion-locales-sencilla-asequible_166373-1909.jpg?t=st=1738763280~exp=1738766880~hmac=1ccc2bcd6914b141dc015daf0a232dd7855b58ef2c586cec3b931f5cdb6198a3&w=996",
+    title: "Instalación de Pladur",
+    description: "Instalación de Pladur en techos y paredes"
+  },
+  {
+    image: "https://img.freepik.com/foto-gratis/hombre-tiro-medio-trabajando-taladro_23-2149366711.jpg?semt=ais_hybrid",
+    title: "Instalación de Pladur",
+    description: "Instalación de Pladur."
+  }
+];
+---
+
+<div class="works-slider overflow-hidden">
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      {works.map(work => (
+        <div class="swiper-slide">
+          <div class="relative h-[400px] group">
+       
+             <Image src={work.image.toString()} alt={work.title} class="w-full h-full object-cover" width={300} height={300} />
+            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 class="text-xl font-bold mb-2">{work.title}</h3>
+                <p>{work.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<style>
+  .works-slider {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, Pagination } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/pagination';
+
+  new Swiper('.swiper', {
+    modules: [Autoplay, Pagination],
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+      
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+    },
+    
+    
+  });
+</script>
