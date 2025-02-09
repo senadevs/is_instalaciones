@@ -1,22 +1,196 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  keywords?: string[];
+  noindex?: boolean;
+}
+
+const defaultKeywords = [
+  'instalaciones barcelona',
+  'reformas barcelona',
+  'electricista barcelona',
+  'fontanero barcelona',
+  'aire acondicionado barcelona',
+  'calefacción barcelona',
+  'instalador autorizado barcelona',
+  'reformas integrales barcelona',
+  'mantenimiento instalaciones barcelona',
+  'presupuesto reformas barcelona',
+  'servicios de instalaciones barcelona',
+  'servicios de reformas barcelona',
+  'servicios de electricidad barcelona',
+  'servicios de fontanería barcelona',
+  'servicios de aire acondicionado barcelona',
+  'servicios de climatización barcelona',
+  'servicios de mantenimiento barcelona',
+  'servicios de carpinteria en aluminio barcelona',
+  'servicios de carpinteria en metal barcelona',
+  'servicios de carpinteria en madera barcelona',
+  'servicios de carpinteria en concreto barcelona',
+  
+];
+
+const {
+  title = "Servicios de Instalaciones y Reformas en Barcelon | IS INSTALACIONES",
+  description = "Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontanería, aire acondicionado y reformas integrales con la máxima garantía.",
+  image = "/imag/logo.webp",
+  keywords = defaultKeywords,
+  noindex = false
+} = Astro.props;
+
+// Configuración de URLs base
+const siteUrl = 'https://is-instalaciones.es';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const imageUrl = new URL(image, siteUrl).toString();
+import '../styles/global.css';
+---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Script para evitar el parpadeo del tema -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'default';
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+    
+    <!-- SEO Básico -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(', ')} />
+    <meta name="author" content="IS INSTALACIONES" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    
+    <!-- Geolocalización -->
+    <meta name="geo.region" content="ES-CT" />
+    <meta name="geo.placename" content="Barcelona" />
+    <meta name="geo.position" content="41.3851;2.1734" />
+    <meta name="ICBM" content="41.3851, 2.1734" />
+    
+    <!-- Idioma y región -->
+    <meta property="og:locale" content="es_ES" />
+    <link rel="alternate" hreflang="es-ES" href={canonicalURL} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" class="rounded-full" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:site_name" content="IS.INSTALACIONES" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <!-- JSON-LD Schema.org -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": siteUrl,
+        "name": "IS.INSTALACIONES",
+        "image": imageUrl,
+        "url": canonicalURL,
+        "telephone": "+34600000000",
+        "email": "contacto@is-instalaciones.es",
+        "priceRange": "€€€",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Barcelona",
+          "postalCode": "08001",
+          "addressRegion": "Barcelona",
+          "addressCountry": "ES"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 41.3851,
+          "longitude": 2.1734
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "10:00",
+            "closes": "14:00"
+          }
+        ],
+        "sameAs": [
+          "https://www.facebook.com/ISINSTALACIONES",
+          "https://www.instagram.com/ISINSTALACIONES"
+        ],
+        "areaServed": {
+          "@type": "City",
+          "name": "Barcelona"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Instalaciones",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Instalaciones Eléctricas",
+                "description": "Servicios profesionales de instalaciones eléctricas en Barcelona, cambios de paneles, mantenimiento y reparaciones"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Fontanería",
+                "description": "Servicios de fontanería y reparaciones en Barcelona"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Aire Acondicionado",
+                "description": "Instalación y mantenimiento de aire acondicionado en Barcelona"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Reformas Integrales",
+                "description": "Servicios de reformas integrales en Barcelona, instalacion de ventanas y puertas. Mantenimiento y reparaciones"
+              }
+            }
+          ]
+        }
+      })}
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
