@@ -1,0 +1,64 @@
+---
+const services = [
+  {
+    title: "Electricidad",
+    description: "Instalaciones y reparaciones eléctricas profesionales.",
+    icon: "⚡",
+    href: "/servicios/electricidad"
+  },
+  {
+    title: "Fontanería",
+    description: "Instalaciones y reparaciones de fontanería profesionales.",
+    icon: "💧",
+    href: "/servicios/fontaneria"
+  },
+  {
+    title: "Climatización",
+    description: "Servicios de climatización profesionales.",
+    icon: "❄️",
+    href: "/servicios/climatizacion"
+  },
+  {
+    title: "Mantenimiento",
+    description: "Instalaciones y reparaciones de gas profesionales.",
+    icon: "🔧",
+    href: "/servicios/mantenimiento"
+  }
+];
+---
+<section id="servicios" class="py-16 md:py-20 bg-white border-b border-primary/20 hover:border-primary/30 transition-colors">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 hover:text-primary transition-colors">Nuestros Servicios</h2>
+      <p class="text-center text-gray-600 mb-12 text-base md:text-lg">
+        Soluciones profesionales para todas tus necesidades
+      </p>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto">
+        <a href="/servicios/electricidad" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Electricidad</h3>
+          <p class="text-gray-600">Instalaciones y reparaciones eléctricas profesionales.</p>
+        </a>
+        
+        <a href="/servicios/fontaneria" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">💧</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Fontanería</h3>
+          <p class="text-gray-600">Soluciones completas en instalaciones de agua.</p>
+        </a>
+        
+        <a href="/servicios/climatizacion" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">❄️</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Climatización</h3>
+          <p class="text-gray-600">Instalación y mantenimiento de sistemas de aire y calefacción.</p>
+        </a>
+        
+        <a href="/servicios/mantenimiento" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">🔧</div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mantenimiento</h3>
+          <p class="text-gray-600">Servicio integral de mantenimiento para instalaciones.</p>
+        </a>
+
+        
+      </div>
+    </div>
+  </section>
