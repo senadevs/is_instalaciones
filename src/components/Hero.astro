@@ -1,0 +1,28 @@
+---
+import HeroForm from "./HeroForm.astro";
+
+---
+
+<section class="relative min-h-[calc(100vh-4rem)] pt-16 flex items-center border-b border-primary/20">
+  <div class="absolute inset-0 bg-black/50 z-10"></div>
+  <img 
+    src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e"
+    alt="Reformas"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="container mx-auto px-4 relative z-20">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="text-white">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight">
+          Servicios de Reformas e Instalaciones.
+        </h1>
+        <p class="text-lg sm:text-xl lg:text-2xl mb-8 max-w-2xl">
+          Ofrecemos una amplia gama de servicios de reformas e instalaciones para satisfacer las necesidades de nuestros clientes.
+        </p>
+      </div>
+      <div class="md:justify-self-end w-full md:max-w-md">
+      <HeroForm />
+      </div>
+    </div>
+  </div>
+</section>
