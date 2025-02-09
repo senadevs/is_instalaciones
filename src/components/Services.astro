@@ -34,31 +34,16 @@ const services = [
       </p>
       
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto">
-        <a href="/servicios/electricidad" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Electricidad</h3>
-          <p class="text-gray-600">Instalaciones y reparaciones eléctricas profesionales.</p>
-        </a>
-        
-        <a href="/servicios/fontaneria" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">💧</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Fontanería</h3>
-          <p class="text-gray-600">Soluciones completas en instalaciones de agua.</p>
-        </a>
-        
-        <a href="/servicios/climatizacion" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">❄️</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Climatización</h3>
-          <p class="text-gray-600">Instalación y mantenimiento de sistemas de aire y calefacción.</p>
-        </a>
-        
-        <a href="/servicios/mantenimiento" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-          <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">🔧</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mantenimiento</h3>
-          <p class="text-gray-600">Servicio integral de mantenimiento para instalaciones.</p>
-        </a>
+      
 
-        
+        {services.map(service => (
+          <a href={service.href} class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+           <div class="text-primary text-3xl mb-4 group-hover:scale-110 transition-transform">{service.icon}</div>
+            <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{service.title}</h3>
+            <p class="text-gray-600">{service.description}</p>
+          
+          </a>
+        ))}
       </div>
     </div>
   </section>
