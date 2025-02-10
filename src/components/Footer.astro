@@ -1,0 +1,70 @@
+---
+import Image from 'astro/components/Image.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer aria-label="Footer" class="bg-primary text-white py-12">
+  <div class="container mx-auto px-4 max-w-7xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Logo y contacto -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-2">
+          <Image src="/favicon.svg" alt="IS.INSTALACIONES" class="w-8 h-8 rounded-full" width={300} height={300} quality={100} />
+          <span class="text-lg md:text-xl font-bold">IS.INSTALACIONES</span>
+        </div>
+        <div class="space-y-2 text-sm md:text-base">
+          <p class="flex items-center">
+            <span class="mr-2">📍</span>
+            Barcelona, España
+          </p>
+          <p class="flex items-center">
+            <span class="mr-2">📞</span>
+            +34 600 000 000
+          </p>
+          <p class="flex items-center">
+            <span class="mr-2">✉️</span>
+            info@isinstalaciones.com
+          </p>
+        </div>
+      </div>
+
+      <!-- Servicios -->
+      <div>
+        <h3 class="text-lg md:text-xl font-bold mb-4">Servicios</h3>
+        <ul class="space-y-2 text-sm md:text-base">
+          <li><a href="/servicios/electricidad" class="hover:text-gray-200 transition-colors">Electricidad</a></li>
+          <li><a href="/servicios/fontaneria" class="hover:text-gray-200 transition-colors">Fontanería</a></li>
+          <li><a href="/servicios/climatizacion" class="hover:text-gray-200 transition-colors">Aire Acondicionado</a></li>
+          <li><a href="/servicios/calefaccion" class="hover:text-gray-200 transition-colors">Calefacción</a></li>
+          <li><a href="/servicios/mantenimiento" class="hover:text-gray-200 transition-colors">Mantenimiento</a></li>
+        </ul>
+      </div>
+
+      <!-- Enlaces -->
+      <div>
+        <h3 class="text-lg md:text-xl font-bold mb-4">Enlaces</h3>
+        <ul class="space-y-2 text-sm md:text-base">
+          <li><a href="/sobre-nosotros" class="hover:text-gray-200 transition-colors">Nosotros</a></li>
+          <li><a href="#servicios" class="hover:text-gray-200 transition-colors">Servicios</a></li>
+          <li><a href="#trabajos" class="hover:text-gray-200 transition-colors">Trabajos</a></li>
+          <li><a href="#contacto" class="hover:text-gray-200 transition-colors">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3 class="text-lg md:text-xl font-bold mb-4">Legal</h3>
+        <ul class="space-y-2 text-sm md:text-base">
+          <li><a href="/legal/privacidad" class="hover:text-gray-200 transition-colors">Política de Privacidad</a></li>
+          <li><a href="/legal/cookies" class="hover:text-gray-200 transition-colors">Política de Cookies</a></li>
+          <li><a href="/legal/aviso-legal" class="hover:text-gray-200 transition-colors">Aviso Legal</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/20 mt-8 pt-8 text-center text-sm md:text-base">
+      <p>&copy; {currentYear} <a href="/" class="hover:text-gray-200 transition-colors">IS.INSTALACIONES</a>. Todos los derechos reservados.</p><p class="mt-2">Creado con Astro y Tailwind CSS. Desarrollado por <a href="https://github.com/pupadevs" class="hover:text-gray-200 transition-colors">Peterson Sena</a></p>
+    </div>
+  </div>
+</footer>
