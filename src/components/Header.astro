@@ -4,42 +4,42 @@ import Image from 'astro/components/Image.astro';
 import logo from '../assets/logo.webp';
 
 const menuItems = [
-  { href: "/", text: "Inicio" },
-  { href: "/sobre-mi", text: "Sobre" },
-  { href: "/#servicios", text: "Servicios" },
-  { href: "/#inspiracion", text: "Inspiración" },
-  { href: "/#horarios", text: "Horarios" }
+  { href: "/", text: "INICIO" },
+  { href: "/sobre-mi", text: "NOSOTROS" },
+  { href: "/#servicios", text: "SERVICIOS" },
+  { href: "/#inspiracion", text: "INSPIRACIÓN" },
+  { href: "/#contacto", text: "CONTACTO" }
 ];
 ---
 
 <header class="bg-primary text-theme-light py-4 fixed w-full z-50 border-b border-primary/20" role="banner">
-  <nav class="container mx-auto px-4 max-w-[2560px]" role="navigation" aria-label="Navegación principal">
-    <div class="flex justify-between items-center">
-      <!-- Logo -->
-      <a href="/" class="text-xl md:text-2xl hover:text-custom-primary  transition-colors font-bold flex items-center shrink-0" aria-label="IS.INSTALACIONES - Ir a inicio">
-        <Image src={logo} alt="IS.INSTALACIONES" class="w-12 h-12 lg:w-20 lg:h-20 md:w-16 md:h-16 sm:w-10 sm:h-10  mr-2 rounded-full" width={300} height={300} quality={100}  />
-         <!-- <span class="text-2xl mr-2">🔧</span> -->
-         <span class="hidden sm:inline text-2xl lg:text-3xl md:text-xl sm:text-xl ">IS.INSTALACIONES</span>
-         <span class="sm:hidden">IS</span>
-       </a>
-      
-      <!-- Contenedor central -->
-      <div class="flex items-center justify-end flex-1 space-x-4 ml-4 md:ml-8">
-        <!-- Menú desktop -->
-        <div class="hidden md:flex space-x-4 lg:space-x-8 justify-center flex-1" role="menubar">
-          {menuItems.map(item => (
-            <a 
-              href={item.href} 
-              class="hover:text-gray-200 transition-colors text-base lg:text-lg whitespace-nowrap hover:text-primary "
-              role="menuitem"
-              tabindex="0"
-            >
-              {item.text}
-            </a>
-          ))}
-        </div>
-
-        <div class="flex items-center space-x-4">
+    <nav class="container mx-auto px-4 max-w-[2560px]" role="navigation" aria-label="Navegación principal">
+      <div class="flex justify-between items-center">
+        <!-- Logo -->
+        <a href="/" class="text-xl md:text-2xl hover:text-custom-primary  transition-colors font-bold flex items-center shrink-0" aria-label="IS.INSTALACIONES - Ir a inicio">
+            <Image src={logo} alt="IS.INSTALACIONES" class="w-12 h-12 lg:w-20 lg:h-20 md:w-16 md:h-16 sm:w-10 sm:h-10  mr-2 rounded-full" width={300} height={300} quality={100}  />
+             <!-- <span class="text-2xl mr-2">🔧</span> -->
+             <span class="hidden sm:inline text-lg lg:text-xl md:text-lg sm:text-lg ">IS INSTALACIONES</span>
+             <span class="sm:hidden">IS</span>
+           </a>
+        
+        <!-- Contenedor central -->
+        <div class="flex items-center justify-end flex-1 space-x-4 ml-4 md:ml-8">
+          <!-- Menú desktop -->
+          <div class="hidden md:flex space-x-4 lg:space-x-8 justify-center font-bold flex-1" role="menubar">
+            {menuItems.map(item => (
+              <a 
+                href={item.href} 
+                class="hover:text-gray-200 transition-colors text-base lg:text-lg whitespace-nowrap  "
+                role="menuitem"
+                tabindex="0"
+                data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
+              >
+                {item.text}
+              </a>
+            ))}
+          </div>
+          <div class="flex items-center space-x-4">
             <a 
               href="https://wa.me/3460564579" 
               target="_blank" 
@@ -54,71 +54,139 @@ const menuItems = [
            
           </div>
 
-        <ThemeSwitcher />
-        
-        <!-- Botón menú móvil -->
-        <button 
-          id="menu-toggle" 
-          class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
-          aria-label="Abrir menú de navegación"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Menú móvil -->
-    <div 
-      id="mobile-menu" 
-      class="hidden md:hidden absolute bg-primary left-0 right-0 top-[100%] border-t border-primary dark:border-white" 
-      role="menu" 
-      aria-label="Menú móvil"
-    >
-      <div class="flex flex-col w-full p-4">
-        {menuItems.map(item => (
-          <a 
-            href={item.href} 
-            class="text-white dark:text-white text-lg px-6 py-3 mb-2 rounded border border-primary dark:border-white hover:bg-primary/5 dark:hover:bg-white/10 transition-colors w-full block"
-            role="menuitem"
-            tabindex="0"
+  
+          <ThemeSwitcher />
+          
+          <!-- Botón menú móvil -->
+          <button 
+            id="menu-toggle" 
+            class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Abrir menú de navegación"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
           >
-            {item.text}
-          </a>
-        ))}
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
+            </svg>
+          </button>
+        </div>
       </div>
-    </div>
-  </nav>
-</header>
+  
+      <!-- Menú móvil -->
+      <div 
+        id="mobile-menu" 
+        class="md:hidden absolute left-0 right-0 top-[100%] bg-primary border-t border-primary dark:border-white transform -translate-y-full opacity-0 invisible transition-all duration-300 ease-in-out" 
+        role="menu" 
+        aria-label="Menú móvil"
+      >
+        <div class="flex flex-col w-full p-4 transform origin-top scale-95 transition-transform duration-300">
+          {menuItems.map(item => (
+            <a 
+              href={item.href} 
+              class="text-white text-lg px-6 py-3 mb-2 rounded border border-primary dark:border-white hover:bg-primary/5 dark:hover:bg-white/10 transition-colors w-full block"
+              role="menuitem"
+              tabindex="0"
+              data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
+            >
+              {item.text}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  </header>
 
-<script>
-  // Manejo del menú móvil
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  menuToggle?.addEventListener('click', () => {
-    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-    mobileMenu?.classList.toggle('hidden');
-  });
-
-  // Cerrar menú al hacer click en un enlace
-  const mobileLinks = mobileMenu?.querySelectorAll('a');
-  mobileLinks?.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
-      menuToggle?.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // Cerrar menú al redimensionar la ventana
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768) { // 768px es el breakpoint md de Tailwind
-      mobileMenu?.classList.add('hidden');
-      menuToggle?.setAttribute('aria-expanded', 'false');
+  <script>
+    // Manejo del menú móvil
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+  
+    // Función para manejar la navegación
+    function handleNavigation(e: Event) {
+      const link = e.currentTarget as HTMLAnchorElement;
+      const href = link.getAttribute('href') || '';
+      const isHashLink = href.includes('#');
+      const currentPath = window.location.pathname;
+      const targetPath = href.split('#')[0] || '/';
+      const sectionId = isHashLink ? href.split('#')[1] : null;
+  
+      // Si estamos en la misma página y es un enlace con hash
+      if (currentPath === targetPath && isHashLink) {
+        e.preventDefault();
+        const section = document.getElementById(sectionId || '');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+          // Eliminar el hash de la URL
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+      }
+      // Si vamos a otra página y hay un hash
+      else if (isHashLink && currentPath !== targetPath) {
+        sessionStorage.setItem('scrollToSection', sectionId || '');
+      }
     }
-  });
-</script>
+  
+    // Añadir el manejador de eventos a todos los enlaces
+    document.querySelectorAll('a[href*="#"]').forEach(link => {
+      link.addEventListener('click', handleNavigation);
+    });
+  
+    // Manejar el scroll al cargar la página
+    window.addEventListener('load', () => {
+      const section = sessionStorage.getItem('scrollToSection');
+      if (section) {
+        const element = document.getElementById(section);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // Eliminar el hash de la URL
+            window.history.replaceState({}, '', window.location.pathname);
+            sessionStorage.removeItem('scrollToSection');
+          }, 100);
+        }
+      }
+    });
+  
+    menuToggle?.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+      
+      if (!isExpanded) {
+        // Abrir menú
+        mobileMenu?.classList.remove('invisible', '-translate-y-full', 'opacity-0');
+        mobileMenu?.classList.add('translate-y-0', 'opacity-100');
+        mobileMenu?.querySelector('.flex')?.classList.remove('scale-95');
+        mobileMenu?.querySelector('.flex')?.classList.add('scale-100');
+      } else {
+        // Cerrar menú
+        mobileMenu?.classList.add('-translate-y-full', 'opacity-0');
+        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
+        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
+        // Añadir invisible después de la transición
+        setTimeout(() => {
+          mobileMenu?.classList.add('invisible');
+        }, 300);
+      }
+    });
+  
+    // Cerrar menú al hacer click en un enlace
+    const mobileLinks = mobileMenu?.querySelectorAll('a');
+    mobileLinks?.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
+        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
+        menuToggle?.setAttribute('aria-expanded', 'false');
+      });
+    });
+  
+    // Cerrar menú al redimensionar la ventana
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) { // 768px es el breakpoint md de Tailwind
+        mobileMenu?.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
+        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
+        menuToggle?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
