@@ -1,0 +1,22 @@
+---
+const { imagen, texto } = Astro.props;
+---
+<section class="relative py-20 border-b border-primary/20">
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    <img
+      src={imagen}
+      alt={texto}
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+    <div class="container mx-auto px-4 relative z-20">
+      <div class="max-w-4xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          {texto}
+        </h1>
+        <p class="text-lg md:text-xl mb-8">
+          Un camino de dedicación y excelencia en el sector de las
+          Instalaciónes
+        </p>
+      </div>
+    </div>
+  </section>

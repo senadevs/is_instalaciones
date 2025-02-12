@@ -1,0 +1,65 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import Panoramic from "../../components/Panoramic.astro";
+const services = [
+  { title: "Instalación de aire acondicionado por coducto." },
+  { title: "Instalación de suelo calefactable." },
+  { title: "Climatización de viviendas." },
+  { title: "Instalación de splices de aire acondicionado." },
+  {title: "Carga de nitrogeno."},
+];
+
+const incidencias = [
+  { title: "Fugas de aire", description: "Solución rapida y segura para problemas de aire." },
+  { title: "Atascos", description: "Diagnostico y reparación de sistemas con atascos." },
+  {title:"Baja presion", description:"Solución a problemas de presión de aire." },
+  {title:"Grifos defectuosos", description:"Reparación y sustitución de grifería." },
+];
+---
+
+<Layout title="Servicios de Climatización - IS.INSTALACIONES">
+  <Header />
+
+  <main class="pt-20">
+
+    <Panoramic
+    imagen="https://media.istockphoto.com/id/1437896577/es/foto/t%C3%A9cnico-de-aire-acondicionado-reparando-sistema-de-aire-acondicionado-central-con-herramientas.jpg?s=2048x2048&w=is&k=20&c=6oNjHmF7yEeTX2HayYvj_yFgrxZ5TH1HHRpbRjKaoto="
+    texto="Servicios de Climatización"/>
+
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Nuestros Servicios</h2>
+                <ul class="space-y-2">
+                  {services.map(service => (
+                    <li class="text-gray-600">
+                      <h3 class="mr-2">✓ {service.title}</h3>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+    
+
+
+        <div>
+            <h2 class="text-2xl font-bold mb-4">Incidencias Comunes</h2>
+            <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+              {incidencias.map(incidencia => (
+                <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+                  <h3 class="text-base lg:text-2xl md:text-base sm:text-base font-bold mb-2">{incidencia.title}</h3>
+                  <p class="text-gray-600 lg:text-lg md:text-base">{incidencia.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

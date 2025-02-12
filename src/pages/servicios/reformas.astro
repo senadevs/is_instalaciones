@@ -1,0 +1,146 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Panoramic from '../../components/Panoramic.astro';
+const services = [
+  {
+    title: "Montaje de Pladur"
+  },
+  {
+    title: "Carpintería de Aluminio"
+  },
+  {
+    title: "Instalación de Ventanas"
+  },
+  {
+    title: "Reformas de Vivienda"
+  },
+  {
+    title: "Acabados en Construcción"
+  },
+  {title: "Instalación RJ-45"},
+
+  {title: "Instalación de antenas"},
+];
+
+---
+
+<Layout title="Servicios de Mantenimiento y Reformas - IS.INSTALACIONES">
+  <Header />
+  
+  <main class="pt-20">
+
+  
+
+      <Panoramic
+      imagen="https://media.istockphoto.com/id/2084526747/es/foto/trabajadores-de-la-construcci%C3%B3n-que-instalan-techos-y-ventanas-en-renovaci%C3%B3n.jpg?s=1024x1024&w=is&k=20&c=uLJnmxGBXAH2guK4-1oUueJht3K8Eryal7BjJeZPHmw="
+      texto="Servicios de Reformas"/>
+
+
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Nuestros Servicios</h2>
+                <ul class="space-y-2">
+                  {services.map(service => (
+                    <li class="text-gray-600">
+                        <h3 class="mr-2">✓ {service.title}</h3>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold mb-4">Precios Orientativos</h2>
+            <div class="space-y-4">
+            
+              <div class="p-4 border rounded hover:border-primary/30 transition-colors">
+                <h3 class="font-bold">Hora de trabajo</h3>
+                <p class="text-gray-600">55€/hora</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" p-8 rounded-lg border border-primary/20 hover:border-primary/30 transition-colors">
+          <h2 class="text-2xl text-center font-bold mb-4">Servicios de Reformas</h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+                <h3 class="font-bold text-xl mb-4">Servicios de Carpintería y Ventanas</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center">
+                   ✓
+                    Instalación de ventanas de aluminio
+                  </li>
+                  <li class="flex items-center">
+                    ✓
+                    Cerramientos de aluminio y PVC
+                  </li>
+                  <li class="flex items-center">
+                    ✓
+                    Montaje de puertas correderas
+                  </li>
+                  <li class="flex items-center">
+                    ✓
+                    Fabricación de estructuras a medida
+                  </li>
+                  <li class="flex items-center">
+                   ✓
+                    Cambio de cristales y persianas
+                  </li>
+                </ul>
+              </div>
+              
+            
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+                <h3 class="font-bold text-xl mb-4">Servicios de Albañilería y Reformas</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center">
+                    ✓
+                    Construcción de tabiques y muros
+                  </li>
+                  <li class="flex items-center">
+                    ✓
+                    Revestimiento de suelos y paredes
+                  </li>
+                  <li class="flex items-center">
+                   ✓
+                    Reforma de cocinas y baños
+                  </li>
+                  <li class="flex items-center">
+                    ✓
+                    Reparación de humedades y grietas
+                  </li>
+                  <li class="flex items-center">
+                   ✓
+                    Enfoscado y alicatado de superficies
+                  </li>
+                </ul>
+              </div>
+              
+            
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+                <h3 class="font-bold text-xl mb-4">Servicios de Pladur y Falsos Techos</h3>
+                <ul class="space-y-2">
+                    <li>✓ Instalación de tabiques de pladur</li>
+                    <li>✓ Montaje de techos desmontables</li>
+                    <li>✓ Aislamiento térmico y acústico</li>
+                    <li>✓ Diseño de estanterías y muebles en pladur</li>
+                    <li>✓ Reparación de estructuras de pladur</li>
+                  </ul>
+                  
+              </div>
+              
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
