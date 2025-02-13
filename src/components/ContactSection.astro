@@ -61,55 +61,70 @@
           class="space-y-4" 
           role="form"  
           aria-labelledby="contact-form-title"
+          action="https://api.staticforms.xyz/submit" 
+          method="POST" 
+        
+          
         >
-          <div>
-            <label for="nombre" class="sr-only">Nombre y apellidos</label>
-            <input 
-              id="nombre"
-              name="nombre"
-              type="text" 
-              placeholder="Nombre y apellidos" 
-              class="w-full px-4 py-2 rounded border focus:border-primary bg-white  focus:ring-1 focus:ring-primary outline-none"
-              required
-              aria-required="true"
-            >
-          </div>
-          <div>
-            <label for="email" class="sr-only">Email</label>
-            <input 
-              id="email"
-              name="email"
-              type="email" 
-              placeholder="Email" 
-              class="w-full px-4 py-2 rounded border focus:border-primary bg-white  focus:ring-1 focus:ring-primary outline-none"
-              required
-              aria-required="true"
-            >
-          </div>
-          <div>
-            <label for="telefono" class="sr-only">Teléfono</label>
-            <input 
-              id="telefono"
-              name="telefono"
-              type="tel" 
-              placeholder="Teléfono" 
-              class="w-full px-4 py-2 rounded border focus:border-primary bg-white  focus:ring-1 focus:ring-primary outline-none"
-              required
-              aria-required="true"
-            >
-          </div>
-          <div>
-            <label for="mensaje" class="sr-only">Mensaje</label>
-            <textarea 
-              id="mensaje"
-              name="mensaje"
-              placeholder="Mensaje" 
-              rows="4" 
-              class="w-full px-4 py-2 rounded border focus:border-primary bg-white  focus:ring-1 focus:ring-primary outline-none"
-              required
-              aria-required="true"
-            ></textarea>
-          </div>
+        <input type="hidden" name="accessKey" value="14567cc6-f537-40ba-9af8-ff56d30fa0a2">
+        <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
+        <input type="hidden" name="replyTo" value="contacto@is-instalaciones.es">
+        <input type="hidden" name="redirectTo" value="https://thejornalia.es">
+        <div>
+          <label for="hero-nombre" class="sr-only">Nombre y apellidos</label>
+          <input 
+            id="hero-nombre"
+            name="name"
+            type="text" 
+            placeholder="Nombre y apellidos" 
+            class="w-full px-4 py-2 rounded border focus:border-primary focus:ring-1 bg-white focus:ring-primary outline-none"
+            required
+          >
+        </div>
+        <div>
+          <label for="hero-email" class="sr-only">Email</label>
+          <input 
+            id="hero-email"
+            name="email" 
+            type="email" 
+            placeholder="Email" 
+            class="w-full px-4 py-2 rounded border focus:border-primary bg-white dark:text-primary focus:ring-1 focus:ring-primary outline-none"
+            required
+          >
+        </div>
+        <div>
+          <label for="hero-telefono" class="sr-only">Teléfono</label>
+          <input 
+            id="hero-telefono"
+            name="phone"
+            type="tel" 
+            placeholder="Teléfono" 
+            class="w-full px-4 py-2 rounded border focus:border-primary  bg-white focus:ring-1 focus:ring-primary outline-none"
+          >
+        </div>
+        <div>
+          <label for="hero-codigo-postal" class="sr-only">Código postal</label>
+          <input 
+            id="hero-codigo-postal"
+            name="postal_code"
+            type="text"
+            pattern="[0-9]{5}"
+            placeholder="Código postal" 
+            class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
+            required
+          >
+        </div>
+        <div>
+          <label for="hero-mensaje" class="sr-only">Mensaje</label>
+          <textarea 
+            id="hero-mensaje"
+            name="message"
+            placeholder="Mensaje" 
+            rows="4" 
+            class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
+            required
+          ></textarea>
+        </div>
           <div id="form-status" class="hidden" role="status" aria-live="polite">
             <p class="text-green-600 success hidden">Mensaje enviado correctamente</p>
             <p class="text-red-600 error hidden">Error al enviar el mensaje</p>

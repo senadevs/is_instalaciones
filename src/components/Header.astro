@@ -17,10 +17,10 @@ const menuItems = [
       <div class="flex justify-between items-center">
         <!-- Logo -->
         <a href="/" class="text-xl md:text-2xl hover:text-custom-primary  transition-colors font-bold flex items-center shrink-0" aria-label="IS.INSTALACIONES - Ir a inicio">
-            <Image src={logo} alt="IS.INSTALACIONES" class="w-12 h-12 lg:w-20 lg:h-20 md:w-16 md:h-16 sm:w-10 sm:h-10  mr-2 rounded-full" width={300} height={300} quality={100}  />
+            <Image src={logo} alt="IS.INSTALACIONES" class="w-12 h-12 lg:w-20 lg:h-20 md:w-16 md:h-16 sm:w-10 sm:h-10  mr-2 rounded-full" width={300} height={300} quality={100}  />  
              <!-- <span class="text-2xl mr-2">🔧</span> -->
-             <span class="hidden sm:inline text-lg lg:text-xl md:text-lg sm:text-lg ">IS INSTALACIONES</span>
-             <span class="sm:hidden">IS</span>
+             <span class="hidden sm:inline text-lg lg:text-xl md:text-lg sm:text-lg "><em>IS</em> INSTALACIONES</span>
+             <span class="sm:hidden"><em>IS</em></span>
            </a>
         
         <!-- Contenedor central -->
@@ -30,7 +30,7 @@ const menuItems = [
             {menuItems.map(item => (
               <a 
                 href={item.href} 
-                class="hover:text-gray-200 transition-colors text-base lg:text-lg whitespace-nowrap  "
+                class="hover:text-green-950 dark:hover:text-gray-200 transition-colors text-base lg:text-lg whitespace-nowrap  "
                 role="menuitem"
                 tabindex="0"
                 data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
