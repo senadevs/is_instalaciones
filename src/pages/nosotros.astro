@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import ContactSection from '../components/ContactSection.astro';
+import Footer from '../components/Footer.astro';
+import SimpleLayout from '../layouts/SimpleLayout.astro';
+import nosotros from '../assets/soldador.jpg'
+---
+
+<Layout 
+  title="Sobre Mí - IS.INSTALACIONES"
+  description="Más de 8 años de experiencia en instalaciones y reformas en Barcelona. Descubre nuestra trayectoria y compromiso con la calidad."
+>
+  
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="relative py-20 border-b border-primary/20">
+      <div class="absolute inset-0 bg-black/50 z-10"></div>
+      <img 
+        src={nosotros.src}
+        alt="Instalador profesional"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="container mx-auto px-4 relative z-20">
+        <div class="max-w-4xl mx-auto text-center text-white">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Nosotros</h1>
+          <p class="text-lg md:text-xl mb-8">
+            Un camino de dedicación y excelencia en el sector de las instalaciones
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biografía -->
+    <section class="py-16 md:py-20 ">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center hover:text-primary transition-colors"><em>IS</em> Instalaciones</h2>
+          <div class="space-y-6">
+            <p class="text-gray-600">Con 8 años de experiencia, nos especializamos en reformas integrales, ofreciendo un servicio personalizado que combina calidad y respeto por el medio ambiente. Nos enfocamos en transformar cada espacio según las necesidades específicas de nuestros clientes, garantizando soluciones duraderas.</p>
+            <p class="text-gray-600">La confianza que nuestros clientes depositan en nosotros es el reflejo de nuestro compromiso y dedicación en cada proyecto. Trabajamos para ofrecer resultados que superen expectativas, cuidando cada detalle para que tu espacio se adapte perfectamente a lo que imaginas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Filosofía de Trabajo -->
+    <section class="py-16 md:py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 hover:text-primary transition-colors">Filosofía de Trabajo</h2>
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">🤝</div>
+            <h3 class="text-xl font-bold mb-3">Cercanía</h3>
+            <p class="text-gray-600">Trato personalizado y directo con cada cliente, entendiendo sus necesidades específicas.</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">✨</div>
+            <h3 class="text-xl font-bold mb-3">Calidad</h3>
+            <p class="text-gray-600">Uso de materiales de primera calidad y técnicas actualizadas para garantizar resultados duraderos.</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">🌱</div>
+            <h3 class="text-xl font-bold mb-3">Sostenibilidad</h3>
+            <p class="text-gray-600">Compromiso con soluciones eficientes y respetuosas con el medio ambiente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <ContactSection />
+  </main>
+</Layout>
