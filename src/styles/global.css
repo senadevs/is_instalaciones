@@ -72,6 +72,15 @@ html {
     --color-text-light: #ffffff;
     --color-background: #101920;
   }
+
+  /* Estilos de la barra de desplazamiento para Webkit (Chrome, Safari, Edge) */
+
+
+/* Estilos de la barra de desplazamiento para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-background);
+}
   
   /* Clases de utilidad para temas */
   body {
