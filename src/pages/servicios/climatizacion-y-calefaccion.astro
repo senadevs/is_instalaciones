@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import Panoramic from "../../components/Panoramic.astro";
+import SimpleLayout from "../../layouts/SimpleLayout.astro";
 const services = [
   { title: "Instalación de aire acondicionado por coducto." },
   { title: "Instalación de suelo calefactable." },
@@ -19,8 +20,7 @@ const incidencias = [
 ];
 ---
 
-<Layout title="Servicios de Climatización - IS.INSTALACIONES">
-  <Header />
+<Layout title="Servicios de Climatización - IS INSTALACIONES">
 
   <main class="pt-20">
 
@@ -61,5 +61,4 @@ const incidencias = [
     </section>
   </main>
 
-  <Footer />
 </Layout>
