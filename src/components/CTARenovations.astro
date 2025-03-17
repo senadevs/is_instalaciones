@@ -1,0 +1,82 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "¿Necesitas un Técnico Urgente?",
+  description = "Resolvemos cualquier incidencia en tu hogar o negocio de forma rápida y profesional"
+} = Astro.props;
+
+const services = [
+  {
+    icon: "⚡",
+    title: "Averías Eléctricas",
+    description: "Cortocircuitos, fallos de luz, instalaciones"
+  },
+  {
+    icon: "🚰",
+    title: "Fugas de Agua",
+    description: "Goteras, tuberías rotas, desatascos"
+  },
+  {
+    icon: "❄️",
+    title: "Climatización",
+    description: "Reparación aire acondicionado y calefacción"
+  }
+];
+
+const benefits = [
+  "Servicio 24/7",
+  "Técnicos cualificados",
+  "Respuesta en menos de 2h",
+  "Garantía en reparaciones"
+];
+---
+
+<section class="py-16 md:py-20  border-b border-primary/20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">{title}</h2>
+      <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+        {description}
+      </p>
+      
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        {services.map(service => (
+          <div class=" p-6 rounded-lg shadow-md transform hover:scale-105 transition-all duration-300">
+            <div class="text-4xl mb-4">{service.icon}</div>
+            <h3 class="font-bold text-xl mb-2">{service.title}</h3>
+            <p class="">{service.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="bg-primary text-white p-8 rounded-lg shadow-lg mb-8">
+        <h3 class="text-2xl font-bold mb-6">Servicio Técnico de Urgencia</h3>
+        <ul class="space-y-3 max-w-md mx-auto mb-8">
+          {benefits.map(benefit => (
+            <li class="flex items-center justify-center">
+              <span class="mr-2">✓</span>
+              {benefit}
+            </li>
+          ))}
+        </ul>
+        <a 
+          href="tel:+34637591736"
+          class="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors transform hover:scale-105 duration-300"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.27c1.21.49 2.53.76 3.88.76.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.29 22 2 13.71 2 3.5 2 2.95 2.45 2.5 3 2.5H6.5c.55 0 1 .45 1 1 0 1.35.27 2.67.76 3.88.14.34.07.73-.27 1.11l-2.2 2.2z"/>
+          </svg>
+          Llamar Ahora
+        </a>
+      </div>
+
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        * Servicio disponible en Barcelona y alrededores
+      </div>
+    </div>
+  </div>
+</section>
