@@ -1,11 +1,6 @@
 ---
 import type { Review } from "../lib/type";
 
-
-// Fetch reviews at build time
-const response = await fetch('http://localhost:4321/api/reviews').catch(() => null);
-const { reviews = [], rating = 5.0, reviewCount = 0, googleBusinessId = "" } = await response?.json().catch(() => ({}));
-
 // Fallback data
 const fallbackReviews = [
   {
@@ -31,12 +26,13 @@ const fallbackReviews = [
   }
 ];
 
-const displayReviews = reviews.length > 0 ? reviews : fallbackReviews;
-const displayRating = rating || 5.0;
-const displayCount = reviewCount || fallbackReviews.length;
+const displayReviews = fallbackReviews;
+const displayRating = 5.0;
+const displayCount = fallbackReviews.length;
+const googleBusinessId = "";
 ---
 
-<section class="py-16 md:py-20  border-b border-primary/20 overflow-hidden">
+<section class="py-16 md:py-20 border-b border-primary/20 overflow-hidden">
   <div class="container mx-auto px-4">
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
@@ -59,7 +55,6 @@ const displayCount = reviewCount || fallbackReviews.length;
     </div>
 
     <div class="relative max-w-6xl mx-auto">
-      <!-- Grid de reseñas con efecto collage -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         {displayReviews.map((review: Review, index: number) => (
           <div 
@@ -83,7 +78,7 @@ const displayCount = reviewCount || fallbackReviews.length;
               </div>
               <blockquote class="relative">
                 <span class="absolute top-0 left-0 text-6xl text-primary/10">"</span>
-                <p class=" mb-4 pl-8 pt-4 italic">
+                <p class="mb-4 pl-8 pt-4 italic">
                   {review.text}
                 </p>
                 <span class="absolute bottom-0 right-0 text-6xl text-primary/10">"</span>
@@ -93,30 +88,6 @@ const displayCount = reviewCount || fallbackReviews.length;
           </div>
         ))}
       </div>
-
-      <!-- Decoraciones de fondo -->
-      <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
     </div>
-
-    {googleBusinessId && (
-      <div class="text-center mt-12">
-        <a 
-          href={`https://g.page/r/${googleBusinessId}`}
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-secondary transition-colors transform hover:scale-105 duration-300 shadow-md hover:shadow-lg"
-        >
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
-            alt="Google Logo" 
-            class="w-6 h-6"
-            width="24"
-            height="24"
-          />
-          <span>Ver todas las reseñas en Google</span>
-        </a>
-      </div>
-    )}
   </div>
 </section>
