@@ -1,0 +1,137 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+}
+
+const {
+  title = "Servicios Profesionales de Instalaciones y Reformas en Barcelona",
+  description = "Soluciones integrales para tu hogar o negocio con la máxima calidad y garantía",
+  buttonText = "Solicitar Presupuesto Gratis",
+  buttonLink = "/#contacto"
+} = Astro.props;
+
+const services = [
+  {
+    icon: "⚡",
+    title: "Instalaciones Eléctricas",
+    features: [
+      "Instalaciones completas y reformas",
+      "Cuadros eléctricos",
+      "Iluminación LED",
+      "Cambio de Fusibles",
+    ]
+  },
+  {
+    icon: "🚰",
+    title: "Fontanería y Saneamiento",
+    features: [
+      "Instalaciones de agua",
+      "Detección de fugas",
+      "Cambio de tuberías",
+      "Instalación de sanitarios"
+    ]
+  },
+  {
+    icon: "❄️",
+    title: "Climatización y Calefacción",
+    features: [
+      "Aire acondicionado",
+      "Calefacción",
+      "Ventilación",
+      "Mantenimiento sistemas"
+    ]
+  },
+  {
+    icon: "🏠",
+    title: "Reformas Integrales",
+    features: [
+      "Carpineria en aluminio",
+      "Viviendas completas",
+      "Instalación de Ventanas",
+      "Montaje de Pladur"
+    ]
+  }
+];
+---
+
+<section class="py-12 sm:py-16 md:py-20  border-b border-primary/20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">{title}</h2>
+        <p class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
+          {description}
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+        {services.map(service => (
+          <a href={`/servicios/${service.title.toLowerCase().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} 
+             class="block bg-white  p-6 sm:p-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+            <!-- Efecto de brillo al hover -->
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+            
+            <!-- Contenido de la card -->
+            <div class="relative z-10">
+              <div class="flex items-center mb-4 sm:mb-6">
+                <span class="text-3xl sm:text-4xl mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</span>
+                <h3 class="text-xl sm:text-2xl font-bold group-hover:text-primary transition-colors duration-300">{service.title}</h3>
+              </div>
+              <ul class="space-y-2 sm:space-y-3">
+                {service.features.map(feature => (
+                  <li class="flex items-center text-sm sm:text-base  group-hover:translate-x-2 transition-transform duration-300">
+                    <span class="text-primary mr-2 flex-shrink-0">✓</span>
+                    <span class="line-clamp-2">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Indicador de click -->
+            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span class="text-primary text-sm font-medium flex items-center">
+                Ver más
+                <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </div>
+
+            <!-- Overlay táctil para móviles -->
+            <div class="absolute inset-0 bg-primary/5 opacity-0 active:opacity-100 sm:hidden transition-opacity"></div>
+          </a>
+        ))}
+      </div>
+
+      <div class="bg-primary text-white p-6 sm:p-8 rounded-lg shadow-lg text-center">
+        <h3 class="text-xl sm:text-2xl font-bold mb-4">¿Necesitas un servicio profesional?</h3>
+        <p class="text-base sm:text-lg mb-6 max-w-2xl mx-auto">
+          Más de 8 años de experiencia nos avalan. Trabajamos en toda Barcelona y alrededores con la máxima calidad y garantía.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 text-sm sm:text-base">
+          <div class="flex items-center">
+            <span class="mr-2">✓</span>
+            Presupuesto sin compromiso
+          </div>
+          <div class="flex items-center">
+            <span class="mr-2">✓</span>
+            Profesionales cualificados
+          </div>
+          <div class="flex items-center">
+            <span class="mr-2">✓</span>
+            Garantía en todos los trabajos
+          </div>
+        </div>
+        <a 
+          href={buttonLink}
+          class="inline-block bg-white text-primary px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+        >
+          {buttonText}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
