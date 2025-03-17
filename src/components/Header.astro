@@ -1,192 +1,296 @@
 ---
 import ThemeSwitcher from './ThemeSwitcher.astro';
 import Image from 'astro/components/Image.astro';
-import logo from '../assets/logo.webp';
+import logoDark from '../assets/bl.png';
+import logo from '../assets/logo.png';
+import Logo from './Logo';
 
 const menuItems = [
   { href: "/", text: "INICIO" },
-  { href: "/sobre-mi", text: "NOSOTROS" },
-  { href: "/#servicios", text: "SERVICIOS" },
-  { href: "/#inspiracion", text: "INSPIRACIÓN" },
-  { href: "/#contacto", text: "CONTACTO" }
+  { href: "/nosotros", text: "NOSOTROS" },
+  { 
+    href: "/#servicios", 
+    text: "SERVICIOS",
+    submenu: [
+      { href: "/servicios/instalaciones-electricas", text: "ELECTRICIDAD" },
+      { href: "/servicios/fontaneria-y-saneamiento", text: "FONTANERÍA" },
+      { href: "/servicios/climatizacion-y-calefaccion", text: "CLIMATIZACIÓN" },
+      { href: "/servicios/reformas-integrales", text: "MANTENIMIENTO" }
+    ]
+  },
+  { href: "/contacto", text: "CONTACTO" }
 ];
+
+const currentPath = Astro.url.pathname;
+const currentHash = Astro.url.hash;
 ---
 
-<header class="bg-primary text-theme-light py-4 fixed w-full z-50 border-b border-primary/20" role="banner">
-    <nav class="container mx-auto px-4 max-w-[2560px]" role="navigation" aria-label="Navegación principal">
-      <div class="flex justify-between items-center">
-        <!-- Logo -->
-        <a href="/" class="text-xl md:text-2xl hover:text-custom-primary  transition-colors font-bold flex items-center shrink-0" aria-label="IS.INSTALACIONES - Ir a inicio">
-            <Image src={logo} alt="IS.INSTALACIONES" class="w-12 h-12 lg:w-20 lg:h-20 md:w-16 md:h-16 sm:w-10 sm:h-10  mr-2 rounded-full" width={300} height={300} quality={100}  />  
-             <!-- <span class="text-2xl mr-2">🔧</span> -->
-             <span class="hidden sm:inline text-lg lg:text-xl md:text-lg sm:text-lg "><em>IS</em> INSTALACIONES</span>
-             <span class="sm:hidden"><em>IS</em></span>
-           </a>
+<header class="bg-primary text-theme-light fixed w-full z-50 border-b border-primary/20" role="banner">
+  <nav class="container mx-auto px-4 max-w-[2560px] h-32" role="navigation" aria-label="Navegación principal">
+    <div class="flex justify-between items-center h-full">
+      <!-- Logo Container -->
+      <div class="h-full flex items-center">
+        <a href="/" class="text-xl md:text-2xl font-bold flex items-center h-full py-2" aria-label="IS.INSTALACIONES - Ir a inicio">
+          <Logo client:load />
+          <span class="hidden sm:inline ml-2">IS.INSTALACIONES</span>
+          <span class="sm:hidden ml-2">IS.</span>
+        </a>
+      </div>
+      
+      <!-- Contenedor central -->
+      <div class="flex items-center justify-end flex-1 space-x-4 ml-4 md:ml-8 h-full">
+        <!-- Menú desktop -->
+        <div class="hidden md:flex space-x-4 lg:space-x-8 justify-center font-bold flex-1" role="menubar">
+          {menuItems.map(item => {
+            const isSelected = 
+              (item.href === '/' && currentPath === '/') ||
+              (item.href !== '/' && !item.href.includes('#') && currentPath.startsWith(item.href)) ||
+              (item.href.includes('#') && currentHash === item.href.substring(item.href.indexOf('#')));
+            
+            return (
+              <div class="relative group">
+                <a 
+                  href={item.href}
+                  class={`px-3 py-1.5 rounded-lg transition-all duration-300 text-base lg:text-lg whitespace-nowrap inline-flex items-center
+                        hover:bg-white/10 hover:border-white/20 hover:border
+                        ${isSelected ? 'bg-white/10 border border-white/20' : 'border border-transparent'}`}
+                  role={item.submenu ? 'button' : 'menuitem'}
+                  tabindex="0"
+                  data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
+                  aria-current={isSelected ? 'page' : undefined}
+                  aria-expanded={item.submenu ? 'false' : undefined}
+                >
+                  {item.text}
+                  {item.submenu && (
+                    <svg class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  )}
+                </a>
+                {item.submenu && (
+                  <div class="absolute top-full left-0 mt-1 w-48 bg-primary border border-white/20 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100">
+                    {item.submenu.map(subItem => (
+                      <a
+                        href={subItem.href}
+                        class="block px-4 py-2 text-sm hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                        role="menuitem"
+                      >
+                        {subItem.text}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="flex items-center space-x-6">
+          <a 
+            href="https://wa.me/34637591736" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="hover:text-gray-200 transition-colors"
+            aria-label="Contactar por WhatsApp"
+          >
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
+          <a href="tel:3460564579" class="hover:text-gray-200 transition-colors">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.27c1.21.49 2.53.76 3.88.76.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.29 22 2 13.71 2 3.5 2 2.95 2.45 2.5 3 2.5H6.5c.55 0 1 .45 1 1 0 1.35.27 2.67.76 3.88.14.34.07.73-.27 1.11l-2.2 2.2z"/>
+            </svg>
+          </a>
+        </div>
+
+        <ThemeSwitcher />
         
-        <!-- Contenedor central -->
-        <div class="flex items-center justify-end flex-1 space-x-4 ml-4 md:ml-8">
-          <!-- Menú desktop -->
-          <div class="hidden md:flex space-x-4 lg:space-x-8 justify-center font-bold flex-1" role="menubar">
-            {menuItems.map(item => (
-              <a 
-                href={item.href} 
-                class="hover:text-green-950 dark:hover:text-gray-200 transition-colors text-base lg:text-lg whitespace-nowrap  "
-                role="menuitem"
-                tabindex="0"
+        <!-- Botón menú móvil -->
+        <button 
+          id="menu-toggle" 
+          class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+          aria-label="Abrir menú de navegación"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div 
+      id="mobile-menu" 
+      class="md:hidden absolute left-0 right-0 top-[100%] bg-primary border-t border-primary dark:border-white transform -translate-y-full opacity-0 invisible transition-all duration-300 ease-in-out" 
+      role="menu" 
+      aria-label="Menú móvil"
+    >
+      <div class="flex flex-col w-full p-4 transform origin-top scale-95 transition-transform duration-300">
+        {menuItems.map(item => {
+          const isSelected = 
+            (item.href === '/' && currentPath === '/') ||
+            (item.href !== '/' && !item.href.includes('#') && currentPath.startsWith(item.href)) ||
+            (item.href.includes('#') && currentHash === item.href.substring(item.href.indexOf('#')));
+          
+          return (
+            <div class="mb-2">
+              <button 
+                class={`w-full text-left text-white text-lg px-6 py-3 rounded-lg border transition-all duration-300 flex items-center justify-between
+                      ${isSelected ? 'bg-white/10 border-white' : 'border-transparent hover:bg-white/10'}`}
                 data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
+                aria-expanded={item.submenu ? 'false' : undefined}
+                data-href={item.href}
+                data-has-submenu={item.submenu ? 'true' : 'false'}
               >
                 {item.text}
-              </a>
-            ))}
-          </div>
-          <div class="flex items-center space-x-4">
-            <a 
-              href="https://wa.me/3460564579" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="hover:text-gray-200 transition-colors"
-              aria-label="Contactar por WhatsApp"
-            >
-              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-            </a>
-           
-          </div>
-
-  
-          <ThemeSwitcher />
-          
-          <!-- Botón menú móvil -->
-          <button 
-            id="menu-toggle" 
-            class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
-            aria-label="Abrir menú de navegación"
-            aria-expanded="false"
-            aria-controls="mobile-menu"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
-            </svg>
-          </button>
-        </div>
+                {item.submenu && (
+                  <svg class="w-4 h-4 ml-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </button>
+              {item.submenu && (
+                <div class="hidden pl-4 mt-2 space-y-2 submenu-container">
+                  {item.submenu.map(subItem => (
+                    <a
+                      href={subItem.href}
+                      class="block text-white text-base px-6 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                      role="menuitem"
+                    >
+                      {subItem.text}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-  
-      <!-- Menú móvil -->
-      <div 
-        id="mobile-menu" 
-        class="md:hidden absolute left-0 right-0 top-[100%] bg-primary border-t border-primary dark:border-white transform -translate-y-full opacity-0 invisible transition-all duration-300 ease-in-out" 
-        role="menu" 
-        aria-label="Menú móvil"
-      >
-        <div class="flex flex-col w-full p-4 transform origin-top scale-95 transition-transform duration-300">
-          {menuItems.map(item => (
-            <a 
-              href={item.href} 
-              class="text-white text-lg px-6 py-3 mb-2 rounded border border-primary dark:border-white hover:bg-primary/5 dark:hover:bg-white/10 transition-colors w-full block"
-              role="menuitem"
-              tabindex="0"
-              data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
-            >
-              {item.text}
-            </a>
-          ))}
-        </div>
-      </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</header>
 
-  <script>
-    // Manejo del menú móvil
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-  
-    // Función para manejar la navegación
-    function handleNavigation(e: Event) {
-      const link = e.currentTarget as HTMLAnchorElement;
-      const href = link.getAttribute('href') || '';
-      const isHashLink = href.includes('#');
-      const currentPath = window.location.pathname;
-      const targetPath = href.split('#')[0] || '/';
-      const sectionId = isHashLink ? href.split('#')[1] : null;
-  
-      // Si estamos en la misma página y es un enlace con hash
-      if (currentPath === targetPath && isHashLink) {
-        e.preventDefault();
-        const section = document.getElementById(sectionId || '');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
-          // Eliminar el hash de la URL
-          window.history.replaceState({}, '', window.location.pathname);
-        }
-      }
-      // Si vamos a otra página y hay un hash
-      else if (isHashLink && currentPath !== targetPath) {
-        sessionStorage.setItem('scrollToSection', sectionId || '');
+<script>
+  function toggleSubmenu(button: HTMLButtonElement) {
+    const submenu = button.nextElementSibling;
+    const icon = button.querySelector('svg');
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    
+    button.setAttribute('aria-expanded', (!isExpanded).toString());
+    
+    if (submenu) {
+      if (isExpanded) {
+        submenu.classList.add('hidden');
+        icon?.classList.remove('rotate-180');
+      } else {
+        submenu.classList.remove('hidden');
+        icon?.classList.add('rotate-180');
       }
     }
-  
-    // Añadir el manejador de eventos a todos los enlaces
-    document.querySelectorAll('a[href*="#"]').forEach(link => {
-      link.addEventListener('click', handleNavigation);
-    });
-  
-    // Manejar el scroll al cargar la página
-    window.addEventListener('load', () => {
-      const section = sessionStorage.getItem('scrollToSection');
-      if (section) {
-        const element = document.getElementById(section);
-        if (element) {
-          setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth' });
-            // Eliminar el hash de la URL
-            window.history.replaceState({}, '', window.location.pathname);
-            sessionStorage.removeItem('scrollToSection');
-          }, 100);
+  }
+
+  // Inicializar los eventos para los botones del menú móvil
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButtons = document.querySelectorAll('#mobile-menu button[data-has-submenu]');
+    
+    mobileMenuButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        const hasSubmenu = btn.getAttribute('data-has-submenu') === 'true';
+        
+        if (hasSubmenu) {
+          toggleSubmenu(btn);
+        } else {
+          const href = btn.getAttribute('data-href') || '/';
+          window.location.href = href;
         }
-      }
-    });
-  
-    menuToggle?.addEventListener('click', () => {
-      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-      
-      if (!isExpanded) {
-        // Abrir menú
-        mobileMenu?.classList.remove('invisible', '-translate-y-full', 'opacity-0');
-        mobileMenu?.classList.add('translate-y-0', 'opacity-100');
-        mobileMenu?.querySelector('.flex')?.classList.remove('scale-95');
-        mobileMenu?.querySelector('.flex')?.classList.add('scale-100');
-      } else {
-        // Cerrar menú
-        mobileMenu?.classList.add('-translate-y-full', 'opacity-0');
-        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
-        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
-        // Añadir invisible después de la transición
-        setTimeout(() => {
-          mobileMenu?.classList.add('invisible');
-        }, 300);
-      }
-    });
-  
-    // Cerrar menú al hacer click en un enlace
-    const mobileLinks = mobileMenu?.querySelectorAll('a');
-    mobileLinks?.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu?.classList.add('-translate-y-full', 'opacity-0', 'invisible');
-        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
-        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
-        menuToggle?.setAttribute('aria-expanded', 'false');
       });
     });
-  
-    // Cerrar menú al redimensionar la ventana
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) { // 768px es el breakpoint md de Tailwind
-        mobileMenu?.classList.add('-translate-y-full', 'opacity-0', 'invisible');
-        mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
-        mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
-        menuToggle?.setAttribute('aria-expanded', 'false');
+  });
+
+  // Función para manejar la navegación
+  function handleNavigation(e: Event) {
+    const link = e.currentTarget as HTMLAnchorElement;
+    const href = link.getAttribute('href') || '';
+    const isHashLink = href.includes('#');
+    
+    if (!isHashLink) return;
+
+    e.preventDefault();
+    const sectionId = href.split('#')[1];
+    
+    // Si estamos en la página de inicio
+    if (window.location.pathname === '/') {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        window.history.replaceState(null, '', `#${sectionId}`);
       }
+    } else {
+      // Si no estamos en la página de inicio, redirigir
+      window.location.href = `/${href}`;
+    }
+  }
+
+  // Añadir manejadores de eventos a los enlaces
+  document.querySelectorAll('a[data-section]').forEach(link => {
+    link.addEventListener('click', handleNavigation);
+  });
+
+  // Manejar menú móvil
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuToggle?.addEventListener('click', () => {
+    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+    
+    if (!isExpanded) {
+      mobileMenu?.classList.remove('invisible', '-translate-y-full', 'opacity-0');
+      mobileMenu?.classList.add('translate-y-0', 'opacity-100');
+      mobileMenu?.querySelector('.flex')?.classList.remove('scale-95');
+      mobileMenu?.querySelector('.flex')?.classList.add('scale-100');
+    } else {
+      mobileMenu?.classList.add('-translate-y-full', 'opacity-0');
+      mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
+      mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
+      setTimeout(() => mobileMenu?.classList.add('invisible'), 300);
+    }
+  });
+
+  // Cerrar menú móvil al hacer click en un enlace
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+      mobileMenu.querySelector('.flex')?.classList.remove('scale-100');
+      mobileMenu.querySelector('.flex')?.classList.add('scale-95');
+      menuToggle?.setAttribute('aria-expanded', 'false');
     });
-  </script>
+  });
+
+  // Cerrar menú móvil al redimensionar la ventana
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+      mobileMenu?.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+      mobileMenu?.querySelector('.flex')?.classList.remove('scale-100');
+      mobileMenu?.querySelector('.flex')?.classList.add('scale-95');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Manejar el scroll inicial si hay un hash en la URL
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const section = document.getElementById(hash.substring(1));
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  });
+</script>
