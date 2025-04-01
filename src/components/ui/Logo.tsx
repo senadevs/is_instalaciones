@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import logoDark from '../assets/bl.png';
-import logo from '../assets/logo.png';
-import white from '../assets/whi.png';
+import logoDark from '../../assets/bl.png';
+import logo from '../../assets/logo.png';
+import white from '../../assets/whi.png';
 
 
 interface LogoProps {
