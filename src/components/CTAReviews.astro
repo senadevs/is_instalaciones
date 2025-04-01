@@ -1,122 +1,182 @@
 ---
-import type { Review } from "../lib/type";
-
-
-// Fetch reviews at build time
-const response = await fetch('http://localhost:4321/api/reviews').catch(() => null);
-const { reviews = [], rating = 5.0, reviewCount = 0, googleBusinessId = "" } = await response?.json().catch(() => ({}));
-
-// Fallback data
-const fallbackReviews = [
-  {
-    initial: "M",
-    name: "María García",
-    rating: 5,
-    text: "Excelente servicio profesional. Instalaron el aire acondicionado rápidamente y con un acabado perfecto.",
-    date: "hace 2 semanas"
-  },
-  {
-    initial: "C",
-    name: "Carlos Rodríguez",
-    rating: 5,
-    text: "Gran trabajo en la reforma de mi baño. Puntuales, limpios y muy profesionales.",
-    date: "hace 1 mes"
-  },
-  {
-    initial: "A",
-    name: "Ana Martínez",
-    rating: 5,
-    text: "Servicio impecable. Solucionaron un problema eléctrico complejo de manera rápida y eficiente.",
-    date: "hace 1 mes"
-  }
-];
-
-const displayReviews = reviews.length > 0 ? reviews : fallbackReviews;
-const displayRating = rating || 5.0;
-const displayCount = reviewCount || fallbackReviews.length;
+// No necesitamos importar el tipo Review aquí ya que lo definiremos en el script
 ---
 
-<section class="py-16 md:py-20  border-b border-primary/20 overflow-hidden">
+<section id="reviews-section" class="py-16 md:py-20  border-b border-primary/20 overflow-hidden">
   <div class="container mx-auto px-4">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
-      <div class="flex justify-center items-center gap-4 mb-6">
-        <img 
-          src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-          alt="Google Logo" 
-          class="w-8 h-8" 
-          width="32"
-          height="32"
-        />
-        <div class="flex items-center">
-          <div class="flex text-yellow-400 text-2xl mr-2" aria-label={`${displayRating} estrellas de 5`}>
-            {"★".repeat(Math.round(displayRating))}
-          </div>
-          <span class="font-bold text-xl">{displayRating.toFixed(1)}</span>
-          <span class="text-gray-600 ml-2">({displayCount} reseñas)</span>
-        </div>
-      </div>
+    <div id="reviews-content" class="text-center py-12">
+      <p class="text-gray-600">Cargando reseñas...</p>
     </div>
-
-    <div class="relative max-w-6xl mx-auto">
-      <!-- Grid de reseñas con efecto collage -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {displayReviews.map((review: Review, index: number) => (
-          <div 
-            class={`transform transition-all duration-500 hover:scale-105 hover:z-10 ${
-              index % 3 === 0 ? 'md:rotate-[-3deg]' : 
-              index % 3 === 1 ? 'md:rotate-[0deg] md:translate-y-4' : 
-              'md:rotate-[3deg]'
-            }`}
-          >
-            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/10 hover:border-primary/30">
-              <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md">
-                  {review.initial}
-                </div>
-                <div>
-                  <p class="font-bold text-lg">{review.name}</p>
-                  <div class="flex text-yellow-400" aria-label={`${review.rating} estrellas de 5`}>
-                    {"★".repeat(review.rating)}
-                  </div>
-                </div>
-              </div>
-              <blockquote class="relative">
-                <span class="absolute top-0 left-0 text-6xl text-primary/10">"</span>
-                <p class=" mb-4 pl-8 pt-4 italic">
-                  {review.text}
-                </p>
-                <span class="absolute bottom-0 right-0 text-6xl text-primary/10">"</span>
-              </blockquote>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 text-right">{review.date}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <!-- Decoraciones de fondo -->
-      <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
-    </div>
-
-    {googleBusinessId && (
-      <div class="text-center mt-12">
-        <a 
-          href={`https://g.page/r/${googleBusinessId}`}
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-secondary transition-colors transform hover:scale-105 duration-300 shadow-md hover:shadow-lg"
-        >
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
-            alt="Google Logo" 
-            class="w-6 h-6"
-            width="24"
-            height="24"
-          />
-          <span>Ver todas las reseñas en Google</span>
-        </a>
-      </div>
-    )}
   </div>
 </section>
+
+<template id="reviews-template">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
+    <div class="flex justify-center items-center gap-4 mb-6">
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+        alt="Google Logo" 
+        class="w-8 h-8" 
+        width="32"
+        height="32"
+      />
+      <div class="flex items-center">
+        <div class="flex text-yellow-400 text-2xl mr-2" id="rating-stars"></div>
+        <span class="font-bold text-xl" id="rating-value"></span>
+        <span class="text-gray-600 ml-2" id="review-count"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative max-w-6xl mx-auto">
+    <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+    </div>
+
+    <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div id="google-link" class="text-center mt-12"></div>
+</template>
+
+<template id="review-template">
+  <div class="transform transition-all duration-500 hover:scale-105 hover:z-10">
+    <div class=" p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/10 hover:border-primary/30">
+      <div class="flex items-center mb-4">
+        <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md review-initial"></div>
+        <div>
+          <p class="font-bold text-lg review-name"></p>
+          <div class="flex text-yellow-400 review-rating"></div>
+        </div>
+      </div>
+      <blockquote class="relative">
+        <span class="absolute top-0 left-0 text-6xl text-primary/10">"</span>
+        <p class="text-gray-600 dark:text-gray-300 mb-4 pl-8 pt-4 italic review-text"></p>
+        <span class="absolute bottom-0 right-0 text-6xl text-primary/10">"</span>
+      </blockquote>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 text-right review-date"></p>
+    </div>
+  </div>
+</template>
+
+<script>
+  interface Review {
+    initial: string;
+    name: string;
+    rating: number;
+    text: string;
+    date: string;
+  }
+
+  interface ReviewsResponse {
+    reviews: Review[];
+    rating: number;
+    reviewCount: number;
+    googleBusinessId: string;
+  }
+
+  declare global {
+    interface HTMLElementTagNameMap {
+      'template': HTMLTemplateElement;
+    }
+  }
+
+  async function fetchReviews() {
+    try {
+      const response = await fetch('/api/reviews');
+      const { reviews, rating, reviewCount, googleBusinessId } = await response.json() as ReviewsResponse;
+
+      if (!reviews || reviews.length === 0) {
+        throw new Error('No reviews available');
+      }
+
+      // Get template elements
+      const reviewsContent = document.getElementById('reviews-content');
+      const reviewsTemplate = document.getElementById('reviews-template') as HTMLTemplateElement;
+      const reviewTemplate = document.getElementById('review-template') as HTMLTemplateElement;
+
+      if (!reviewsContent || !reviewsTemplate || !reviewTemplate) return;
+
+      // Clone and populate the main template
+      const mainContent = reviewsTemplate.content.cloneNode(true) as DocumentFragment;
+      
+      // Update rating information
+      const ratingStars = mainContent.getElementById('rating-stars');
+      const ratingValue = mainContent.getElementById('rating-value');
+      const reviewCountElement = mainContent.getElementById('review-count');
+      
+      if (ratingStars) ratingStars.innerHTML = "★".repeat(Math.round(rating));
+      if (ratingStars) ratingStars.setAttribute('aria-label', `${rating} estrellas de 5`);
+      if (ratingValue) ratingValue.textContent = rating.toFixed(1);
+      if (reviewCountElement) reviewCountElement.textContent = `(${reviewCount} reseñas)`;
+
+      // Add reviews to the grid
+      const reviewsGrid = mainContent.getElementById('reviews-grid');
+      reviews.forEach((review: Review, index: number) => {
+        const reviewElement = reviewTemplate.content.cloneNode(true) as DocumentFragment;
+        const reviewContainer = reviewElement.querySelector('.transform');
+        
+        // Add rotation classes based on index
+        reviewContainer?.classList.add(
+          index % 3 === 0 ? 'md:rotate-[-2deg]' : 
+          index % 3 === 1 ? 'md:rotate-[0deg] md:translate-y-4' : 
+          'md:rotate-[2deg]'
+        );
+
+        // Populate review data
+        const initial = reviewElement.querySelector('.review-initial');
+        const name = reviewElement.querySelector('.review-name');
+        const rating = reviewElement.querySelector('.review-rating');
+        const text = reviewElement.querySelector('.review-text');
+        const date = reviewElement.querySelector('.review-date');
+
+        if (initial) initial.textContent = review.initial;
+        if (name) name.textContent = review.name;
+        if (rating) rating.innerHTML = "★".repeat(review.rating);
+        if (text) text.textContent = review.text;
+        if (date) date.textContent = review.date;
+
+        reviewsGrid?.appendChild(reviewElement);
+      });
+
+      // Add Google link if available
+      if (googleBusinessId) {
+        const googleLink = mainContent.getElementById('google-link');
+        if (googleLink) {
+          googleLink.innerHTML = `
+            <a 
+              href="https://g.page/r/${googleBusinessId}"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-secondary transition-colors transform hover:scale-105 duration-300 shadow-md hover:shadow-lg"
+            >
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+                alt="Google Logo" 
+                class="w-6 h-6"
+                width="24"
+                height="24"
+              />
+              <span>Ver todas las reseñas en Google</span>
+            </a>
+          `;
+        }
+      }
+
+      // Replace loading content with reviews
+      reviewsContent.innerHTML = '';
+      reviewsContent.appendChild(mainContent);
+
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      const reviewsContent = document.getElementById('reviews-content');
+      if (reviewsContent) {
+        reviewsContent.innerHTML = '<p class="text-gray-600">No hay reseñas disponibles en este momento.</p>';
+      }
+    }
+  }
+
+  // Fetch reviews when the component mounts
+  fetchReviews();
+</script>
