@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Panoramic from '../../components/Panoramic.astro';
+import fontanero from '../../assets/fontanero.jpg'
 
 const services = [
     { title: "Instalación de agua." },
@@ -24,9 +25,11 @@ const incidencias = [
   
   <main class="pt-20">
 
+
+    
   
       <Panoramic 
-      imagen="https://media.istockphoto.com/id/1440019701/es/foto/primer-plano-del-fontanero-reparando-el-lavabo-con-herramienta-en-el-ba%C3%B1o.jpg?s=2048x2048&w=is&k=20&c=CtwsiRheHhOIsLPwAC8hE2Wq7bnQuYBkmyPY1p-tKcE=",
+      imagen={fontanero},
       texto="Servicios de Fontanería"/>
 
     <section class="py-20">

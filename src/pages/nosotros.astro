@@ -3,8 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
-import SimpleLayout from '../layouts/SimpleLayout.astro';
 import nosotros from '../assets/soldador.jpg'
+import Panoramic from '../components/Panoramic.astro';
 ---
 
 <Layout 
@@ -14,22 +14,9 @@ import nosotros from '../assets/soldador.jpg'
   
   <main class="pt-20">
     <!-- Hero Section -->
-    <section class="relative py-20 border-b border-primary/20">
-      <div class="absolute inset-0 bg-black/50 z-10"></div>
-      <img 
-        src={nosotros.src}
-        alt="Instalador profesional"
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      <div class="container mx-auto px-4 relative z-20">
-        <div class="max-w-4xl mx-auto text-center text-white">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Nosotros</h1>
-          <p class="text-lg md:text-xl mb-8">
-            Un camino de dedicación y excelencia en el sector de las instalaciones
-          </p>
-        </div>
-      </div>
-    </section>
+    <Panoramic
+    imagen={nosotros}
+    texto="Servicios de Climatización"/>
 
     <!-- Biografía -->
     <section class="py-16 md:py-20 ">

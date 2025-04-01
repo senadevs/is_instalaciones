@@ -1,9 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
 import Panoramic from "../../components/Panoramic.astro";
-import SimpleLayout from "../../layouts/SimpleLayout.astro";
+import aire from '../../assets/tecnico-aire-acondicionado.png'
 const services = [
   { title: "Instalación de aire acondicionado por coducto." },
   { title: "Instalación de suelo calefactable." },
@@ -25,7 +23,7 @@ const incidencias = [
   <main class="pt-20">
 
     <Panoramic
-    imagen="https://media.istockphoto.com/id/1437896577/es/foto/t%C3%A9cnico-de-aire-acondicionado-reparando-sistema-de-aire-acondicionado-central-con-herramientas.jpg?s=2048x2048&w=is&k=20&c=6oNjHmF7yEeTX2HayYvj_yFgrxZ5TH1HHRpbRjKaoto="
+    imagen={aire}
     texto="Servicios de Climatización"/>
 
     <section class="py-20">
