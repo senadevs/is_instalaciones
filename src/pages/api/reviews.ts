@@ -1,3 +1,4 @@
+import '../../polyfills/message-channel'; 
 import type { APIRoute } from 'astro';
 import type { Review, GoogleReview } from '../../lib/type';
 
