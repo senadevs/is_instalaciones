@@ -85,7 +85,7 @@
     try {
       const response = await fetch('/api/reviews');
       const { reviews, rating, reviewCount, googleBusinessId } = await response.json() as ReviewsResponse;
-
+      console.log(response)
       if (!reviews || reviews.length === 0) {
         throw new Error('No reviews available');
       }
