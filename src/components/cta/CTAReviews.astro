@@ -1,5 +1,4 @@
 ---
-// No necesitamos importar el tipo Review aquí ya que lo definiremos en el script
 ---
 
 <section id="reviews-section" class="py-16 md:py-20  border-b border-primary/20 overflow-hidden">
@@ -15,7 +14,7 @@
     <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
     <div class="flex justify-center items-center gap-4 mb-6">
       <img 
-        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+        src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
         alt="Google Logo" 
         class="w-8 h-8" 
         width="32"
@@ -146,13 +145,13 @@
         if (googleLink) {
           googleLink.innerHTML = `
             <a 
-              href="https://g.page/r/${googleBusinessId}"
+              href="https://search.google.com/local/reviews?placeid=${googleBusinessId}"
               target="_blank" 
               rel="noopener noreferrer" 
               class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg hover:bg-secondary transition-colors transform hover:scale-105 duration-300 shadow-md hover:shadow-lg"
             >
               <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
                 alt="Google Logo" 
                 class="w-6 h-6"
                 width="24"

@@ -11,9 +11,14 @@ async function fetchGoogleReviews(): Promise<{
   reviewCount: number;
 }> {
   try {
-    // Fetch place details including reviews
+    // Fetch place details including reviews with maximum count and sorting
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews,rating,user_ratings_total&key=${GOOGLE_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/details/json?` +
+      `place_id=${PLACE_ID}` +
+      `&fields=reviews,rating,user_ratings_total` +
+      `&reviews_sort=newest` +
+      `&reviews_no_translations=true` +
+      `&key=${GOOGLE_API_KEY}`
     );
 
     if (!response.ok) {
@@ -21,6 +26,23 @@ async function fetchGoogleReviews(): Promise<{
     }
 
     const data = await response.json();
+    
+    // Log para diagnóstico
+    console.log('Google Places API Response:', {
+      status: data.status,
+      reviewsCount: data.result?.reviews?.length,
+      totalRatings: data.result?.user_ratings_total,
+      rating: data.result?.rating
+    });
+
+    if (!data.result?.reviews) {
+      console.error('No reviews found in response:', data);
+      return {
+        reviews: [],
+        rating: data.result?.rating || 0,
+        reviewCount: data.result?.user_ratings_total || 0
+      };
+    }
 
     // Transform Google reviews to our format
     const reviews: Review[] = data.result.reviews.map((review: GoogleReview) => ({

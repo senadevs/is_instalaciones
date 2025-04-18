@@ -12,6 +12,10 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    define:{
+      'process.env.GOOGLE_API_KEY': JSON.stringify(process.env.GOOGLE_API_KEY),
+      'process.env.GOOGLE_PLACE_ID': JSON.stringify(process.env.GOOGLE_PLACE_ID),
+    }
   },
 
   integrations: [sitemap(), react()],

@@ -15,6 +15,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "astro": "^5.2.5",
+    "dotenv": "^16.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "swiper": "^11.2.2",
