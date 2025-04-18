@@ -6,7 +6,11 @@ import sitemap from '@astrojs/sitemap';
 
 import react from '@astrojs/react';
 
-import cloudflare from '@astrojs/cloudflare';
+
+
+import netlify from '@astrojs/netlify';
+
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,6 +25,6 @@ export default defineConfig({
   },
 
   integrations: [sitemap(), react()],
-  adapter: cloudflare(),
+  adapter: netlify(),
   output: 'server'
 });

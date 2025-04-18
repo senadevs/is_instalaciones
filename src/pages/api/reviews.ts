@@ -1,17 +1,10 @@
-import '../../polyfills/message-channel'; 
 import type { APIRoute } from 'astro';
 import type { Review, GoogleReview } from '../../lib/type';
 
 const GOOGLE_API_KEY = import.meta.env.GOOGLE_API_KEY;
 const PLACE_ID = import.meta.env.GOOGLE_PLACE_ID;
 
-// Verificar si las API keys están configuradas
-if (!GOOGLE_API_KEY || !PLACE_ID) {
-  console.error('⚠️ Error: Variables de entorno faltantes');
-  console.error(`GOOGLE_API_KEY: ${GOOGLE_API_KEY ? '✅ Configurada' : '❌ Falta'}`);
-  console.error(`GOOGLE_PLACE_ID: ${PLACE_ID ? '✅ Configurada' : '❌ Falta'}`);
-  console.error('Por favor, configura las variables de entorno en el archivo .env');
-}
+
 
 async function fetchGoogleReviews(): Promise<{
   reviews: Review[];
