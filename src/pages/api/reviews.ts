@@ -1,30 +1,19 @@
 import type { APIRoute } from 'astro';
 import type { Review, GoogleReview } from '../../lib/type';
 
+
 const GOOGLE_API_KEY = import.meta.env.GOOGLE_API_KEY;
 const PLACE_ID = import.meta.env.GOOGLE_PLACE_ID;
-
-
 
 async function fetchGoogleReviews(): Promise<{
   reviews: Review[];
   rating: number;
   reviewCount: number;
 }> {
-  // Verificar nuevamente las keys antes de hacer la petición
-  if (!GOOGLE_API_KEY || !PLACE_ID) {
-    throw new Error('Las variables de entorno GOOGLE_API_KEY y GOOGLE_PLACE_ID son requeridas');
-  }
-
   try {
-    // Fetch place details including reviews with maximum count and sorting
+    // Fetch place details including reviews
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?` +
-      `place_id=${PLACE_ID}` +
-      `&fields=reviews,rating,user_ratings_total` +
-      `&reviews_sort=newest` +
-      `&reviews_no_translations=true` +
-      `&key=${GOOGLE_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews,rating,user_ratings_total&key=${GOOGLE_API_KEY}`
     );
 
     if (!response.ok) {
@@ -32,23 +21,6 @@ async function fetchGoogleReviews(): Promise<{
     }
 
     const data = await response.json();
-    
-    // Log para diagnóstico
-    console.log('Google Places API Response:', {
-      status: data.status,
-      reviewsCount: data.result?.reviews?.length,
-      totalRatings: data.result?.user_ratings_total,
-      rating: data.result?.rating
-    });
-
-    if (!data.result?.reviews) {
-      console.error('No reviews found in response:', data);
-      return {
-        reviews: [],
-        rating: data.result?.rating || 0,
-        reviewCount: data.result?.user_ratings_total || 0
-      };
-    }
 
     // Transform Google reviews to our format
     const reviews: Review[] = data.result.reviews.map((review: GoogleReview) => ({
