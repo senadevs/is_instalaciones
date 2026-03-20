@@ -1,0 +1,202 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<!-- Chat Bubble -->
+<div id="chat-widget" class="fixed bottom-6 right-6 z-50">
+
+  <!-- Chat Window -->
+  <div
+    id="chat-window"
+    class="hidden absolute bottom-20 right-0 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
+  >
+    {/* Header */}
+    <div class="bg-primary p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="/isbot.png" alt="IS Bot" class="w-12 h-12 object-contain" width="48" height="48" />
+        <div>
+          <p class="text-white font-semibold text-sm">IS Instalaciones</p>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <span class="text-white/70 text-xs">En línea</span>
+          </div>
+        </div>
+      </div>
+      <button
+        id="chat-close"
+        class="text-white/70 hover:text-white transition-colors p-1"
+        aria-label="Cerrar chat"
+      >
+        <Icon name="lucide:x" class="w-5 h-5" />
+      </button>
+    </div>
+
+    {/* Messages area */}
+    <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-3 bg-gray-50">
+      {/* Welcome message */}
+      <div class="flex gap-2">
+        <img src="/isbot.png" alt="IS Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />
+        <div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]">
+          <p class="text-sm text-gray-700">
+            Hola, soy el asistente de <strong>IS Instalaciones</strong>. ¿En qué puedo ayudarte?
+          </p>
+        </div>
+      </div>
+
+      {/* Quick replies */}
+      <div id="chat-quick-replies" class="flex flex-wrap gap-2 pl-10">
+        <button class="chat-quick-reply text-xs bg-white border border-primary/20 text-primary px-3 py-1.5 rounded-full hover:bg-primary/5 transition-colors">
+          Pedir presupuesto
+        </button>
+        <button class="chat-quick-reply text-xs bg-white border border-primary/20 text-primary px-3 py-1.5 rounded-full hover:bg-primary/5 transition-colors">
+          Servicios disponibles
+        </button>
+        <button class="chat-quick-reply text-xs bg-white border border-primary/20 text-primary px-3 py-1.5 rounded-full hover:bg-primary/5 transition-colors">
+          Horario de atención
+        </button>
+      </div>
+    </div>
+
+    {/* Input area */}
+    <div class="p-3 border-t border-gray-200 bg-white">
+      <form id="chat-form" class="flex items-center gap-2">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Escribe tu mensaje..."
+          class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-secondary transition-colors shrink-0"
+          aria-label="Enviar mensaje"
+        >
+          <Icon name="lucide:send" class="w-4 h-4" />
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <button
+    id="chat-toggle"
+    class="chat-bubble-btn w-16 h-16 bg-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300 relative border-2 border-primary/20"
+    aria-label="Abrir chat"
+  >
+    <img src="/isbot.png" alt="Chat" id="chat-icon-open" class="w-14 h-14 object-contain" width="56" height="56" />
+    <Icon name="lucide:x" id="chat-icon-close" class="w-7 h-7 text-primary hidden" />
+
+    {/* Notification dot */}
+    <span id="chat-notification" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+  </button>
+</div>
+
+<script is:inline>
+  (function() {
+    function initChat() {
+      const toggle = document.getElementById('chat-toggle');
+      const window_ = document.getElementById('chat-window');
+      const close = document.getElementById('chat-close');
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const iconOpen = document.getElementById('chat-icon-open');
+      const iconClose = document.getElementById('chat-icon-close');
+      const notification = document.getElementById('chat-notification');
+      const quickReplies = document.querySelectorAll('.chat-quick-reply');
+
+      if (!toggle || !window_) return;
+
+      let isOpen = false;
+
+      function toggleChat() {
+        isOpen = !isOpen;
+        window_.classList.toggle('hidden', !isOpen);
+        iconOpen.classList.toggle('hidden', isOpen);
+        iconClose.classList.toggle('hidden', !isOpen);
+        if (isOpen) {
+          notification.classList.add('hidden');
+          input.focus();
+        }
+      }
+
+      toggle.addEventListener('click', toggleChat);
+      close.addEventListener('click', toggleChat);
+
+      function addMessage(text, isUser) {
+        var div = document.createElement('div');
+        div.className = isUser ? 'flex gap-2 justify-end' : 'flex gap-2';
+        div.innerHTML = isUser
+          ? '<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%]"><p class="text-sm">' + text + '</p></div>'
+          : '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]"><p class="text-sm text-gray-700">' + text + '</p></div>';
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      function showTyping() {
+        var div = document.createElement('div');
+        div.id = 'typing-indicator';
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100"><div class="flex gap-1"><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.15s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.3s"></span></div></div>';
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      function removeTyping() {
+        var el = document.getElementById('typing-indicator');
+        if (el) el.remove();
+      }
+
+      // Placeholder responses - replace with real agent later
+      var responses = {
+        'presupuesto': 'Para solicitar un presupuesto gratuito puedes llamarnos al <strong>637 59 17 36</strong>, escribirnos por <a href="https://wa.me/34637591736" class="text-primary underline" target="_blank">WhatsApp</a> o rellenar el formulario de contacto más abajo.',
+        'servicios': 'Ofrecemos: <strong>Electricidad</strong> (instalaciones, cuadros, LED), <strong>Fontanería</strong> (fugas, tuberías, calderas), <strong>Climatización</strong> (aire acondicionado, calefacción) y <strong>Reformas Integrales</strong> (pladur, ventanas, carpintería).',
+        'horario': 'Nuestro horario es: <strong>Lunes a Viernes</strong> de 9:00 a 18:00 y <strong>Sábados</strong> de 9:00 a 14:00. Para urgencias puedes llamarnos al <strong>637 59 17 36</strong>.',
+        'default': 'Gracias por tu mensaje. Para una respuesta inmediata, contacta con nosotros por <a href="https://wa.me/34637591736" class="text-primary underline" target="_blank">WhatsApp</a> o llama al <strong>637 59 17 36</strong>. También puedes dejarnos tus datos en el formulario de contacto y te responderemos en menos de 24 horas.'
+      };
+
+      function getResponse(text) {
+        var lower = text.toLowerCase();
+        if (lower.includes('presupuesto') || lower.includes('precio') || lower.includes('cuanto') || lower.includes('coste')) return responses['presupuesto'];
+        if (lower.includes('servicio') || lower.includes('hacen') || lower.includes('ofrecen') || lower.includes('trabaj')) return responses['servicios'];
+        if (lower.includes('horario') || lower.includes('hora') || lower.includes('abierto') || lower.includes('cuando')) return responses['horario'];
+        return responses['default'];
+      }
+
+      function handleSend(text) {
+        if (!text.trim()) return;
+        // Hide quick replies after first message
+        var qr = document.getElementById('chat-quick-replies');
+        if (qr) qr.remove();
+
+        addMessage(text, true);
+        input.value = '';
+
+        showTyping();
+        setTimeout(function() {
+          removeTyping();
+          addMessage(getResponse(text), false);
+        }, 1000 + Math.random() * 500);
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleSend(input.value);
+      });
+
+      quickReplies.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          handleSend(btn.textContent.trim());
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initChat);
+    } else {
+      initChat();
+    }
+    document.addEventListener('astro:page-load', initChat);
+  })();
+</script>

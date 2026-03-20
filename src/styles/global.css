@@ -580,3 +580,19 @@ html {
     }
   }
 
+  /* ========== Chat Bubble ========== */
+  .chat-bubble-btn {
+    animation: chat-bounce 2s ease-in-out 3s 3;
+  }
+
+  @keyframes chat-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat-bubble-btn {
+      animation: none;
+    }
+  }
+

@@ -48,6 +48,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const imageUrl = new URL(image, siteUrl).toString();
 import Footer from '../components/ui/Footer.astro';
 import Header from '../components/ui/Header.astro';
+import ChatBubble from '../components/ui/ChatBubble.astro';
 import '../styles/global.css';
 ---
 
@@ -209,6 +210,7 @@ import '../styles/global.css';
     <Header/>
     <slot />
     <Footer/>
+    <ChatBubble />
     <script is:inline>
       function initScrollAnimations() {
         const elements = document.querySelectorAll('[data-animate]');

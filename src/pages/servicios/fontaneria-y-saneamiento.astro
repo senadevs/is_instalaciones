@@ -33,10 +33,6 @@ const faqItems = [
     answer: "Las señales más comunes son manchas de humedad en paredes o techos, aumento inexplicable en la factura del agua, y sonido de agua corriendo cuando todos los grifos están cerrados. En IS Instalaciones utilizamos equipos de detección profesional para localizar fugas sin necesidad de realizar obras innecesarias."
   },
   {
-    question: "¿Cuánto cuesta cambiar las tuberías de una vivienda?",
-    answer: "El coste depende del tipo de tubería, la extensión de la instalación y la accesibilidad. Para una vivienda de 80-100m², el cambio completo de tuberías suele oscilar entre 2.500€ y 5.000€. Ofrecemos presupuestos personalizados tras una visita técnica gratuita."
-  },
-  {
     question: "¿Qué tipo de caldera recomiendan instalar?",
     answer: "Recomendamos calderas de condensación o sistemas aerotérmicos por su alta eficiencia energética y menor impacto ambiental. La elección depende de las características de tu vivienda, el consumo estimado y tu presupuesto. Nuestros técnicos te asesoran sin compromiso."
   },
@@ -67,73 +63,125 @@ const faqSchema = {
     imagen={fontanero},
     texto="Servicios de Fontanería"/>
 
-    <section class="py-20">
+    <section class="py-12 md:py-16" aria-label="Sección de servicios">
       <div class="container mx-auto px-4">
-        <h1 data-animate="fade-up" class="text-3xl md:text-4xl font-bold text-center mb-6">Servicios de Fontanería y Saneamiento en Barcelona</h1>
+        <div class="max-w-6xl mx-auto">
 
-        <div data-animate="fade-up" data-delay="200" class="max-w-4xl mx-auto mb-12">
-          <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
-            En <strong>IS Instalaciones</strong> ofrecemos servicios completos de <strong>fontanería y saneamiento en Barcelona</strong> y área metropolitana. Nuestro equipo de fontaneros autorizados cuenta con más de 8 años de experiencia resolviendo todo tipo de incidencias, desde fugas de agua y atascos hasta la instalación completa de sistemas sanitarios en viviendas y locales comerciales.
-          </p>
-          <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
-            Realizamos <strong>instalaciones de agua fría y caliente</strong>, acometidas generales, montaje de calderas termoeléctricas y aerotérmicas, así como la sustitución integral de tuberías antiguas por materiales modernos de mayor durabilidad. Utilizamos técnicas de detección de fugas no invasivas para minimizar las obras en tu hogar.
-          </p>
-          <p class="text-gray-600 text-base md:text-lg leading-relaxed">
-            Contamos con un <strong>servicio de urgencias de fontanería 24/7</strong> para atender averías que no pueden esperar: fugas, roturas de tuberías, problemas con la caldera o atascos severos. Solicita tu presupuesto gratuito y descubre por qué somos el fontanero de confianza de cientos de hogares en Barcelona.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
-          <div data-animate="fade-left">
-            <h2 class="text-2xl font-bold mb-4">Nuestros Servicios</h2>
-            <ul class="space-y-2">
-              {services.map(service => (
-                <li class="flex items-center text-gray-600">
-                  <Icon name="lucide:check" class="w-4 h-4 text-primary mr-2 flex-shrink-0" />
-                  <h3>{service.title}</h3>
-                </li>
-              ))}
-            </ul>
+          <!-- Title + badge -->
+          <div class="text-center mb-10">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:droplets" class="w-4 h-4" />
+              Fontaneros profesionales en Barcelona
+            </div>
+            <h1 data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-6">Servicios de Fontanería y Saneamiento en Barcelona</h1>
           </div>
 
-          <div data-animate="fade-right">
-            <h2 class="text-2xl font-bold mb-4">Incidencias Comunes</h2>
-            <div data-stagger class="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
-              {incidencias.map(incidencia => (
-                <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
-                  <h3 class="text-base lg:text-2xl md:text-base sm:text-base font-bold mb-2">{incidencia.title}</h3>
-                  <p class="text-gray-600 lg:text-lg md:text-base">{incidencia.description}</p>
+          <!-- SEO text -->
+          <div data-animate="fade-up" data-delay="200" class="max-w-4xl mx-auto mb-14 space-y-4">
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              En <strong>IS Instalaciones</strong> ofrecemos servicios completos de <strong>fontanería y saneamiento en Barcelona</strong> y área metropolitana. Nuestro equipo de fontaneros autorizados cuenta con más de 8 años de experiencia resolviendo todo tipo de incidencias, desde fugas de agua y atascos hasta la instalación completa de sistemas sanitarios en viviendas y locales comerciales.
+            </p>
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              Realizamos <strong>instalaciones de agua fría y caliente</strong>, acometidas generales, montaje de calderas termoeléctricas y aerotérmicas, así como la sustitución integral de tuberías antiguas por materiales modernos de mayor durabilidad. Utilizamos técnicas de detección de fugas no invasivas para minimizar las obras en tu hogar.
+            </p>
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              Contamos con un <strong>servicio de urgencias de fontanería 24/7</strong> para atender averías que no pueden esperar: fugas, roturas de tuberías, problemas con la caldera o atascos severos. Solicita tu presupuesto gratuito y descubre por qué somos el fontanero de confianza de cientos de hogares en Barcelona.
+            </p>
+          </div>
+
+          <!-- Services + Incidencias grid -->
+          <div class="grid md:grid-cols-2 gap-8 mb-14">
+
+            <!-- Left: Nuestros Servicios -->
+            <div data-animate="fade-left" class="cta-service-card bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-100 border-l-4 border-l-primary relative overflow-hidden">
+              <div class="cta-stat-shine"></div>
+              <div class="relative z-[1]">
+                <div class="flex items-center gap-3 mb-6">
+                  <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Icon name="lucide:list-checks" class="w-5 h-5 text-primary" />
+                  </div>
+                  <h2 class="text-xl font-bold text-slate-800">Nuestros Servicios</h2>
+                </div>
+                <ul class="space-y-3">
+                  {services.map(service => (
+                    <li class="flex items-start text-gray-600 text-sm leading-snug">
+                      <Icon name="lucide:circle-check" class="w-4 h-4 text-primary mr-2.5 mt-0.5 flex-shrink-0" />
+                      <h3>{service.title}</h3>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Right: Incidencias -->
+            <div data-animate="fade-right">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+                  <Icon name="lucide:alert-triangle" class="w-5 h-5 text-amber-500" />
+                </div>
+                <h2 class="text-xl font-bold text-slate-800">Incidencias Comunes</h2>
+              </div>
+              <div data-stagger class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {incidencias.map(incidencia => (
+                  <div data-animate="fade-up" class="cta-service-card bg-white p-5 rounded-2xl shadow-md border border-gray-100 border-l-4 border-l-amber-400 relative overflow-hidden group">
+                    <div class="cta-stat-shine"></div>
+                    <div class="relative z-[1]">
+                      <h3 class="font-bold text-slate-800 mb-1.5 group-hover:text-primary transition-colors">{incidencia.title}</h3>
+                      <p class="text-gray-600 text-sm leading-snug">{incidencia.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefits -->
+          <div class="mb-14">
+            <div class="text-center mb-8">
+              <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+                <Icon name="lucide:award" class="w-4 h-4" />
+                Nuestras garantías
+              </div>
+              <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">¿Por qué Elegir IS Instalaciones?</h2>
+            </div>
+            <div data-stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
+              {benefits.map(benefit => (
+                <div data-animate="fade-up" class="cta-service-card bg-white text-center p-6 rounded-2xl shadow-md border border-gray-100 relative overflow-hidden group">
+                  <div class="cta-stat-shine"></div>
+                  <div class="relative z-[1]">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <Icon name={benefit.icon} class="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 class="font-bold text-slate-800 mb-2">{benefit.title}</h3>
+                    <p class="text-sm text-gray-600 leading-snug">{benefit.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
 
-        <!-- Por qué Elegir IS Instalaciones -->
-        <div class="max-w-5xl mx-auto mb-12">
-          <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold text-center mb-8">¿Por qué Elegir IS Instalaciones?</h2>
-          <div data-stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map(benefit => (
-              <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
-                <Icon name={benefit.icon} class="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 class="font-bold mb-2">{benefit.title}</h3>
-                <p class="text-sm text-gray-600">{benefit.description}</p>
+          <!-- FAQ -->
+          <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+              <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+                <Icon name="lucide:help-circle" class="w-4 h-4" />
+                Resolvemos tus dudas
               </div>
-            ))}
+              <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">Preguntas Frecuentes</h2>
+            </div>
+            <div data-stagger class="space-y-4">
+              {faqItems.map(item => (
+                <div data-animate="fade-up" class="cta-service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group">
+                  <div class="cta-stat-shine"></div>
+                  <div class="relative z-[1]">
+                    <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">{item.question}</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">{item.answer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <!-- FAQ -->
-        <div class="max-w-4xl mx-auto">
-          <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold text-center mb-8">Preguntas Frecuentes</h2>
-          <div data-stagger class="space-y-6">
-            {faqItems.map(item => (
-              <div data-animate="fade-up" class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
-                <h3 class="text-lg font-bold mb-3">{item.question}</h3>
-                <p class="text-gray-600">{item.answer}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
