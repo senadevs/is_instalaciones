@@ -41,7 +41,7 @@ const services = [
         
         <div class="grid md:grid-cols-2 gap-8 mb-12">
 
-            <div>
+            <div data-animate="fade-left">
                 <h2 class="text-2xl font-bold mb-4">Nuestros Servicios</h2>
                 <ul class="space-y-2">
                   {services.map(service => (
@@ -52,7 +52,7 @@ const services = [
                 </ul>
               </div>
           
-          <div>
+          <div data-animate="fade-right">
             <h2 class="text-2xl font-bold mb-4">Precios Orientativos</h2>
             <div class="space-y-4">
             
@@ -65,9 +65,9 @@ const services = [
         </div>
 
         <div class=" p-8 rounded-lg border border-primary/20 hover:border-primary/30 transition-colors">
-          <h2 class="text-2xl text-center font-bold mb-4">Servicios de Reformas</h2>
-          <div class="grid md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+          <h2 data-animate="fade-up" class="text-2xl text-center font-bold mb-4">Servicios de Reformas</h2>
+          <div data-stagger class="grid md:grid-cols-3 gap-6">
+            <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
                 <h3 class="font-bold text-xl mb-4">Servicios de Carpintería y Ventanas</h3>
                 <ul class="space-y-2">
                   <li class="flex items-center">
@@ -94,7 +94,7 @@ const services = [
               </div>
               
             
-              <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+              <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
                 <h3 class="font-bold text-xl mb-4">Servicios de Albañilería y Reformas</h3>
                 <ul class="space-y-2">
                   <li class="flex items-center">
@@ -121,7 +121,7 @@ const services = [
               </div>
               
             
-              <div class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
+              <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
                 <h3 class="font-bold text-xl mb-4">Servicios de Pladur y Falsos Techos</h3>
                 <ul class="space-y-2">
                     <li>✓ Instalación de tabiques de pladur</li>

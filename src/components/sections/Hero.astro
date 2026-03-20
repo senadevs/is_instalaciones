@@ -1,33 +1,219 @@
 ---
 import HeroForm from "./HeroForm.astro";
-import Image from 'astro/components/Image.astro';
-import electricista from "/public/electricista.webp" ;
-
-
+import Image from "astro/components/Image.astro";
+import electricista from "/public/electricista.webp";
+import reformas from "../../assets/reformas-integrales.jpg";
+import { Icon } from 'astro-icon/components';
 ---
 
-<section class="relative min-h-[calc(100vh-4rem)] pt-16 flex items-center border-b border-primary/20">
-  <div class="absolute inset-0 bg-black/50 z-10"></div>
- <!--  <img 
-    src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e"
-    alt="Reformas"
-    class="absolute inset-0 w-full h-full object-cover"
-  /> -->
-  <Image src={electricista} alt="IS.INSTALACIONES" class="absolute inset-0 w-full h-full object-cover" width={500} height={500} quality={100} format="webp" />
-  <div class="container mx-auto px-4 relative z-20">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
-      <div class="text-white">
-        <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl font-bold pt-6 mb-4 leading-tight">
-          IS INSTALACIONES - Servicios de Reformas e Instalaciones.
-        </h1>
-        <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 max-w-2xl">
-          Servicios de Electricidad, Fontanería, Climatización, Calefacción y Mantenimiento en
-          Barcelona y alrededores.
-        </p>
+<section
+  class="relative border-b border-primary/20 overflow-hidden"
+  style="height: calc(100vh - 4rem); min-height: 600px;"
+>
+  <!-- Swiper Slider (fills entire section) -->
+  <div class="hero-slider swiper" style="width:100%;height:100%;">
+    <div class="swiper-wrapper">
+
+      <!-- Slide 1: Electricista -->
+      <div class="swiper-slide" style="height:100%;">
+        <div class="relative w-full h-full">
+          <Image
+            src={electricista}
+            alt="Electricista profesional en Barcelona - IS Instalaciones"
+            class="absolute inset-0 w-full h-full object-cover grayscale-[30%] contrast-[110%]"
+            width={1920}
+            height={1080}
+            quality={80}
+            format="webp"
+          />
+          <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+          <div class="absolute inset-0 bg-grid opacity-50 z-[1]"></div>
+
+          <div class="hero-slide-content absolute inset-0 flex items-center pt-20 z-[2]">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl text-white space-y-5">
+                <div class="inline-flex items-center space-x-2 bg-primary/20 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <Icon name="lucide:house" class="w-5 h-5 inline" />
+                  <span>Especialistas en Reformas e Instalaciones</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                  Transformamos tu espacio con <span class="text-primary-foreground drop-shadow-sm">Garantía Profesional</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
+                  Expertos en Electricidad <Icon name="lucide:zap" class="w-5 h-5 inline text-amber-400" />, Fontanería <Icon name="lucide:droplets" class="w-5 h-5 inline text-blue-400" /> y Climatización <Icon name="lucide:snowflake" class="w-5 h-5 inline text-cyan-400" />.
+                  Soluciones integrales en Barcelona con atención 24/7.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                  <div class="flex items-center space-x-2">
+                    <Icon name="lucide:circle-check" class="w-6 h-6 text-green-400" />
+                    <span class="text-sm font-medium">Presupuesto Gratis</span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <Icon name="lucide:hard-hat" class="w-6 h-6 text-yellow-400" />
+                    <span class="text-sm font-medium">Técnicos Autorizados</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="md:justify-self-end w-full md:max-w-md">
-      <HeroForm />
+
+      <!-- Slide 2: Video -->
+      <div class="swiper-slide" style="height:100%;">
+        <div class="relative w-full h-full">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            class="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/is.mp4" type="video/mp4" />
+          </video>
+          <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+
+          <div class="hero-slide-content absolute inset-0 flex items-center pt-20 z-[2]">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl text-white space-y-5">
+                <div class="inline-flex items-center space-x-2 bg-primary/20 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <Icon name="lucide:siren" class="w-5 h-5 inline" />
+                  <span>Servicio de Urgencias 24/7</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                  Electricistas y Fontaneros en <span class="text-primary-foreground drop-shadow-sm">Barcelona</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
+                  Servicio técnico de urgencia disponible las 24 horas, los 365 días del año. Cobertura en Barcelona, Hospitalet, Badalona, Santa Coloma, Cornellà y toda el área metropolitana. Presupuesto gratuito y sin compromiso.
+                </p>
+                <a
+                  href="tel:+34637591736"
+                  class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-secondary transition-colors shadow-lg"
+                >
+                  <Icon name="lucide:phone" class="w-5 h-5" />
+                  Llámanos Ahora
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Reformas -->
+      <div class="swiper-slide" style="height:100%;">
+        <div class="relative w-full h-full">
+          <Image
+            src={reformas}
+            alt="Reformas integrales en Barcelona - IS Instalaciones"
+            class="absolute inset-0 w-full h-full object-cover"
+            width={1920}
+            height={1080}
+            quality={80}
+            format="webp"
+          />
+          <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+
+          <div class="hero-slide-content absolute inset-0 flex items-center pt-20 z-[2]">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl text-white space-y-5">
+                <div class="inline-flex items-center space-x-2 bg-primary/20 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <Icon name="lucide:hammer" class="w-5 h-5 inline" />
+                  <span>Reformas Integrales</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                  Reformas Integrales en <span class="text-primary-foreground drop-shadow-sm">Barcelona</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
+                  Renovamos viviendas, locales y oficinas. Carpintería de aluminio, montaje de pladur, instalación de ventanas, baños y cocinas completas. Materiales de primera calidad y presupuesto sin compromiso.
+                </p>
+                <a
+                  href="/servicios/reformas-integrales"
+                  class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-secondary transition-colors shadow-lg"
+                >
+                  <Icon name="lucide:arrow-right" class="w-5 h-5" />
+                  Ver Servicios
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Pagination -->
+    <div class="hero-pagination swiper-pagination z-20"></div>
+  </div>
+
+  <!-- Floating Form overlay (desktop: right side, mobile: hidden here, shown below) -->
+  <div class="hidden md:flex absolute inset-0 z-30 items-center pt-20 pointer-events-none">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-end">
+        <div class="w-full max-w-sm pointer-events-auto">
+          <div class="glass-card p-1 rounded-2xl shadow-2xl">
+            <HeroForm />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Mobile Form (below hero) -->
+<div class="md:hidden px-4 -mt-8 relative z-10 pb-8">
+  <div class="max-w-md mx-auto">
+    <div class="glass-card p-1 rounded-2xl shadow-2xl bg-white">
+      <HeroForm />
+    </div>
+  </div>
+</div>
+
+<script>
+  import Swiper from "swiper";
+  import { Pagination, Autoplay, EffectFade } from "swiper/modules";
+  import "swiper/css";
+  import "swiper/css/effect-fade";
+
+  function initHeroSlider() {
+    const el = document.querySelector(".hero-slider");
+    if (!el || el.classList.contains("swiper-initialized")) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    new Swiper(".hero-slider", {
+      modules: [Pagination, Autoplay, EffectFade],
+      effect: "fade",
+      fadeEffect: { crossFade: true },
+      speed: 1000,
+      loop: true,
+      autoplay: prefersReducedMotion ? false : {
+        delay: 6000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".hero-pagination",
+        type: "progressbar",
+      },
+      on: {
+        slideChange: function () {
+          this.slides.forEach((slide: HTMLElement) => {
+            const video = slide.querySelector("video");
+            if (video) video.pause();
+          });
+          const activeSlide = this.slides[this.activeIndex];
+          if (activeSlide) {
+            const video = activeSlide.querySelector("video");
+            if (video) video.play();
+          }
+        },
+      },
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeroSlider);
+  } else {
+    initHeroSlider();
+  }
+  document.addEventListener("astro:page-load", initHeroSlider);
+</script>

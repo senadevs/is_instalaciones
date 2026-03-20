@@ -1,74 +1,109 @@
-<div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-  <h2 class="text-2xl font-bold mb-4" id="hero-form-title">Contáctanos</h2>
-  <form 
-    action="https://api.staticforms.xyz/submit" 
-    method="POST" 
-    class="space-y-4"
+---
+import { Icon } from 'astro-icon/components';
+---
+<div
+  class="hero-form-card backdrop-blur-lg p-5 rounded-xl shadow-2xl w-full border border-white/20"
+>
+  <div class="text-center mb-4">
+    <h2
+      class="text-2xl font-bold text-gray-800 dark:text-white mb-2"
+      id="hero-form-title"
+    >
+      Pide tu Presupuesto
+    </h2>
+    <p class="text-sm text-gray-600 dark:text-gray-400">
+      Te contactamos en menos de 24 horas <Icon name="lucide:clock" class="w-4 h-4 inline" />
+    </p>
+  </div>
+  <form
+    action="https://api.staticforms.xyz/submit"
+    method="POST"
+    class="space-y-3"
   >
-    <input type="hidden" name="accessKey" value="14567cc6-f537-40ba-9af8-ff56d30fa0a2">
+    <input
+      type="hidden"
+      name="accessKey"
+      value="14567cc6-f537-40ba-9af8-ff56d30fa0a2"
+    />
     <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
-    <input type="hidden" name="replyTo" value="contacto@is-instalaciones.es">
-    <input type="hidden" name="redirectTo" value="https://is-instalaciones.es">
-    <div>
+    <input type="hidden" name="replyTo" value="contacto@is-instalaciones.es" />
+    <input
+      type="hidden"
+      name="redirectTo"
+      value="https://is-instalaciones.es"
+    />
+
+    <div class="relative">
+      <Icon name="lucide:user" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
       <label for="hero-nombre" class="sr-only">Nombre y apellidos</label>
-      <input 
+      <input
         id="hero-nombre"
         name="name"
-        type="text" 
-        placeholder="Nombre y apellidos" 
-        class="w-full px-4 py-2 rounded border focus:border-primary focus:ring-1 bg-white focus:ring-primary outline-none"
-        required
-      >
-    </div>
-    <div>
-      <label for="hero-email" class="sr-only">Email</label>
-      <input 
-        id="hero-email"
-        name="email" 
-        type="email" 
-        placeholder="Email" 
-        class="w-full px-4 py-2 rounded border focus:border-primary bg-white dark:text-primary focus:ring-1 focus:ring-primary outline-none"
-        required
-      >
-    </div>
-    <div>
-      <label for="hero-telefono" class="sr-only">Teléfono</label>
-      <input 
-        id="hero-telefono"
-        name="phone"
-        type="tel" 
-        placeholder="Teléfono" 
-        class="w-full px-4 py-2 rounded border focus:border-primary  bg-white focus:ring-1 focus:ring-primary outline-none"
-      >
-    </div>
-    <div>
-      <label for="hero-codigo-postal" class="sr-only">Código postal</label>
-      <input 
-        id="hero-codigo-postal"
-        name="postal_code"
         type="text"
-        pattern="[0-9]{5}"
-        placeholder="Código postal" 
-        class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
+        placeholder="Nombre y apellidos"
+        class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
         required
-      >
+      />
     </div>
-    <div>
+    <div class="relative">
+      <Icon name="lucide:mail" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      <label for="hero-email" class="sr-only">Email</label>
+      <input
+        id="hero-email"
+        name="email"
+        type="email"
+        placeholder="Email"
+        class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+        required
+      />
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="relative">
+        <Icon name="lucide:phone" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <label for="hero-telefono" class="sr-only">Teléfono</label>
+        <input
+          id="hero-telefono"
+          name="phone"
+          type="tel"
+          placeholder="Teléfono"
+          class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+        />
+      </div>
+      <div class="relative">
+        <Icon name="lucide:map-pin" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <label for="hero-codigo-postal" class="sr-only">C.P.</label>
+        <input
+          id="hero-codigo-postal"
+          name="postal_code"
+          type="text"
+          pattern="[0-9]{5}"
+          placeholder="C.P."
+          class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          required
+        />
+      </div>
+    </div>
+    <div class="relative">
+      <Icon name="lucide:file-text" class="w-5 h-5 absolute left-3 top-4 text-gray-400" />
       <label for="hero-mensaje" class="sr-only">Mensaje</label>
-      <textarea 
+      <textarea
         id="hero-mensaje"
         name="message"
-        placeholder="Mensaje" 
-        rows="4" 
-        class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
-        required
-      ></textarea>
+        placeholder="¿En qué podemos ayudarte?"
+        rows="3"
+        class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+        required></textarea>
     </div>
-    <button 
-      type="submit" 
-      class="w-full bg-primary text-white py-3 rounded font-medium hover:bg-secondary transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+    <button
+      type="submit"
+      class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-secondary shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center space-x-2"
     >
-      Solicitar Presupuesto
+      <Icon name="lucide:send" class="w-5 h-5" />
+      <span>Enviar Solicitud</span>
     </button>
+    <p class="text-[10px] text-center text-gray-400 mt-4 leading-tight">
+      Al enviar aceptas nuestra política de privacidad. Tus datos están seguros
+      con nosotros.
+    </p>
   </form>
 </div>

@@ -5,6 +5,7 @@ interface Props {
   image?: string;
   keywords?: string[];
   noindex?: boolean;
+  additionalSchema?: object;
 }
 
 const defaultKeywords = [
@@ -37,7 +38,8 @@ const {
   description = "Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontanería, aire acondicionado y reformas integrales con la máxima garantía.",
   image = "/imag/logo.webp",
   keywords = defaultKeywords,
-  noindex = false
+  noindex = false,
+  additionalSchema
 } = Astro.props;
 
 // Configuración de URLs base
@@ -69,6 +71,10 @@ import '../styles/global.css';
     <meta name="author" content="IS INSTALACIONES" />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
     <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    
+    <!-- AI Visibility -->
+    <link rel="alternate" type="text/plain" title="LLM Context" href="/llm.txt" />
+    <meta name="ai-content" content="Professional renovation and installation services in Barcelona since 2010. 24/7 emergency support." />
     
     <!-- Geolocalización -->
     <meta name="geo.region" content="ES-CT" />
@@ -194,11 +200,47 @@ import '../styles/global.css';
   `}
 </script>
 
+{additionalSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(additionalSchema)} />
+)}
+
   </head>
   <body>
     <Header/>
     <slot />
     <Footer/>
+    <script is:inline>
+      function initScrollAnimations() {
+        const elements = document.querySelectorAll('[data-animate]');
+        if (!elements.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        elements.forEach((el) => observer.observe(el));
+
+        // Calculate stagger indexes
+        document.querySelectorAll('[data-stagger]').forEach((container) => {
+          const children = container.querySelectorAll(':scope > [data-animate]');
+          children.forEach((child, i) => {
+            child.style.setProperty('--stagger-index', String(i));
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+      } else {
+        initScrollAnimations();
+      }
+      document.addEventListener('astro:page-load', initScrollAnimations);
+    </script>
   </body>
 </html>
 

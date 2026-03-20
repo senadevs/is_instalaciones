@@ -3,24 +3,28 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/ui/Footer.astro';
 import ContactSection from '../components/contact/ContactSection.astro';
+import { Icon } from 'astro-icon/components';
 
 const atentionChannels = [
   {
-    icon: "🚨",
+    icon: "lucide:siren",
+    color: "text-red-500",
     title: "Emergencias 24/7",
     description: "Servicio técnico de urgencia disponible todos los días del año",
     action: "Llamar ahora",
     link: "tel:+34637591736"
   },
   {
-    icon: "💬",
+    icon: "lucide:message-circle",
+    color: "text-green-500",
     title: "WhatsApp",
     description: "Respuesta rápida a tus consultas por mensaje",
     action: "Chatear",
     link: "https://wa.me/34637591736"
   },
   {
-    icon: "📧",
+    icon: "lucide:mail",
+    color: "text-blue-500",
     title: "Email",
     description: "Solicita presupuesto o información detallada",
     action: "Escribir",
@@ -94,11 +98,25 @@ const faqItems = [
     answer: "Sí, ofrecemos servicio de emergencias los 365 días del año. Para trabajos programados, abrimos los sábados de 9:00 a 14:00."
   }
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
 ---
 
-<Layout 
+<Layout
   title="Contacto - IS.INSTALACIONES"
   description="Contacta con nosotros para cualquier consulta sobre instalaciones y reformas en Barcelona. Respuesta rápida y presupuesto sin compromiso."
+  additionalSchema={faqSchema}
 >
   
   <main class="pt-20">
@@ -121,7 +139,7 @@ const faqItems = [
               href="tel:+34637591736"
               class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-secondary transition-colors flex items-center gap-2"
             >
-              <span class="text-2xl">📞</span>
+              <Icon name="lucide:phone" class="w-6 h-6" />
               Llamar ahora
             </a>
             <a 
@@ -142,12 +160,10 @@ const faqItems = [
     <!-- Canales de Atención -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div data-stagger class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {atentionChannels.map(channel => (
-            <div class="bg-white p-8 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-              <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform">
-                {channel.icon}
-              </div>
+            <div data-animate="fade-up" class="bg-white p-8 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
+              <Icon name={channel.icon} class={`w-10 h-10 mb-4 transform group-hover:scale-110 transition-transform ${channel.color}`} />
               <h3 class="text-xl font-bold mb-2">{channel.title}</h3>
               <p class="text-gray-600 mb-6">{channel.description}</p>
               <a 
@@ -169,10 +185,10 @@ const faqItems = [
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold text-center mb-12">Zonas de Servicio</h2>
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-12">Zonas de Servicio</h2>
+          <div data-stagger class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {serviceAreas.map(area => (
-              <div class="bg-white p-4 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all text-center">
+              <div data-animate="fade-up" class="bg-white p-4 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all text-center">
                 {area}
               </div>
             ))}
@@ -185,13 +201,14 @@ const faqItems = [
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold text-center mb-6">Síguenos en Redes Sociales</h2>
-          <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-6">Síguenos en Redes Sociales</h2>
+          <p data-animate="fade-up" data-delay="200" class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
             Mantente al día con nuestros últimos proyectos, ofertas especiales y consejos profesionales
           </p>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div data-stagger class="grid grid-cols-2 md:grid-cols-4 gap-6">
             {socialPlatforms.map(platform => (
-              <a 
+              <a
+                data-animate="fade-up"
                 href={platform.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -212,10 +229,10 @@ const faqItems = [
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-          <h2 class="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
-          <div class="space-y-6">
+          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
+          <div data-stagger class="space-y-6">
             {faqItems.map(item => (
-              <div class="bg-white rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div data-animate="fade-up" class="bg-white rounded-lg p-6 hover:shadow-md transition-shadow">
                 <h3 class="text-xl font-bold mb-3">{item.question}</h3>
                 <p class="text-gray-600">{item.answer}</p>
               </div>

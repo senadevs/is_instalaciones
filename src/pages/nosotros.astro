@@ -5,6 +5,8 @@ import ContactSection from '../components/contact/ContactSection.astro';
 import Footer from '../components/ui/Footer.astro';
 import nosotros from '../assets/soldador.jpg'
 import Panoramic from '../components/sections/Panoramic.astro';
+import GlitchSlider from '../components/sections/GlitchSlider.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <Layout 
@@ -16,16 +18,18 @@ import Panoramic from '../components/sections/Panoramic.astro';
     <!-- Hero Section -->
     <Panoramic
     imagen={nosotros}
-    texto="Servicios de Climatización"/>
+    texto="Sobre Nosotros"/>
 
     <!-- Biografía -->
     <section class="py-16 md:py-20 ">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-          <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center hover:text-primary transition-colors"><em>IS</em> Instalaciones</h2>
-          <div class="space-y-6">
-            <p class="text-gray-600">Con 8 años de experiencia, nos especializamos en reformas integrales, ofreciendo un servicio personalizado que combina calidad y respeto por el medio ambiente. Nos enfocamos en transformar cada espacio según las necesidades específicas de nuestros clientes, garantizando soluciones duraderas.</p>
-            <p class="text-gray-600">La confianza que nuestros clientes depositan en nosotros es el reflejo de nuestro compromiso y dedicación en cada proyecto. Trabajamos para ofrecer resultados que superen expectativas, cuidando cada detalle para que tu espacio se adapte perfectamente a lo que imaginas.</p>
+          <h2 data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-8 text-center hover:text-primary transition-colors"><em>IS</em> Instalaciones</h2>
+          <div data-animate="fade-up" data-delay="200" class="space-y-6">
+            <p class="text-gray-600">Con más de 8 años de experiencia en el sector, <strong>IS Instalaciones</strong> nació con el propósito de ofrecer un servicio integral de reformas e instalaciones en Barcelona. Desde nuestros inicios, apostamos por la cercanía con el cliente y la excelencia en cada trabajo, lo que nos ha permitido crecer de forma constante gracias a las recomendaciones de quienes confían en nosotros.</p>
+            <p class="text-gray-600">Nuestro equipo está formado por técnicos cualificados y autorizados, especializados en electricidad, fontanería, climatización y reformas integrales. Cada profesional cuenta con las certificaciones necesarias para garantizar intervenciones seguras y conformes con la normativa vigente.</p>
+            <p class="text-gray-600">Trabajamos con materiales de primera calidad y colaboramos con proveedores de referencia en el sector. Nuestro compromiso con la eficiencia energética nos lleva a recomendar siempre las soluciones más sostenibles y rentables a largo plazo para cada proyecto.</p>
+            <p class="text-gray-600">Nuestra zona de servicio abarca Barcelona ciudad y toda el área metropolitana, incluyendo Hospitalet de Llobregat, Badalona, Santa Coloma, Cornellà, Esplugues, Sant Just Desvern y Sant Joan Despí. Ofrecemos servicio de urgencias 24/7 para que nunca te quedes sin asistencia cuando más la necesitas.</p>
           </div>
         </div>
       </div>
@@ -33,20 +37,20 @@ import Panoramic from '../components/sections/Panoramic.astro';
     <!-- Filosofía de Trabajo -->
     <section class="py-16 md:py-20 bg-white">
       <div class="container mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 hover:text-primary transition-colors">Filosofía de Trabajo</h2>
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
-            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">🤝</div>
+        <h2 data-animate="fade-up" class="text-3xl md:text-4xl font-bold text-center mb-12 hover:text-primary transition-colors">Filosofía de Trabajo</h2>
+        <div data-stagger class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <Icon name="lucide:handshake" class="w-10 h-10 mb-4 text-primary hover:scale-110 transition-transform" />
             <h3 class="text-xl font-bold mb-3">Cercanía</h3>
             <p class="text-gray-600">Trato personalizado y directo con cada cliente, entendiendo sus necesidades específicas.</p>
           </div>
-          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
-            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">✨</div>
+          <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <Icon name="lucide:sparkles" class="w-10 h-10 mb-4 text-primary hover:scale-110 transition-transform" />
             <h3 class="text-xl font-bold mb-3">Calidad</h3>
             <p class="text-gray-600">Uso de materiales de primera calidad y técnicas actualizadas para garantizar resultados duraderos.</p>
           </div>
-          <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
-            <div class="text-4xl mb-4 text-primary hover:scale-110 transition-transform">🌱</div>
+          <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+            <Icon name="lucide:leaf" class="w-10 h-10 mb-4 text-primary hover:scale-110 transition-transform" />
             <h3 class="text-xl font-bold mb-3">Sostenibilidad</h3>
             <p class="text-gray-600">Compromiso con soluciones eficientes y respetuosas con el medio ambiente.</p>
           </div>
@@ -54,6 +58,36 @@ import Panoramic from '../components/sections/Panoramic.astro';
       </div>
     </section>
 
+    <!-- Nuestra Trayectoria -->
+    <section class="py-16 md:py-20 border-b border-primary/20">
+      <div class="container mx-auto px-4">
+        <h2 data-animate="fade-up" class="text-3xl md:text-4xl font-bold text-center mb-12 hover:text-primary transition-colors">Nuestra Trayectoria</h2>
+        <div data-stagger class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20">
+            <Icon name="lucide:calendar-check" class="w-8 h-8 text-primary mx-auto mb-3" />
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">+8</div>
+            <p class="text-sm text-gray-600">Años de experiencia</p>
+          </div>
+          <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20">
+            <Icon name="lucide:briefcase" class="w-8 h-8 text-primary mx-auto mb-3" />
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">+500</div>
+            <p class="text-sm text-gray-600">Proyectos realizados</p>
+          </div>
+          <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20">
+            <Icon name="lucide:clock" class="w-8 h-8 text-primary mx-auto mb-3" />
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">24/7</div>
+            <p class="text-sm text-gray-600">Servicio de urgencias</p>
+          </div>
+          <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20">
+            <Icon name="lucide:shield-check" class="w-8 h-8 text-primary mx-auto mb-3" />
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">2 años</div>
+            <p class="text-sm text-gray-600">Garantía en trabajos</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <GlitchSlider />
     <ContactSection />
   </main>
 </Layout>

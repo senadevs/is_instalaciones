@@ -86,6 +86,7 @@ html {
   body {
     background-color: var(--color-background);
     color: var(--color-text);
+    overflow-x: hidden;
   }
   
   .bg-primary {
@@ -124,6 +125,22 @@ html {
   [data-theme="dark"] .text-gray-600 {
     color: var(--color-text-light) !important;
   }
+
+  [data-theme="dark"] .text-gray-500 {
+    color: var(--color-text-light) !important;
+  }
+
+  [data-theme="dark"] .text-slate-800 {
+    color: #fff !important;
+  }
+
+  [data-theme="dark"] .text-slate-600 {
+    color: var(--color-text-light) !important;
+  }
+
+  [data-theme="dark"] .bg-slate-50 {
+    background-color: var(--color-secondary) !important;
+  }
   
   /* Ajustes de hover para cada tema */
   [data-theme="default"] .hover\:text-primary:hover,
@@ -144,24 +161,196 @@ html {
   [data-theme="dark"] .border-primary\/20 {
     border-color: rgba(255, 255, 255, 0.2);
   }
-  
-  /* Ajustes de hover para bordes */
-  [data-theme="default"] .hover\:border-primary\/30:hover {
-    border-color: rgba(4, 106, 83, 0.3);
+
+  /* Hero Form - consistent styling across all themes */
+  .hero-form-card {
+    background-color: rgba(255, 255, 255, 0.95);
   }
-  
-  [data-theme="dark-green"] .hover\:border-primary\/30:hover {
-    border-color: rgba(11, 68, 60, 0.3);
+
+  .hero-form-card h2 {
+    color: #1f2937 !important;
   }
-  
-  [data-theme="dark"] .hover\:border-primary\/30:hover {
-    border-color: rgba(255, 255, 255, 0.3);
+
+  .hero-form-card p {
+    color: #6b7280 !important;
   }
-  
+
+  .hero-form-card input,
+  .hero-form-card textarea {
+    background-color: #fff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
+  }
+
+  .hero-form-card input::placeholder,
+  .hero-form-card textarea::placeholder {
+    color: #9ca3af !important;
+  }
+
+  .hero-form-card input:focus,
+  .hero-form-card textarea:focus {
+    border-color: var(--color-primary) !important;
+  }
+
+  .hero-form-card .text-gray-400 {
+    color: #9ca3af !important;
+  }
+
+  .hero-form-card .text-\[10px\] {
+    color: #9ca3af !important;
+  }
+
+  [data-theme="dark"] .hero-form-card {
+    background-color: rgba(15, 25, 30, 0.95) !important;
+  }
+
+  [data-theme="dark"] .hero-form-card h2 {
+    color: #fff !important;
+  }
+
+  [data-theme="dark"] .hero-form-card p {
+    color: #9ca3af !important;
+  }
+
+  [data-theme="dark"] .hero-form-card input,
+  [data-theme="dark"] .hero-form-card textarea {
+    background-color: #1c2b33 !important;
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  [data-theme="dark"] .hero-form-card input::placeholder,
+  [data-theme="dark"] .hero-form-card textarea::placeholder {
+    color: #6b7280 !important;
+  }
+
+  [data-theme="dark"] .hero-form-card .text-gray-400 {
+    color: #6b7280 !important;
+  }
+
+  [data-theme="dark"] .hero-form-card .text-\[10px\] {
+    color: #6b7280 !important;
+  }
+
+  /* Glassmorphism Utilities */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  [data-theme="dark"] .glass-card {
+    background: rgba(13, 30, 35, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Renovation "Blueprint" Effect Animation */
+  @keyframes blueprint-scan {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+
+  .blueprint-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    animation: blueprint-scan 4s linear infinite;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  /* Grid pattern for background */
+  .bg-grid {
+    background-image: radial-gradient(circle, var(--color-primary) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.05;
+  }
+
   /* Optimización de rendimiento */
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Dark theme icon visibility */
+  [data-theme="dark"] .text-primary svg,
+  [data-theme="dark"] svg.text-primary {
+    color: var(--color-text-light);
+  }
+
+  /* Glitch Slider Animations */
+  @keyframes glitch-in {
+    0% {
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      transform: skewX(2deg);
+    }
+    40% {
+      clip-path: polygon(0 0, 60% 0, 55% 100%, 0 100%);
+      transform: skewX(-1deg);
+    }
+    70% {
+      clip-path: polygon(0 0, 85% 0, 90% 100%, 0 100%);
+      transform: skewX(0.5deg);
+    }
+    100% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transform: skewX(0deg);
+    }
+  }
+
+  @keyframes glitch-rgb {
+    0%, 100% {
+      filter: none;
+    }
+    20% {
+      filter: drop-shadow(2px 0 0 rgba(255, 0, 0, 0.4)) drop-shadow(-2px 0 0 rgba(0, 255, 255, 0.4));
+    }
+    40% {
+      filter: drop-shadow(-2px 0 0 rgba(255, 0, 0, 0.3)) drop-shadow(2px 0 0 rgba(0, 255, 255, 0.3));
+    }
+    60% {
+      filter: none;
+    }
+  }
+
+  @keyframes crack-appear {
+    0% { opacity: 0; }
+    30% { opacity: 0.6; }
+    100% { opacity: 0; }
+  }
+
+  .glitch-active img {
+    animation: glitch-rgb 0.6s ease-out;
+  }
+
+  .glitch-crack-overlay {
+    background:
+      linear-gradient(135deg, transparent 40%, var(--color-primary) 40.5%, transparent 41%),
+      linear-gradient(225deg, transparent 60%, var(--color-primary) 60.5%, transparent 61%),
+      linear-gradient(45deg, transparent 70%, var(--color-primary) 70.3%, transparent 70.6%);
+    mix-blend-mode: overlay;
+  }
+
+  .glitch-crack-overlay.crack-visible {
+    animation: crack-appear 0.6s ease-out forwards;
+  }
+
+  /* Glitch pagination bar */
+  .glitch-pagination {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+  }
+
+  .glitch-pagination .swiper-pagination-progressbar-fill {
+    background: var(--color-primary) !important;
+  }
+
+  [data-theme="dark"] .glitch-pagination {
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .works-slider {
@@ -169,4 +358,197 @@ html {
     height: 800px;
   }
 
-  
+  /* ========== Scroll Animations ========== */
+  [data-animate] {
+    opacity: 0;
+    will-change: opacity, transform;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  [data-animate="fade-up"] {
+    transform: translateY(30px);
+  }
+
+  [data-animate="fade-in"] {
+    transform: none;
+  }
+
+  [data-animate="fade-left"] {
+    transform: translateX(-30px);
+  }
+
+  [data-animate="fade-right"] {
+    transform: translateX(30px);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Stagger children */
+  [data-stagger] > [data-animate] {
+    transition-delay: calc(var(--stagger-index, 0) * 120ms);
+  }
+
+  /* Manual delays */
+  [data-delay="200"] { transition-delay: 200ms; }
+  [data-delay="300"] { transition-delay: 300ms; }
+  [data-delay="400"] { transition-delay: 400ms; }
+  [data-delay="500"] { transition-delay: 500ms; }
+
+  /* Accessibility: disable animations for reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    [data-stagger] > [data-animate] {
+      transition-delay: 0ms !important;
+    }
+  }
+
+  /* ========== Hero Slider ========== */
+  .hero-slider {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-slider .swiper-slide {
+    overflow: hidden;
+    width: 100% !important;
+  }
+
+  .hero-pagination {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+  }
+
+  .hero-pagination .swiper-pagination-progressbar-fill {
+    background: var(--color-primary) !important;
+  }
+
+  .hero-slider .hero-slide-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+  }
+
+  .hero-slider .swiper-slide-active .hero-slide-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slider .hero-slide-content {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* ========== CTA Services Ticker ========== */
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes ticker-scroll-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .cta-ticker {
+    animation: ticker-scroll 25s linear infinite;
+  }
+
+  .cta-ticker-reverse {
+    animation: ticker-scroll-reverse 30s linear infinite;
+  }
+
+  .cta-ticker:hover,
+  .cta-ticker-reverse:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-ticker,
+    .cta-ticker-reverse {
+      animation: none;
+    }
+  }
+
+  /* CTA Stat Cards */
+  .cta-stat-card {
+    transition: transform 0.3s ease, background-color 0.3s ease !important;
+  }
+
+  .cta-stat-card:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .cta-stat-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.15) 55%,
+      transparent 100%
+    );
+    transition: none;
+    pointer-events: none;
+  }
+
+  .cta-stat-card:hover .cta-stat-shine {
+    animation: shine-sweep 0.8s ease forwards;
+  }
+
+  @keyframes shine-sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .cta-service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+  }
+
+  .cta-service-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .cta-service-card > .cta-stat-shine {
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(4, 106, 83, 0.06) 40%,
+      rgba(4, 106, 83, 0.12) 50%,
+      rgba(4, 106, 83, 0.06) 60%,
+      transparent 100%
+    );
+  }
+
+  .cta-service-card:hover > .cta-stat-shine {
+    animation: shine-sweep 0.8s ease forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-stat-card:hover,
+    .cta-service-card:hover {
+      transform: none;
+    }
+    .cta-stat-card:hover .cta-stat-shine,
+    .cta-service-card:hover .cta-stat-shine {
+      animation: none;
+    }
+  }
+

@@ -1,16 +1,16 @@
 ---
-
+import { Icon } from 'astro-icon/components';
 ---
 
 <section id="contacto" aria-label="Sección de contacto, con información de contacto y formulario" class="py-20 bg-gray-50" role="region" aria-labelledby="contact-title">
   <div class="container mx-auto px-4">
-    <h2 id="contact-title" class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 hover:text-primary transition-colors">Contacto</h2>
-    <p class="text-center text-gray-600 mb-12">En <strong>IS</strong> Instalaciones te asesoraremos sobre tu proyecto y te ofreceremos el mejor servicio.</p>
+    <h2 id="contact-title" data-animate="fade-up" class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 hover:text-primary transition-colors">Contacto</h2>
+    <p data-animate="fade-up" data-delay="200" class="text-center text-gray-600 mb-12">En <strong>IS</strong> Instalaciones te asesoraremos sobre tu proyecto y te ofreceremos el mejor servicio.</p>
     
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Información de contacto -->
-      <div class="bg-white p-8 rounded-lg shadow-md" role="region" aria-labelledby="contact-info-title">
-        <h3 id="contact-info-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6">Información de Contacto ℹ️  </h3>
+      <div data-animate="fade-left" class="bg-white p-8 rounded-lg shadow-md" role="region" aria-labelledby="contact-info-title">
+        <h3 id="contact-info-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6 flex items-center gap-2">Información de Contacto <Icon name="lucide:info" class="w-5 h-5 inline" /></h3>
 
         <div class="space-y-4 text-sm sm:text-base md:text-lg lg:text-xl">
           <div class="flex items-center">
@@ -47,15 +47,15 @@
         </div>
         
         <div class="mt-8">
-          <h4 class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-2">Horario de Atención ⏱️</h4>
+          <h4 class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 flex items-center gap-2">Horario de Atención <Icon name="lucide:clock" class="w-5 h-5 inline" /></h4>
           <p>De lunes a viernes de <strong>9:00 a 18:00</strong></p>
           <p>Sabados de <strong>9:00 a 14:00</strong></p>
         </div>
       </div>
 
       <!-- Formulario -->
-      <div class="bg-white p-8 rounded-lg shadow-md">
-        <h3 id="contact-form-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6">Envíanos un mensaje 📩</h3>
+      <div data-animate="fade-right" class="bg-white p-8 rounded-lg shadow-md">
+        <h3 id="contact-form-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6 flex items-center gap-2">Envíanos un mensaje <Icon name="lucide:mail-open" class="w-5 h-5 inline" /></h3>
         <form 
           id="contact-form" 
           class="space-y-4" 

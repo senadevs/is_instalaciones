@@ -9,8 +9,7 @@ import react from '@astrojs/react';
 
 
 import netlify from '@astrojs/netlify';
-
-
+import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +23,7 @@ export default defineConfig({
     }
   },
 
-  integrations: [sitemap(), react()],
+  integrations: [sitemap(), react(), icon()],
   adapter: netlify(),
   output: 'server'
 });

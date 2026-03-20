@@ -1,14 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import ContactSection from '../../components/contact/ContactSection.astro';
+import { Icon } from 'astro-icon/components';
 import electricista from '../../assets/ELECTRICISTA-FUNCIONES.jpg'
 
 const services = [
-  { title: "Instalación  electrica de baja tensión." },
+  { title: "Instalación electrica de baja tensión." },
   { title: "Centralización de contadores." },
   { title: "Montante electrico." },
   { title: "Instalación de punto tierra." },
-  { title: "Instalación  general de viviendas o edificios." },
+  { title: "Instalación general de viviendas o edificios." },
 ];
 
 const incidencias = [
@@ -16,11 +18,49 @@ const incidencias = [
   { title: "Sobrecarga", description: "Diagnóstico y reparación de sistemas sobrecargados." },
   { title: "Fallos de Iluminación", description: "Reparación de sistemas de iluminación defectuosos." },
   { title: "Instalaciones Antiguas", description: "Actualización de instalaciones obsoletas." },
- 
 ];
+
+const benefits = [
+  { icon: "lucide:shield-check", title: "Técnicos Autorizados", description: "Todos nuestros electricistas cuentan con las certificaciones oficiales vigentes." },
+  { icon: "lucide:clock", title: "Urgencias 24/7", description: "Servicio de emergencias eléctricas disponible todos los días del año." },
+  { icon: "lucide:file-text", title: "Presupuesto Gratuito", description: "Realizamos diagnóstico y presupuesto sin compromiso en tu domicilio." },
+  { icon: "lucide:award", title: "Garantía de 2 Años", description: "Todos nuestros trabajos están cubiertos por garantía de mano de obra y materiales." },
+];
+
+const faqItems = [
+  {
+    question: "¿Cuánto cuesta una instalación eléctrica completa en Barcelona?",
+    answer: "El coste de una instalación eléctrica completa varía según las dimensiones de la vivienda y la complejidad del trabajo. Para una vivienda estándar de 80-100m², los precios suelen oscilar entre 3.000€ y 6.000€. Ofrecemos presupuestos personalizados y sin compromiso."
+  },
+  {
+    question: "¿Qué incluye el servicio de urgencias eléctricas?",
+    answer: "Nuestro servicio de urgencias 24/7 cubre cortocircuitos, caídas de tensión, fallos en el cuadro eléctrico, y cualquier avería que ponga en riesgo la seguridad de tu hogar. Garantizamos una respuesta en menos de 2 horas en Barcelona y área metropolitana."
+  },
+  {
+    question: "¿Necesito el boletín eléctrico para mi vivienda?",
+    answer: "El boletín eléctrico (CIE) es obligatorio para dar de alta o aumentar la potencia del suministro eléctrico, y también se requiere en compraventas y reformas. En IS Instalaciones tramitamos el boletín eléctrico tras verificar que la instalación cumple con la normativa REBT."
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
 ---
 
-<Layout title="Servicios de Electricidad - IS.INSTALACIONES">
+<Layout
+  title="Instalaciones Eléctricas Profesionales en Barcelona - IS.INSTALACIONES"
+  description="Servicios de instalaciones eléctricas en Barcelona: reformas, cuadros eléctricos, iluminación LED, boletines y urgencias 24/7. Técnicos autorizados con más de 8 años de experiencia."
+  additionalSchema={faqSchema}
+>
 
   <main class="pt-10" id="electricidad">
     <!-- Hero Section -->
@@ -31,26 +71,38 @@ const incidencias = [
     <!-- Services Section -->
     <section class="py-10" aria-label="Sección de servicios">
       <div class="container mx-auto px-4">
-        <h1 class="text-4xl text-center font-bold mb-8"></h1>
+        <h1 data-animate="fade-up" class="text-3xl md:text-4xl font-bold text-center mb-6">Instalaciones Eléctricas Profesionales en Barcelona</h1>
+
+        <div data-animate="fade-up" data-delay="200" class="max-w-4xl mx-auto mb-12">
+          <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
+            En <strong>IS Instalaciones</strong> somos especialistas en todo tipo de <strong>instalaciones eléctricas en Barcelona</strong> y área metropolitana. Con más de 8 años de experiencia, nuestro equipo de electricistas autorizados se encarga de proyectos residenciales, comerciales e industriales, garantizando siempre el cumplimiento de la normativa REBT vigente y la máxima seguridad en cada intervención.
+          </p>
+          <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
+            Desde la <strong>instalación eléctrica completa</strong> de una vivienda nueva hasta la actualización de sistemas antiguos, pasando por la centralización de contadores y la instalación de iluminación LED de bajo consumo, cubrimos todas las necesidades eléctricas de tu hogar o negocio. Trabajamos con materiales de primeras marcas y ofrecemos soluciones orientadas a la eficiencia energética para reducir tu factura eléctrica.
+          </p>
+          <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+            Disponemos de un <strong>servicio de urgencias eléctricas 24/7</strong> para resolver cualquier avería con rapidez y profesionalidad. No importa la hora ni el día: si tienes un problema eléctrico, estamos a tu disposición. Solicita tu presupuesto sin compromiso y descubre por qué cientos de clientes en Barcelona confían en nosotros.
+          </p>
+        </div>
 
         <div class="grid md:grid-cols-2 gap-8 mb-12">
-          <div>
+          <div data-animate="fade-left">
             <h2 class="text-2xl font-bold mb-4">Nuestros Servicios</h2>
             <ul class="space-y-2">
               {services.map(service => (
-                <li class="text-gray-600">
-                                      <h3 class="mr-2">✓ {service.title}</h3>
-
+                <li class="flex items-center text-gray-600">
+                  <Icon name="lucide:check" class="w-4 h-4 text-primary mr-2 flex-shrink-0" />
+                  <h3>{service.title}</h3>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
+          <div data-animate="fade-right">
             <h2 class="text-2xl font-bold mb-4">Incidencias Comunes</h2>
-            <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+            <div data-stagger class="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
               {incidencias.map(incidencia => (
-                <div class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+                <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
                   <h3 class="text-base lg:text-2xl md:text-base sm:text-base font-bold mb-2">{incidencia.title}</h3>
                   <p class="text-gray-600 lg:text-lg md:text-base">{incidencia.description}</p>
                 </div>
@@ -59,8 +111,37 @@ const incidencias = [
           </div>
 
         </div>
+
+        <!-- Por qué Elegir IS Instalaciones -->
+        <div class="max-w-5xl mx-auto mb-12">
+          <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold text-center mb-8">¿Por qué Elegir IS Instalaciones?</h2>
+          <div data-stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {benefits.map(benefit => (
+              <div data-animate="fade-up" class="text-center p-6 bg-white rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg">
+                <Icon name={benefit.icon} class="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 class="font-bold mb-2">{benefit.title}</h3>
+                <p class="text-sm text-gray-600">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="max-w-4xl mx-auto">
+          <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold text-center mb-8">Preguntas Frecuentes</h2>
+          <div data-stagger class="space-y-6">
+            {faqItems.map(item => (
+              <div data-animate="fade-up" class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-lg font-bold mb-3">{item.question}</h3>
+                <p class="text-gray-600">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
+
+    <ContactSection />
   </main>
 
 </Layout>

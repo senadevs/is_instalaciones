@@ -1,4 +1,6 @@
 ---
+import { Icon } from "astro-icon/components";
+
 interface Props {
   title?: string;
   description?: string;
@@ -9,128 +11,356 @@ interface Props {
 const {
   title = "Servicios Profesionales de Instalaciones y Reformas en Barcelona",
   description = "Soluciones integrales para tu hogar o negocio con la máxima calidad y garantía",
-  buttonText = "Llamanos 📞",
-  buttonLink = "tel:+34637591736"
+  buttonText = "Llamanos",
+  buttonLink = "tel:+34637591736",
 } = Astro.props;
 
 const services = [
   {
-    icon: "⚡",
+    icon: "lucide:zap",
+    color: "text-amber-500",
+    bgColor: "bg-amber-50",
+    borderAccent: "border-l-amber-500",
     title: "Instalaciones Eléctricas",
+    desc: "Instalaciones seguras y eficientes para tu hogar o negocio en Barcelona.",
     features: [
       "Instalaciones completas y reformas",
-      "Cuadros eléctricos",
-      "Iluminación LED",
-      "Cambio de Fusibles",
-    ]
+      "Cuadros eléctricos y protecciones",
+      "Iluminación LED de bajo consumo",
+      "Boletines eléctricos (CIE)",
+      "Cambio de fusibles y cableado",
+    ],
   },
   {
-    icon: "🚰",
+    icon: "lucide:droplets",
+    color: "text-blue-500",
+    bgColor: "bg-blue-50",
+    borderAccent: "border-l-blue-500",
     title: "Fontanería y Saneamiento",
+    desc: "Soluciones integrales de fontanería con detección avanzada de fugas.",
     features: [
-      "Instalaciones de agua",
-      "Detección de fugas",
-      "Cambio de tuberías",
-      "Instalación de sanitarios"
-    ]
+      "Instalaciones de agua fría y caliente",
+      "Detección y reparación de fugas",
+      "Cambio integral de tuberías",
+      "Instalación de sanitarios y grifería",
+      "Calderas y termos eléctricos",
+    ],
   },
   {
-    icon: "❄️",
+    icon: "lucide:snowflake",
+    color: "text-cyan-500",
+    bgColor: "bg-cyan-50",
+    borderAccent: "border-l-cyan-500",
     title: "Climatización y Calefacción",
+    desc: "Confort térmico todo el año con equipos de máxima eficiencia energética.",
     features: [
-      "Aire acondicionado",
-      "Calefacción",
-      "Ventilación",
-      "Mantenimiento sistemas"
-    ]
+      "Aire acondicionado splits y conductos",
+      "Calefacción y suelo radiante",
+      "Ventilación y extracción",
+      "Mantenimiento preventivo",
+      "Carga de refrigerante",
+    ],
   },
   {
-    icon: "🏠",
+    icon: "lucide:hammer",
+    color: "text-orange-500",
+    bgColor: "bg-orange-50",
+    borderAccent: "border-l-orange-500",
     title: "Reformas Integrales",
+    desc: "Transformamos espacios con acabados de primera calidad y plazos garantizados.",
     features: [
-      "Carpineria en aluminio",
-      "Viviendas completas",
-      "Instalación de Ventanas",
-      "Montaje de Pladur"
-    ]
-  }
+      "Carpintería de aluminio y PVC",
+      "Reformas completas de viviendas",
+      "Instalación de ventanas y persianas",
+      "Montaje de pladur y falsos techos",
+      "Reformas de baños y cocinas",
+    ],
+  },
 ];
 ---
 
-<section class="py-12 sm:py-16 md:py-20  border-b border-primary/20">
+<section class="py-12 sm:py-16 md:py-20 border-b border-primary/20">
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-8 sm:mb-12">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">{title}</h2>
-        <p class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
+        <h2
+          data-animate="fade-up"
+          class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2"
+        >
+          {title}
+        </h2>
+        <p
+          data-animate="fade-up"
+          data-delay="200"
+          class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-2"
+        >
           {description}
         </p>
       </div>
 
-      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
-        {services.map(service => (
-          <a href={`/servicios/${service.title.toLowerCase().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} 
-             class="block bg-white  p-6 sm:p-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
-            <!-- Efecto de brillo al hover -->
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-            
-            <!-- Contenido de la card -->
-            <div class="relative z-10">
-              <div class="flex items-center mb-4 sm:mb-6">
-                <span class="text-3xl sm:text-4xl mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</span>
-                <h3 class="text-xl sm:text-2xl font-bold group-hover:text-primary transition-colors duration-300">{service.title}</h3>
-              </div>
-              <ul class="space-y-2 sm:space-y-3">
-                {service.features.map(feature => (
-                  <li class="flex items-center text-sm sm:text-base  group-hover:translate-x-2 transition-transform duration-300">
-                    <span class="text-primary mr-2 flex-shrink-0">✓</span>
-                    <span class="line-clamp-2">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <!-- Indicador de click -->
-            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span class="text-primary text-sm font-medium flex items-center">
-                Ver más
-                <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </span>
-            </div>
-
-            <!-- Overlay táctil para móviles -->
-            <div class="absolute inset-0 bg-primary/5 opacity-0 active:opacity-100 sm:hidden transition-opacity"></div>
-          </a>
-        ))}
-      </div>
-
-      <div class="bg-primary text-white p-6 sm:p-8 rounded-lg shadow-lg text-center">
-        <h3 class="text-xl sm:text-2xl font-bold mb-4">¿Necesitas un servicio profesional?</h3>
-        <p class="text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-          Más de 8 años de experiencia nos avalan. Trabajamos en toda Barcelona y alrededores con la máxima calidad y garantía.
-        </p>
-        <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 text-sm sm:text-base">
-          <div class="flex items-center">
-            <span class="mr-2">✓</span>
-            Presupuesto sin compromiso
-          </div>
-          <div class="flex items-center">
-            <span class="mr-2">✓</span>
-            Profesionales cualificados
-          </div>
-          <div class="flex items-center">
-            <span class="mr-2">✓</span>
-            Garantía en todos los trabajos
+      {/* Intro Banner with ticker */}
+      <div
+        data-animate="fade-up"
+        class="relative mb-16 overflow-hidden rounded-3xl bg-primary shadow-2xl"
+      >
+        <!-- Scrolling ticker top -->
+        <div class="overflow-hidden py-3 border-b border-white/10">
+          <div class="cta-ticker flex whitespace-nowrap">
+            <span class="ticker-item text-white text-sm font-medium mx-8">Electricidad</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Fontanería</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Climatización</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Reformas Integrales</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Pladur</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Carpintería Aluminio</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Iluminación LED</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Aire Acondicionado</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            {/* Duplicate for seamless loop */}
+            <span class="ticker-item text-white text-sm font-medium mx-8">Electricidad</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Fontanería</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Climatización</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Reformas Integrales</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Pladur</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Carpintería Aluminio</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Iluminación LED</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Aire Acondicionado</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
           </div>
         </div>
-        <a 
-          href={buttonLink}
-          class="inline-block bg-white text-primary px-6 sm:px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
-        >
-          {buttonText}
-        </a>
+
+        <!-- Main content -->
+        <div class="relative z-10 text-center px-6 py-16 md:py-20">
+          <div class="flex justify-center gap-8 md:gap-16 mb-10">
+            <div class="flex flex-col items-center gap-2">
+              <Icon name="lucide:zap" class="w-14 h-14 md:w-20 md:h-20 text-amber-300 drop-shadow-[0_0_12px_rgba(251,191,36,0.4)]" />
+              <span class="text-white/50 text-xs font-medium uppercase tracking-wider">Electricidad</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <Icon name="lucide:droplets" class="w-14 h-14 md:w-20 md:h-20 text-blue-300 drop-shadow-[0_0_12px_rgba(96,165,250,0.4)]" />
+              <span class="text-white/50 text-xs font-medium uppercase tracking-wider">Fontanería</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <Icon name="lucide:snowflake" class="w-14 h-14 md:w-20 md:h-20 text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.4)]" />
+              <span class="text-white/50 text-xs font-medium uppercase tracking-wider">Clima</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <Icon name="lucide:hammer" class="w-14 h-14 md:w-20 md:h-20 text-orange-300 drop-shadow-[0_0_12px_rgba(251,146,60,0.4)]" />
+              <span class="text-white/50 text-xs font-medium uppercase tracking-wider">Reformas</span>
+            </div>
+          </div>
+
+          <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4 uppercase tracking-tighter">
+            Tu proyecto, <span class="text-white/70 italic">nuestra especialidad</span>
+          </h2>
+          <p class="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
+            Más de 8 años transformando hogares y negocios en Barcelona con soluciones técnicas de primera calidad.
+          </p>
+        </div>
+
+        <!-- Scrolling ticker bottom (reverse) -->
+        <div class="overflow-hidden py-3 border-t border-white/10">
+          <div class="cta-ticker-reverse flex whitespace-nowrap">
+            <span class="ticker-item text-white text-sm font-medium mx-8">Barcelona</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Hospitalet</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Badalona</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Santa Coloma</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Cornellà</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Esplugues</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Sant Just Desvern</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Sant Joan Despí</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            {/* Duplicate */}
+            <span class="ticker-item text-white text-sm font-medium mx-8">Barcelona</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Hospitalet</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Badalona</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Santa Coloma</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Cornellà</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Esplugues</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Sant Just Desvern</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+            <span class="ticker-item text-white text-sm font-medium mx-8">Sant Joan Despí</span>
+            <span class="ticker-dot text-white/60 mx-2">&bull;</span>
+          </div>
+        </div>
+
+        <div class="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+      </div>
+
+      <div data-animate="fade-up" class="mb-12 max-w-4xl mx-auto text-center space-y-4">
+        <p class="text-gray-600 leading-relaxed">
+          En <strong>IS Instalaciones</strong> somos tu empresa de confianza para servicios de <strong>electricidad, fontanería, climatización y reformas integrales en Barcelona</strong> y toda el área metropolitana. Nuestros <strong>técnicos autorizados</strong> trabajan en l'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Cornellà, Esplugues, Sant Just Desvern y Sant Joan Despí.
+        </p>
+        <p class="text-gray-600 leading-relaxed">
+          Ofrecemos <strong>presupuesto sin compromiso</strong> con visita técnica gratuita. Más de <strong>8 años de experiencia</strong> y cientos de proyectos completados nos avalan como tu <strong>electricista en Barcelona</strong> y <strong>fontanero en Barcelona</strong> de referencia. Materiales de primera calidad y garantía de 2 años en todos nuestros trabajos.
+        </p>
+      </div>
+
+      <div data-stagger class="grid sm:grid-cols-2 gap-6 md:gap-8 mb-12">
+        {
+          services.map((service) => (
+            <a
+              data-animate="fade-up"
+              href={`/servicios/${service.title
+                .toLowerCase()
+                .replace(/\s+/g, "-")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")}`}
+              class={`cta-service-card block bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-100 hover:border-primary/30 group relative overflow-hidden border-l-4 ${service.borderAccent}`}
+            >
+              <div class="cta-stat-shine"></div>
+              <div class="p-6 md:p-8 relative z-[1]">
+                {/* Header: icon + title */}
+                <div class="flex items-center gap-4 mb-4">
+                  <div class={`w-14 h-14 ${service.bgColor} rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon
+                      name={service.icon}
+                      class={`w-7 h-7 ${service.color}`}
+                    />
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-800 group-hover:text-primary transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p class="text-sm text-gray-500 leading-snug mt-0.5">{service.desc}</p>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div class="h-px bg-gray-100 mb-4"></div>
+
+                {/* Features */}
+                <ul class="space-y-2.5 mb-6">
+                  {service.features.map((feature) => (
+                    <li class="flex items-start text-gray-600 text-sm leading-snug">
+                      <Icon
+                        name="lucide:circle-check"
+                        class={`w-4 h-4 ${service.color} mr-2.5 mt-0.5 flex-shrink-0`}
+                      />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA link */}
+                <div class="flex items-center text-primary font-semibold text-sm group-hover:gap-3 gap-1.5 transition-all duration-300">
+                  Ver servicio
+                  <Icon
+                    name="lucide:arrow-right"
+                    class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <div
+        data-animate="fade-up"
+        class="bg-primary rounded-2xl shadow-xl overflow-hidden"
+      >
+        <div class="grid md:grid-cols-2 gap-0">
+          {/* Left: content */}
+          <div class="p-8 md:p-10 text-white">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+              <Icon name="lucide:shield-check" class="w-4 h-4" />
+              Empresa de confianza en Barcelona
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold mb-4">
+              Tu instalador de referencia en Barcelona y área metropolitana
+            </h3>
+            <p class="text-white/80 leading-relaxed mb-6">
+              Desde 2016 ofrecemos servicios profesionales de electricidad, fontanería, climatización y reformas integrales. Técnicos autorizados, materiales de primera calidad y atención personalizada en cada proyecto.
+            </p>
+            <div class="grid grid-cols-2 gap-3 mb-8">
+              <div class="flex items-center gap-2 text-sm">
+                <Icon name="lucide:circle-check" class="w-4 h-4 text-green-300 flex-shrink-0" />
+                <span>Presupuesto gratis</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <Icon name="lucide:circle-check" class="w-4 h-4 text-green-300 flex-shrink-0" />
+                <span>Técnicos autorizados</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <Icon name="lucide:circle-check" class="w-4 h-4 text-green-300 flex-shrink-0" />
+                <span>Garantía de 2 años</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <Icon name="lucide:circle-check" class="w-4 h-4 text-green-300 flex-shrink-0" />
+                <span>Materiales certificados</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a
+                href={buttonLink}
+                class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+              >
+                <Icon name="lucide:phone" class="w-5 h-5" />
+                {buttonText}
+              </a>
+              <a
+                href="https://wa.me/34637591736"
+                class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors border border-white/20"
+              >
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                WhatsApp
+              </a>
+            </div>
+          </div>
+
+          {/* Right: stats */}
+          <div class="bg-white/5 p-8 md:p-10 flex items-center">
+            <div class="grid grid-cols-2 gap-5 w-full">
+              <div class="cta-stat-card text-center p-5 bg-white/10 rounded-xl backdrop-blur-sm relative overflow-hidden group cursor-default">
+                <div class="cta-stat-shine"></div>
+                <Icon name="lucide:calendar-check" class="w-7 h-7 text-white/80 mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+                <div class="text-3xl md:text-4xl font-black text-white mb-1">+8</div>
+                <p class="text-white/70 text-sm">Años de experiencia</p>
+              </div>
+              <div class="cta-stat-card text-center p-5 bg-white/10 rounded-xl backdrop-blur-sm relative overflow-hidden group cursor-default">
+                <div class="cta-stat-shine"></div>
+                <Icon name="lucide:shield-check" class="w-7 h-7 text-white/80 mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+                <div class="text-3xl md:text-4xl font-black text-white mb-1">2 años</div>
+                <p class="text-white/70 text-sm">Garantía en trabajos</p>
+              </div>
+              <div class="cta-stat-card text-center p-5 bg-white/10 rounded-xl backdrop-blur-sm relative overflow-hidden group cursor-default col-span-2">
+                <div class="cta-stat-shine"></div>
+                <Icon name="lucide:star" class="w-7 h-7 text-white/80 mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+                <div class="text-3xl md:text-4xl font-black text-white mb-1">100%</div>
+                <p class="text-white/70 text-sm">Clientes satisfechos</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
