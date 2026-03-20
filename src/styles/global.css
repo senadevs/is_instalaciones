@@ -141,6 +141,34 @@ html {
   [data-theme="dark"] .bg-slate-50 {
     background-color: var(--color-secondary) !important;
   }
+
+  [data-theme="dark"] .bg-gray-100 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  [data-theme="dark"] .border-gray-100 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  [data-theme="dark"] .text-primary {
+    color: var(--color-text-light) !important;
+  }
+
+  /* Keep text-primary on buttons with bg-white */
+  [data-theme="dark"] .bg-white.text-primary {
+    color: var(--color-primary) !important;
+  }
+
+  [data-theme="dark"] .bg-amber-50,
+  [data-theme="dark"] .bg-blue-50,
+  [data-theme="dark"] .bg-cyan-50,
+  [data-theme="dark"] .bg-orange-50 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  [data-theme="dark"] .bg-primary\/5 {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
   
   /* Ajustes de hover para cada tema */
   [data-theme="default"] .hover\:text-primary:hover,

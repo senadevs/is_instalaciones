@@ -2,143 +2,227 @@
 import { Icon } from 'astro-icon/components';
 ---
 
-<section id="contacto" aria-label="Sección de contacto, con información de contacto y formulario" class="py-20 bg-gray-50" role="region" aria-labelledby="contact-title">
+<section id="contacto" aria-label="Sección de contacto" class="py-16 md:py-20 bg-gray-50 border-b border-primary/20" role="region" aria-labelledby="contact-title">
   <div class="container mx-auto px-4">
-    <h2 id="contact-title" data-animate="fade-up" class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 hover:text-primary transition-colors">Contacto</h2>
-    <p data-animate="fade-up" data-delay="200" class="text-center text-gray-600 mb-12">En <strong>IS</strong> Instalaciones te asesoraremos sobre tu proyecto y te ofreceremos el mejor servicio.</p>
-    
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Información de contacto -->
-      <div data-animate="fade-left" class="bg-white p-8 rounded-lg shadow-md" role="region" aria-labelledby="contact-info-title">
-        <h3 id="contact-info-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6 flex items-center gap-2">Información de Contacto <Icon name="lucide:info" class="w-5 h-5 inline" /></h3>
+    <div class="max-w-6xl mx-auto">
 
-        <div class="space-y-4 text-sm sm:text-base md:text-lg lg:text-xl">
-          <div class="flex items-center">
-           <!--  <span class=" text-xl mr-4" role="img" aria-label="Ubicación">📍</span> -->
-            <svg class="w-6 h-6 mr-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-            <p>Barcelona, España</p>
-          </div>
-          <div class="flex items-center">
-            <a 
-              href="https://wa.me/34637591736" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="flex items-center hover:text-primary transition-colors"
-            >
-              <svg class="w-6 h-6 mr-4 " viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              <p class="text-base sm:text-sm md:text-lg">+34 637 59 17 36</p>
-            </a>
-          </div>
-          <div class="flex items-center">
-            <a 
-              href="mailto:isinstalacionesbcn@gmail.com" 
-              class="flex items-center hover:text-primary transition-colors"
-            >
-              <svg class="w-6 h-6 mr-4 " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-              <p class="text-base sm:text-sm md:text-lg">isinstalacionesbcn@gmail.com</p>
-            </a>
-          </div>
+      {/* Header */}
+      <div class="text-center mb-12">
+        <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+          <Icon name="lucide:mail" class="w-4 h-4" />
+          Estamos aquí para ayudarte
         </div>
-        
-        <div class="mt-8">
-          <h4 class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 flex items-center gap-2">Horario de Atención <Icon name="lucide:clock" class="w-5 h-5 inline" /></h4>
-          <p>De lunes a viernes de <strong>9:00 a 18:00</strong></p>
-          <p>Sabados de <strong>9:00 a 14:00</strong></p>
-        </div>
+        <h2 id="contact-title" data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-4">Contacto</h2>
+        <p data-animate="fade-up" data-delay="200" class="text-gray-600 max-w-2xl mx-auto">
+          En <strong>IS Instalaciones</strong> te asesoraremos sobre tu proyecto y te ofreceremos el mejor servicio. Cuéntanos qué necesitas.
+        </p>
       </div>
 
-      <!-- Formulario -->
-      <div data-animate="fade-right" class="bg-white p-8 rounded-lg shadow-md">
-        <h3 id="contact-form-title" class="text-xl sm:text-lg md:text-xl lg:text-2xl font-bold mb-6 flex items-center gap-2">Envíanos un mensaje <Icon name="lucide:mail-open" class="w-5 h-5 inline" /></h3>
-        <form 
-          id="contact-form" 
-          class="space-y-4" 
-          role="form"  
-          aria-labelledby="contact-form-title"
-          action="https://api.staticforms.xyz/submit" 
-          method="POST" 
-        
-          
+      {/* Quick contact cards */}
+      <div data-stagger class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        <a
+          data-animate="fade-up"
+          href="tel:+34637591736"
+          class="cta-service-card flex items-center gap-4 bg-white p-5 rounded-2xl shadow-md border border-gray-100 hover:border-primary/30 hover:shadow-xl group relative overflow-hidden"
         >
-        <input type="hidden" name="accessKey" value="14567cc6-f537-40ba-9af8-ff56d30fa0a2">
-        <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
-        <input type="hidden" name="replyTo" value="contacto@is-instalaciones.es">
-        <input type="hidden" name="redirectTo" value="https://thejornalia.es">
-        <div>
-          <label for="hero-nombre" class="sr-only">Nombre y apellidos</label>
-          <input 
-            id="hero-nombre"
-            name="name"
-            type="text" 
-            placeholder="Nombre y apellidos" 
-            class="w-full px-4 py-2 rounded border focus:border-primary focus:ring-1 bg-white focus:ring-primary outline-none"
-            required
-          >
-        </div>
-        <div>
-          <label for="hero-email" class="sr-only">Email</label>
-          <input 
-            id="hero-email"
-            name="email" 
-            type="email" 
-            placeholder="Email" 
-            class="w-full px-4 py-2 rounded border focus:border-primary bg-white dark:text-primary focus:ring-1 focus:ring-primary outline-none"
-            required
-          >
-        </div>
-        <div>
-          <label for="hero-telefono" class="sr-only">Teléfono</label>
-          <input 
-            id="hero-telefono"
-            name="phone"
-            type="tel" 
-            placeholder="Teléfono" 
-            class="w-full px-4 py-2 rounded border focus:border-primary  bg-white focus:ring-1 focus:ring-primary outline-none"
-          >
-        </div>
-        <div>
-          <label for="hero-codigo-postal" class="sr-only">Código postal</label>
-          <input 
-            id="hero-codigo-postal"
-            name="postal_code"
-            type="text"
-            pattern="[0-9]{5}"
-            placeholder="Código postal" 
-            class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
-            required
-          >
-        </div>
-        <div>
-          <label for="hero-mensaje" class="sr-only">Mensaje</label>
-          <textarea 
-            id="hero-mensaje"
-            name="message"
-            placeholder="Mensaje" 
-            rows="4" 
-            class="w-full px-4 py-2 rounded border focus:border-primary bg-white focus:ring-1 focus:ring-primary outline-none"
-            required
-          ></textarea>
-        </div>
-          <div id="form-status" class="hidden" role="status" aria-live="polite">
-            <p class="text-green-600 success hidden">Mensaje enviado correctamente</p>
-            <p class="text-red-600 error hidden">Error al enviar el mensaje</p>
+          <div class="cta-stat-shine"></div>
+          <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-[1]">
+            <Icon name="lucide:phone" class="w-6 h-6 text-green-500" />
           </div>
-          <button 
-            type="submit" 
-            class="w-full bg-primary text-white  py-3 rounded font-medium hover:bg-primary/80 transition-colors"
-            aria-label="Enviar mensaje"
-          >
-            Enviar Mensaje
-          </button>
-        </form>
+          <div class="relative z-[1]">
+            <p class="font-semibold text-slate-800">Llámanos</p>
+            <p class="text-sm text-gray-600">+34 637 59 17 36</p>
+          </div>
+        </a>
+
+        <a
+          data-animate="fade-up"
+          href="https://wa.me/34637591736"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cta-service-card flex items-center gap-4 bg-white p-5 rounded-2xl shadow-md border border-gray-100 hover:border-primary/30 hover:shadow-xl group relative overflow-hidden"
+        >
+          <div class="cta-stat-shine"></div>
+          <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-[1]">
+            <svg class="w-6 h-6 text-green-500" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </div>
+          <div class="relative z-[1]">
+            <p class="font-semibold text-slate-800">WhatsApp</p>
+            <p class="text-sm text-gray-600">Respuesta rápida</p>
+          </div>
+        </a>
+
+        <a
+          data-animate="fade-up"
+          href="mailto:isinstalacionesbcn@gmail.com"
+          class="cta-service-card flex items-center gap-4 bg-white p-5 rounded-2xl shadow-md border border-gray-100 hover:border-primary/30 hover:shadow-xl group relative overflow-hidden"
+        >
+          <div class="cta-stat-shine"></div>
+          <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-[1]">
+            <Icon name="lucide:mail" class="w-6 h-6 text-blue-500" />
+          </div>
+          <div class="relative z-[1]">
+            <p class="font-semibold text-slate-800">Email</p>
+            <p class="text-sm text-gray-600">isinstalacionesbcn@gmail.com</p>
+          </div>
+        </a>
       </div>
+
+      {/* Main grid: info + form */}
+      <div class="grid md:grid-cols-5 gap-8">
+
+        {/* Left: info */}
+        <div data-animate="fade-left" class="md:col-span-2 space-y-6">
+
+          {/* Location card */}
+          <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                <Icon name="lucide:map-pin" class="w-5 h-5 text-primary" />
+              </div>
+              <h3 class="font-bold text-lg text-slate-800">Ubicación</h3>
+            </div>
+            <p class="text-gray-600">Barcelona, España</p>
+            <p class="text-sm text-gray-500 mt-1">Servicio en Barcelona y área metropolitana</p>
+          </div>
+
+          {/* Schedule card */}
+          <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                <Icon name="lucide:clock" class="w-5 h-5 text-primary" />
+              </div>
+              <h3 class="font-bold text-lg text-slate-800">Horario de Atención</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                <span class="text-gray-600">Lunes - Viernes</span>
+                <span class="font-semibold text-slate-800">9:00 - 18:00</span>
+              </div>
+              <div class="flex justify-between items-center py-2">
+                <span class="text-gray-600">Sábados</span>
+                <span class="font-semibold text-slate-800">9:00 - 14:00</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Right: form */}
+        <div data-animate="fade-right" class="md:col-span-3 bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-100">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+              <Icon name="lucide:send" class="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h3 id="contact-form-title" class="font-bold text-lg text-slate-800">Envíanos un mensaje</h3>
+              <p class="text-sm text-gray-500">Te respondemos en menos de 24 horas</p>
+            </div>
+          </div>
+
+          <form
+            id="contact-form"
+            class="space-y-4"
+            role="form"
+            aria-labelledby="contact-form-title"
+            action="https://api.staticforms.xyz/submit"
+            method="POST"
+          >
+            <input type="hidden" name="accessKey" value="14567cc6-f537-40ba-9af8-ff56d30fa0a2">
+            <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
+            <input type="hidden" name="replyTo" value="contacto@is-instalaciones.es">
+            <input type="hidden" name="redirectTo" value="https://thejornalia.es">
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="relative">
+                <Icon name="lucide:user" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <label for="contact-nombre" class="sr-only">Nombre y apellidos</label>
+                <input
+                  id="contact-nombre"
+                  name="name"
+                  type="text"
+                  placeholder="Nombre y apellidos"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                  required
+                >
+              </div>
+              <div class="relative">
+                <Icon name="lucide:mail" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <label for="contact-email" class="sr-only">Email</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="relative">
+                <Icon name="lucide:phone" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <label for="contact-telefono" class="sr-only">Teléfono</label>
+                <input
+                  id="contact-telefono"
+                  name="phone"
+                  type="tel"
+                  placeholder="Teléfono"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                >
+              </div>
+              <div class="relative">
+                <Icon name="lucide:map-pin" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <label for="contact-codigo-postal" class="sr-only">Código postal</label>
+                <input
+                  id="contact-codigo-postal"
+                  name="postal_code"
+                  type="text"
+                  pattern="[0-9]{5}"
+                  placeholder="Código postal"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="relative">
+              <Icon name="lucide:file-text" class="w-4 h-4 absolute left-3 top-4 text-gray-400" />
+              <label for="contact-mensaje" class="sr-only">Mensaje</label>
+              <textarea
+                id="contact-mensaje"
+                name="message"
+                placeholder="Cuéntanos tu proyecto o incidencia..."
+                rows="4"
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none text-sm"
+                required
+              ></textarea>
+            </div>
+
+            <div id="form-status" class="hidden" role="status" aria-live="polite">
+              <p class="text-green-600 success hidden">Mensaje enviado correctamente</p>
+              <p class="text-red-600 error hidden">Error al enviar el mensaje</p>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-secondary shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              aria-label="Enviar mensaje"
+            >
+              <Icon name="lucide:send" class="w-5 h-5" />
+              Enviar Mensaje
+            </button>
+
+            <p class="text-[10px] text-center text-gray-400 leading-tight">
+              Al enviar aceptas nuestra política de privacidad. Tus datos están seguros con nosotros.
+            </p>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
-

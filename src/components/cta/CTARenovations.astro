@@ -1,142 +1,93 @@
 ---
 import { Icon } from "astro-icon/components";
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = "¿Necesitas un Técnico ?",
-  description = "Resolvemos cualquier incidencia en tu hogar o negocio de forma rápida y profesional",
-} = Astro.props;
-
 const services = [
   {
     icon: "lucide:zap",
     color: "text-amber-500",
+    bgColor: "bg-amber-50",
+    borderAccent: "border-l-amber-500",
     title: "Averías Eléctricas",
-    description: "Cortocircuitos, fallos de luz, instalaciones",
+    description: "Cortocircuitos, fallos de luz, cuadros eléctricos y cableado defectuoso.",
   },
   {
     icon: "lucide:droplets",
     color: "text-blue-500",
+    bgColor: "bg-blue-50",
+    borderAccent: "border-l-blue-500",
     title: "Fugas de Agua",
-    description: "Goteras, tuberías rotas, desatascos",
+    description: "Goteras, tuberías rotas, desatascos y problemas de presión.",
   },
   {
     icon: "lucide:snowflake",
     color: "text-cyan-500",
+    bgColor: "bg-cyan-50",
+    borderAccent: "border-l-cyan-500",
     title: "Climatización",
-    description: "Reparación aire acondicionado y calefacción",
+    description: "Reparación de aire acondicionado, calefacción y ventilación.",
   },
-];
-
-const benefits = [
-  "Servicio 24/7",
-  "Técnicos cualificados",
-  "Respuesta en menos de 2h",
-  "Garantía en reparaciones",
 ];
 ---
 
 <section class="py-16 md:py-20 border-b border-primary/20">
   <div class="container mx-auto px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-6">
-        {title}
-      </h2>
-      <p
-        data-animate="fade-up"
-        data-delay="200"
-        class="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
-      >
-        {description}
-      </p>
+    <div class="max-w-5xl mx-auto">
 
+      {/* Header */}
+      <div class="text-center mb-12">
+        <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+          <Icon name="lucide:wrench" class="w-4 h-4" />
+          Servicio técnico profesional
+        </div>
+        <h2 data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-4">
+          ¿Necesitas un Técnico en Barcelona?
+        </h2>
+        <p data-animate="fade-up" data-delay="200" class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Resolvemos cualquier incidencia en tu hogar o negocio. Técnicos autorizados con respuesta rápida en Barcelona y área metropolitana.
+        </p>
+      </div>
+
+      {/* Service cards */}
       <div data-stagger class="grid md:grid-cols-3 gap-6 mb-12">
         {
           services.map((service) => (
             <div
               data-animate="fade-up"
-              class="bg-white p-8 rounded-xl shadow-md border border-primary/10 hover:border-primary/30 transition-all hover:shadow-xl group relative overflow-hidden"
+              class={`cta-service-card bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:border-primary/30 hover:shadow-xl group relative overflow-hidden border-l-4 ${service.borderAccent}`}
             >
-              <div class="relative mb-6">
-                <Icon
-                  name={service.icon}
-                  class={`w-12 h-12 transition-all duration-300 group-hover:scale-110 ${service.color}`}
-                />
-
-                {/* Custom Animation: Air Conditioning */}
-                {service.title === "Climatización" && (
-                  <div class="absolute -bottom-4 left-0 w-12 flex justify-around opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div
-                      class="air-line w-1 h-3 bg-cyan-200/50 rounded-full"
-                      style="animation-delay: 0s"
-                    />
-                    <div
-                      class="air-line w-1 h-4 bg-cyan-200/50 rounded-full"
-                      style="animation-delay: 0.2s"
-                    />
-                    <div
-                      class="air-line w-1 h-3 bg-cyan-200/50 rounded-full"
-                      style="animation-delay: 0.4s"
-                    />
-                  </div>
-                )}
-
-                {/* Custom Animation: Leaking Pipe */}
-                {service.title === "Fugas de Agua" && (
-                  <div class="absolute top-8 left-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div class="water-drop w-1.5 h-2 bg-blue-400 rounded-full blur-[0.5px]" />
-                  </div>
-                )}
+              <div class="cta-stat-shine"></div>
+              <div class="relative z-[1]">
+                <div class={`w-12 h-12 ${service.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon
+                    name={service.icon}
+                    class={`w-6 h-6 ${service.color}`}
+                  />
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-slate-800 group-hover:text-primary transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  {service.description}
+                </p>
               </div>
-
-              <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors">
-                {service.title}
-              </h3>
-              <p class="text-gray-600 leading-relaxed">
-                {service.description}
-              </p>
-
-              {/* Background design element */}
-              <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500" />
             </div>
           ))
         }
       </div>
 
-      <div
-        data-animate="fade-up"
-        class="bg-primary text-white p-8 rounded-lg shadow-lg mb-8"
-      >
-        <h3 class="text-2xl font-bold mb-6">Servicio Técnico de Urgencia</h3>
-        <ul class="space-y-3 max-w-md mx-auto mb-8">
-          {
-            benefits.map((benefit) => (
-              <li class="flex items-center justify-center">
-                <Icon name="lucide:check" class="w-4 h-4 mr-2" />
-                {benefit}
-              </li>
-            ))
-          }
-        </ul>
+      {/* Inline CTA - simple, no repetir banner verde */}
+      <div data-animate="fade-up" class="text-center">
+        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+          Cuéntanos tu problema y te daremos una solución rápida. <strong>Presupuesto gratuito</strong> y sin compromiso para cualquier incidencia en Barcelona y alrededores.
+        </p>
         <a
-          href="tel:+34637591736"
-          class="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors transform hover:scale-105 duration-300"
+          href="#contacto"
+          class="cta-service-card inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-2xl font-semibold shadow-md border border-primary/20 hover:bg-secondary hover:shadow-xl relative overflow-hidden"
         >
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.27c1.21.49 2.53.76 3.88.76.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.29 22 2 13.71 2 3.5 2 2.95 2.45 2.5 3 2.5H6.5c.55 0 1 .45 1 1 0 1.35.27 2.67.76 3.88.14.34.07.73-.27 1.11l-2.2 2.2z"
-            ></path>
-          </svg>
-          Llamar Ahora
+          <div class="cta-stat-shine"></div>
+          <Icon name="lucide:file-text" class="w-5 h-5 relative z-[1]" />
+          <span class="relative z-[1]">Solicitar Presupuesto Gratis</span>
         </a>
-      </div>
-
-      <div class="text-sm text-gray-500">
-        * Servicio disponible en Barcelona y alrededores
       </div>
     </div>
   </div>
