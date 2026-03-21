@@ -68,16 +68,19 @@ const currentHash = Astro.url.hash;
                   )}
                 </a>
                 {item.submenu && (
-                  <div class="absolute top-full left-0 mt-1 w-48 bg-primary border border-white/20 rounded-lg shadow-lg hidden group-hover:block">
-                    {item.submenu.map(subItem => (
-                      <a
-                        href={subItem.href}
-                        class="block px-4 py-2 text-sm hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg"
-                        role="menuitem"
-                      >
-                        {subItem.text}
-                      </a>
-                    ))}
+                  <div class="absolute top-full left-0 pt-2 w-52 hidden group-hover:block">
+                    <div class="bg-primary border border-white/20 rounded-xl shadow-xl py-2">
+                      {item.submenu.map(subItem => (
+                        <a
+                          href={subItem.href}
+                          class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-white/10 transition-colors"
+                          role="menuitem"
+                        >
+                          <span class="w-1.5 h-1.5 bg-white/40 rounded-full"></span>
+                          {subItem.text}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

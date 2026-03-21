@@ -157,26 +157,37 @@ const faqSchema = {
       </div>
     </section>
 
-    <!-- Canales de Atención -->
-    <section class="py-16 bg-white">
+    <!-- Redes Sociales -->
+    <section class="py-16">
       <div class="container mx-auto px-4">
-        <div data-stagger class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {atentionChannels.map(channel => (
-            <div data-animate="fade-up" class="bg-white p-8 rounded-lg shadow-md border border-primary/20 hover:border-primary/30 transition-all hover:shadow-lg group">
-              <Icon name={channel.icon} class={`w-10 h-10 mb-4 transform group-hover:scale-110 transition-transform ${channel.color}`} />
-              <h3 class="text-xl font-bold mb-2">{channel.title}</h3>
-              <p class="text-gray-600 mb-6">{channel.description}</p>
-              <a 
-                href={channel.link}
-                class="inline-flex items-center text-primary hover:text-secondary transition-colors"
-              >
-                {channel.action}
-                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </a>
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-10">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:share-2" class="w-4 h-4" />
+              Conecta con nosotros
             </div>
-          ))}
+            <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold mb-3">Síguenos en Redes Sociales</h2>
+            <p data-animate="fade-up" data-delay="200" class="text-gray-600 max-w-2xl mx-auto">
+              Mantente al día con nuestros últimos proyectos, ofertas especiales y consejos profesionales
+            </p>
+          </div>
+          <div data-stagger class="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
+            {socialPlatforms.map(platform => (
+              <a
+                data-animate="fade-up"
+                href={platform.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`cta-service-card ${platform.color} text-white p-6 rounded-2xl shadow-md hover:shadow-xl relative overflow-hidden group`}
+              >
+                <div class="cta-stat-shine"></div>
+                <div class="flex flex-col items-center text-center space-y-3 relative z-[1]">
+                  <div class="group-hover:scale-110 transition-transform duration-300" set:html={platform.icon} />
+                  <span class="font-semibold text-sm">{platform.name}</span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -185,40 +196,22 @@ const faqSchema = {
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-12">Zonas de Servicio</h2>
-          <div data-stagger class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {serviceAreas.map(area => (
-              <div data-animate="fade-up" class="bg-white p-4 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all text-center">
-                {area}
-              </div>
-            ))}
+          <div class="text-center mb-8">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:map-pin" class="w-4 h-4" />
+              Cobertura en Barcelona
+            </div>
+            <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">Zonas de Servicio</h2>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Plataformas Digitales -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-6">Síguenos en Redes Sociales</h2>
-          <p data-animate="fade-up" data-delay="200" class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Mantente al día con nuestros últimos proyectos, ofertas especiales y consejos profesionales
-          </p>
-          <div data-stagger class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {socialPlatforms.map(platform => (
-              <a
-                data-animate="fade-up"
-                href={platform.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class={`${platform.color} text-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:scale-105 group`}
-              >
-                <div class="flex flex-col items-center text-center space-y-4">
-                  <div class="group-hover:scale-110 transition-transform duration-300" set:html={platform.icon} />
-                  <span class="font-medium">{platform.name}</span>
+          <div data-stagger class="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {serviceAreas.map(area => (
+              <div data-animate="fade-up" class="cta-service-card bg-white p-4 rounded-2xl shadow-md border border-gray-100 text-center relative overflow-hidden group">
+                <div class="cta-stat-shine"></div>
+                <div class="relative z-[1] flex items-center justify-center gap-2">
+                  <Icon name="lucide:map-pin" class="w-4 h-4 text-primary flex-shrink-0" />
+                  <span class="font-medium text-slate-800 text-sm">{area}</span>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -229,12 +222,21 @@ const faqSchema = {
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-          <h2 data-animate="fade-up" class="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
-          <div data-stagger class="space-y-6">
+          <div class="text-center mb-8">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:help-circle" class="w-4 h-4" />
+              Resolvemos tus dudas
+            </div>
+            <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">Preguntas Frecuentes</h2>
+          </div>
+          <div data-stagger class="space-y-4">
             {faqItems.map(item => (
-              <div data-animate="fade-up" class="bg-white rounded-lg p-6 hover:shadow-md transition-shadow">
-                <h3 class="text-xl font-bold mb-3">{item.question}</h3>
-                <p class="text-gray-600">{item.answer}</p>
+              <div data-animate="fade-up" class="cta-service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group">
+                <div class="cta-stat-shine"></div>
+                <div class="relative z-[1]">
+                  <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">{item.question}</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">{item.answer}</p>
+                </div>
               </div>
             ))}
           </div>
