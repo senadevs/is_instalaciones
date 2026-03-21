@@ -126,6 +126,10 @@ html {
     color: var(--color-text-light) !important;
   }
 
+  [data-theme="dark"] .text-gray-700 {
+    color: var(--color-text-light) !important;
+  }
+
   [data-theme="dark"] .text-gray-500 {
     color: var(--color-text-light) !important;
   }
@@ -578,6 +582,18 @@ html {
     .cta-service-card:hover .cta-stat-shine {
       animation: none;
     }
+  }
+
+  [data-theme="dark"] .bg-gray-50 {
+    background-color: var(--color-background) !important;
+  }
+
+  [data-theme="dark"] .bg-gray-200 {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  [data-theme="dark"] .border-gray-200 {
+    border-color: rgba(255, 255, 255, 0.15) !important;
   }
 
   /* ========== Chat Markdown ========== */
