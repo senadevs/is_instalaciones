@@ -1,0 +1,159 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[60] hidden">
+  <div class="bg-white border-t border-primary/20 shadow-2xl">
+    <div class="container mx-auto px-4 py-4 md:py-5">
+      <div class="flex flex-col md:flex-row md:items-center gap-4 max-w-6xl mx-auto">
+
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <Icon name="lucide:cookie" class="w-5 h-5 text-primary" />
+            <p class="font-semibold text-slate-800 text-sm">Uso de cookies</p>
+          </div>
+          <p class="text-gray-600 text-xs leading-relaxed">
+            Utilizamos cookies propias y de terceros para analizar el uso de la web y mejorar nuestros servicios. Puedes aceptar todas, rechazarlas o configurar tus preferencias. Más info en nuestra
+            <a href="/legal/privacidad" class="text-primary underline">política de privacidad</a>.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            id="cookie-reject"
+            class="px-4 py-2 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          >
+            Rechazar
+          </button>
+          <button
+            id="cookie-config-btn"
+            class="px-4 py-2 text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors"
+          >
+            Configurar
+          </button>
+          <button
+            id="cookie-accept"
+            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors"
+          >
+            Aceptar todo
+          </button>
+        </div>
+      </div>
+
+      <!-- Config panel -->
+      <div id="cookie-config" class="hidden max-w-6xl mx-auto mt-4 pt-4 border-t border-gray-100">
+        <div class="grid sm:grid-cols-3 gap-3">
+          <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-not-allowed opacity-70">
+            <input type="checkbox" checked disabled class="w-4 h-4 accent-primary" />
+            <div>
+              <p class="text-xs font-semibold text-slate-800">Necesarias</p>
+              <p class="text-[10px] text-gray-500">Siempre activas</p>
+            </div>
+          </label>
+          <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+            <input type="checkbox" id="cookie-analytics" checked class="w-4 h-4 accent-primary" />
+            <div>
+              <p class="text-xs font-semibold text-slate-800">Analíticas</p>
+              <p class="text-[10px] text-gray-500">Google Analytics</p>
+            </div>
+          </label>
+          <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+            <input type="checkbox" id="cookie-marketing" class="w-4 h-4 accent-primary" />
+            <div>
+              <p class="text-xs font-semibold text-slate-800">Marketing</p>
+              <p class="text-[10px] text-gray-500">Publicidad personalizada</p>
+            </div>
+          </label>
+        </div>
+        <div class="flex justify-end mt-3">
+          <button
+            id="cookie-save"
+            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors"
+          >
+            Guardar preferencias
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    var COOKIE_KEY = 'is_cookie_consent';
+
+    function getConsent() {
+      try { return JSON.parse(localStorage.getItem(COOKIE_KEY)); } catch(e) { return null; }
+    }
+
+    function saveConsent(consent) {
+      localStorage.setItem(COOKIE_KEY, JSON.stringify(consent));
+    }
+
+    function loadGTM() {
+      if (window._gtmLoaded) return;
+      window._gtmLoaded = true;
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-T7PCRRFB');
+    }
+
+    function initCookieBanner() {
+      var banner = document.getElementById('cookie-banner');
+      var acceptBtn = document.getElementById('cookie-accept');
+      var rejectBtn = document.getElementById('cookie-reject');
+      var configBtn = document.getElementById('cookie-config-btn');
+      var configPanel = document.getElementById('cookie-config');
+      var saveBtn = document.getElementById('cookie-save');
+      var analyticsCheck = document.getElementById('cookie-analytics');
+      var marketingCheck = document.getElementById('cookie-marketing');
+
+      if (!banner) return;
+
+      var consent = getConsent();
+
+      if (consent) {
+        if (consent.analytics) loadGTM();
+        return;
+      }
+
+      // Show banner
+      banner.classList.remove('hidden');
+
+      acceptBtn.addEventListener('click', function() {
+        saveConsent({ necessary: true, analytics: true, marketing: true });
+        banner.classList.add('hidden');
+        loadGTM();
+      });
+
+      rejectBtn.addEventListener('click', function() {
+        saveConsent({ necessary: true, analytics: false, marketing: false });
+        banner.classList.add('hidden');
+      });
+
+      configBtn.addEventListener('click', function() {
+        configPanel.classList.toggle('hidden');
+      });
+
+      saveBtn.addEventListener('click', function() {
+        var c = {
+          necessary: true,
+          analytics: analyticsCheck.checked,
+          marketing: marketingCheck.checked
+        };
+        saveConsent(c);
+        banner.classList.add('hidden');
+        if (c.analytics) loadGTM();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCookieBanner);
+    } else {
+      initCookieBanner();
+    }
+    document.addEventListener('astro:page-load', initCookieBanner);
+  })();
+</script>
