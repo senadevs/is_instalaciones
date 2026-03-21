@@ -1,10 +1,9 @@
 {
   "name": "IS Instalaciones",
   "short_name": "IS Instalaciones",
-  "description": "Servicios de instalaciones y reformas en barcelona,",
+  "description": "Servicios de instalaciones y reformas en Barcelona",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
- 
-  "theme_color": "#0057B8",
+  "theme_color": "#046a53"
 }

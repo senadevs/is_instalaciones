@@ -95,24 +95,29 @@ import { Icon } from 'astro-icon/components';
 <script is:inline>
   (function() {
     function initChat() {
-      const toggle = document.getElementById('chat-toggle');
-      const window_ = document.getElementById('chat-window');
-      const close = document.getElementById('chat-close');
-      const form = document.getElementById('chat-form');
-      const input = document.getElementById('chat-input');
-      const messages = document.getElementById('chat-messages');
-      const iconOpen = document.getElementById('chat-icon-open');
-      const iconClose = document.getElementById('chat-icon-close');
-      const notification = document.getElementById('chat-notification');
-      const quickReplies = document.querySelectorAll('.chat-quick-reply');
+      var toggle = document.getElementById('chat-toggle');
+      var chatWindow = document.getElementById('chat-window');
+      var closeBtn = document.getElementById('chat-close');
+      var form = document.getElementById('chat-form');
+      var input = document.getElementById('chat-input');
+      var messagesEl = document.getElementById('chat-messages');
+      var iconOpen = document.getElementById('chat-icon-open');
+      var iconClose = document.getElementById('chat-icon-close');
+      var notification = document.getElementById('chat-notification');
+      var quickReplies = document.querySelectorAll('.chat-quick-reply');
+      var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
-      if (!toggle || !window_) return;
+      if (!toggle || !chatWindow || !form || !input || !messagesEl) return;
+      if (toggle.dataset.chatInit === 'true') return;
+      toggle.dataset.chatInit = 'true';
 
-      let isOpen = false;
+      var isOpen = false;
+      var isStreaming = false;
+      var chatHistory = [];
 
       function toggleChat() {
         isOpen = !isOpen;
-        window_.classList.toggle('hidden', !isOpen);
+        chatWindow.classList.toggle('hidden', !isOpen);
         iconOpen.classList.toggle('hidden', isOpen);
         iconClose.classList.toggle('hidden', !isOpen);
         if (isOpen) {
@@ -122,16 +127,35 @@ import { Icon } from 'astro-icon/components';
       }
 
       toggle.addEventListener('click', toggleChat);
-      close.addEventListener('click', toggleChat);
+      closeBtn.addEventListener('click', toggleChat);
 
-      function addMessage(text, isUser) {
+      function addUserMessage(text) {
         var div = document.createElement('div');
-        div.className = isUser ? 'flex gap-2 justify-end' : 'flex gap-2';
-        div.innerHTML = isUser
-          ? '<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%]"><p class="text-sm">' + text + '</p></div>'
-          : '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]"><p class="text-sm text-gray-700">' + text + '</p></div>';
-        messages.appendChild(div);
-        messages.scrollTop = messages.scrollHeight;
+        div.className = 'flex gap-2 justify-end';
+        div.innerHTML = '<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%]"><p class="text-sm">' + escapeHtml(text) + '</p></div>';
+        messagesEl.appendChild(div);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+
+      function createBotMessage() {
+        var div = document.createElement('div');
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]"><div class="text-sm text-gray-700 bot-text chat-markdown"></div></div>';
+        messagesEl.appendChild(div);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        return div.querySelector('.bot-text');
+      }
+
+      function renderMarkdown(text) {
+        var html = text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/^- (.+)/gm, '<li>$1</li>')
+          .replace(/^\d+\. (.+)/gm, '<li>$1</li>')
+          .replace(/(<li>.*<\/li>)/s, '<ul class="list-disc pl-4 space-y-1 my-1">$1</ul>')
+          .replace(/\n\n/g, '</p><p class="mt-2">')
+          .replace(/\n/g, '<br>');
+        return '<p>' + html + '</p>';
       }
 
       function showTyping() {
@@ -139,8 +163,8 @@ import { Icon } from 'astro-icon/components';
         div.id = 'typing-indicator';
         div.className = 'flex gap-2';
         div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100"><div class="flex gap-1"><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.15s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.3s"></span></div></div>';
-        messages.appendChild(div);
-        messages.scrollTop = messages.scrollHeight;
+        messagesEl.appendChild(div);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
       }
 
       function removeTyping() {
@@ -148,46 +172,90 @@ import { Icon } from 'astro-icon/components';
         if (el) el.remove();
       }
 
-      // Placeholder responses - replace with real agent later
-      var responses = {
-        'presupuesto': 'Para solicitar un presupuesto gratuito puedes llamarnos al <strong>637 59 17 36</strong>, escribirnos por <a href="https://wa.me/34637591736" class="text-primary underline" target="_blank">WhatsApp</a> o rellenar el formulario de contacto más abajo.',
-        'servicios': 'Ofrecemos: <strong>Electricidad</strong> (instalaciones, cuadros, LED), <strong>Fontanería</strong> (fugas, tuberías, calderas), <strong>Climatización</strong> (aire acondicionado, calefacción) y <strong>Reformas Integrales</strong> (pladur, ventanas, carpintería).',
-        'horario': 'Nuestro horario es: <strong>Lunes a Viernes</strong> de 9:00 a 18:00 y <strong>Sábados</strong> de 9:00 a 14:00. Para urgencias puedes llamarnos al <strong>637 59 17 36</strong>.',
-        'default': 'Gracias por tu mensaje. Para una respuesta inmediata, contacta con nosotros por <a href="https://wa.me/34637591736" class="text-primary underline" target="_blank">WhatsApp</a> o llama al <strong>637 59 17 36</strong>. También puedes dejarnos tus datos en el formulario de contacto y te responderemos en menos de 24 horas.'
-      };
-
-      function getResponse(text) {
-        var lower = text.toLowerCase();
-        if (lower.includes('presupuesto') || lower.includes('precio') || lower.includes('cuanto') || lower.includes('coste')) return responses['presupuesto'];
-        if (lower.includes('servicio') || lower.includes('hacen') || lower.includes('ofrecen') || lower.includes('trabaj')) return responses['servicios'];
-        if (lower.includes('horario') || lower.includes('hora') || lower.includes('abierto') || lower.includes('cuando')) return responses['horario'];
-        return responses['default'];
+      function escapeHtml(text) {
+        var d = document.createElement('div');
+        d.textContent = text;
+        return d.innerHTML;
       }
 
-      function handleSend(text) {
-        if (!text.trim()) return;
-        // Hide quick replies after first message
+      function setLoading(loading) {
+        isStreaming = loading;
+        if (submitBtn) {
+          submitBtn.disabled = loading;
+          submitBtn.style.opacity = loading ? '0.5' : '1';
+        }
+        input.disabled = loading;
+      }
+
+      async function sendMessage(text) {
+        if (!text.trim() || isStreaming) return;
+
+        // Hide quick replies
         var qr = document.getElementById('chat-quick-replies');
         if (qr) qr.remove();
 
-        addMessage(text, true);
+        addUserMessage(text);
         input.value = '';
+        chatHistory.push({ role: 'user', content: text });
 
+        setLoading(true);
         showTyping();
-        setTimeout(function() {
+
+        try {
+          var response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: chatHistory }),
+          });
+
           removeTyping();
-          addMessage(getResponse(text), false);
-        }, 1000 + Math.random() * 500);
+
+          if (!response.ok) throw new Error('API error');
+
+          var botTextEl = createBotMessage();
+          var fullText = '';
+
+          // Read text stream
+          var reader = response.body.getReader();
+          var decoder = new TextDecoder();
+
+          while (true) {
+            var result = await reader.read();
+            if (result.done) break;
+
+            var chunk = decoder.decode(result.value, { stream: true });
+            fullText += chunk;
+            botTextEl.textContent = fullText;
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+          }
+
+          // Render markdown after stream completes
+          botTextEl.innerHTML = renderMarkdown(fullText);
+
+          chatHistory.push({ role: 'assistant', content: fullText });
+
+          // Keep history manageable (last 10 messages)
+          if (chatHistory.length > 10) {
+            chatHistory = chatHistory.slice(-10);
+          }
+
+        } catch (err) {
+          removeTyping();
+          var errorEl = createBotMessage();
+          errorEl.textContent = 'Lo siento, ha ocurrido un error. Puedes contactarnos directamente al 637 59 17 36 o por WhatsApp.';
+        }
+
+        setLoading(false);
       }
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        handleSend(input.value);
+        sendMessage(input.value);
       });
 
       quickReplies.forEach(function(btn) {
         btn.addEventListener('click', function() {
-          handleSend(btn.textContent.trim());
+          sendMessage(btn.textContent.trim());
         });
       });
     }

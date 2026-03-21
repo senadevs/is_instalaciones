@@ -580,6 +580,14 @@ html {
     }
   }
 
+  /* ========== Chat Markdown ========== */
+  .chat-markdown p { margin: 0; }
+  .chat-markdown p + p { margin-top: 0.5rem; }
+  .chat-markdown strong { font-weight: 600; }
+  .chat-markdown ul { list-style: disc; padding-left: 1rem; margin: 0.25rem 0; }
+  .chat-markdown li { margin: 0.15rem 0; }
+  .chat-markdown br + br { display: none; }
+
   /* ========== Chat Bubble ========== */
   .chat-bubble-btn {
     animation: chat-bounce 2s ease-in-out 3s 3;
