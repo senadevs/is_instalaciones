@@ -11,7 +11,7 @@ import { Icon } from 'astro-icon/components';
     class="hidden fixed md:absolute inset-0 md:inset-auto md:bottom-20 md:right-0 w-full md:w-[360px] md:max-w-[calc(100vw-2rem)] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-200 overflow-hidden z-[60] flex flex-col"
   >
     {/* Header */}
-    <div class="bg-primary p-4 flex items-center justify-between">
+    <div class="bg-primary p-4 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
         <img src="/isbot.png" alt="IS Bot" class="w-12 h-12 object-contain" width="48" height="48" />
         <div>
@@ -58,7 +58,7 @@ import { Icon } from 'astro-icon/components';
     </div>
 
     {/* Input area */}
-    <div class="p-3 border-t border-gray-200 bg-white">
+    <div class="p-3 border-t border-gray-200 bg-white shrink-0">
       <form id="chat-form" class="flex items-center gap-2">
         <input
           id="chat-input"
@@ -122,7 +122,10 @@ import { Icon } from 'astro-icon/components';
         iconClose.classList.toggle('hidden', !isOpen);
         if (isOpen) {
           notification.classList.add('hidden');
+          document.body.classList.add('chat-open');
           input.focus();
+        } else {
+          document.body.classList.remove('chat-open');
         }
       }
 

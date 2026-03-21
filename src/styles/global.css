@@ -596,6 +596,19 @@ html {
     border-color: rgba(255, 255, 255, 0.15) !important;
   }
 
+  /* ========== Chat Mobile Fullscreen ========== */
+  @media (max-width: 767px) {
+    #chat-window:not(.hidden) {
+      height: 100dvh !important;
+      top: 0 !important;
+      bottom: 0 !important;
+    }
+  }
+
+  body.chat-open {
+    overflow: hidden !important;
+  }
+
   /* ========== Chat Markdown ========== */
   .chat-markdown p { margin: 0; }
   .chat-markdown p + p { margin-top: 0.5rem; }
