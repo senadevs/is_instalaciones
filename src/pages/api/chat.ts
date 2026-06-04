@@ -5,6 +5,19 @@ import knowledgeBase from '../../data/knowledge.md?raw';
 
 const OPENROUTER_API_KEY = import.meta.env.OPENROUTER_API_KEY;
 
+// Cadena de modelos gratuitos (todos instruct, sin "reasoning" para evitar
+// que la traza de pensamiento se cuele en la respuesta). OpenRouter usa el
+// primero como principal y salta al siguiente si está rate-limited (429).
+// Todos son fuertes en español.
+const MODEL = 'google/gemma-4-26b-a4b-it:free';
+const MODEL_FALLBACKS = [
+  'google/gemma-4-26b-a4b-it:free',
+  'google/gemma-4-31b-it:free',
+  'qwen/qwen3-next-80b-a3b-instruct:free',
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'meta-llama/llama-3.2-3b-instruct:free',
+];
+
 const TZ = 'Europe/Madrid';
 
 // Calcula la fecha/hora actual en Barcelona y si la empresa está dentro del horario de atención.
@@ -116,7 +129,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const result = streamText({
-      model: openrouter('google/gemma-4-26b-a4b-it:free'),
+      model: openrouter(MODEL, { models: MODEL_FALLBACKS }),
       system: buildSystemPrompt(),
       messages,
       maxTokens: 400,
