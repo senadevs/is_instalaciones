@@ -116,10 +116,10 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const result = streamText({
-      model: openrouter('openai/gpt-oss-20b:free'),
+      model: openrouter('google/gemma-4-26b-a4b:free'),
       system: buildSystemPrompt(),
       messages,
-      maxTokens: 250,
+      maxTokens: 400,
       temperature: 0.3,
     });
 
