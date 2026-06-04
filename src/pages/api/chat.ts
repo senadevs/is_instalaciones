@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const result = streamText({
-      model: openrouter('nvidia/nemotron-3-super-120b-a12b:free'),
+      model: openrouter('cognitivecomputations/dolphin-mistral-24b-venice-edition:free'),
       system: SYSTEM_PROMPT,
       messages,
       maxTokens: 300,
