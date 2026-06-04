@@ -94,23 +94,37 @@ Técnicos certificados en gases fluorados para instalación, mantenimiento y rep
 - Caldera que no enciende
 
 ### 4. Reformas Integrales
-Transformamos espacios con acabados de primera calidad y cumplimiento de plazos.
+Somos especialistas en reformas integrales y parciales de viviendas y locales en Barcelona. Nos encargamos del proyecto de principio a fin (llave en mano): coordinamos albañilería, electricidad, fontanería, climatización, carpintería y acabados con un único interlocutor, para que el cliente no tenga que tratar con varios gremios. Transformamos espacios con acabados de primera calidad y cumplimiento de plazos.
 
-**Lo que hacemos:**
+**Tipos de reforma que realizamos:**
+- **Reforma integral de vivienda**: renovación completa de un piso o casa (distribución, instalaciones, suelos, paredes, techos y acabados).
+- **Reforma de baños**: cambio de bañera por plato de ducha, alicatado y solado, sanitarios, grifería, muebles, fontanería y electricidad del baño, impermeabilización.
+- **Reforma de cocinas**: distribución, instalación eléctrica y de agua, alicatado, encimeras, muebles, campana y electrodomésticos, iluminación.
+- **Reforma parcial**: actuaciones concretas como cambiar el suelo, pintar, abrir o cerrar una estancia, renovar una habitación.
+- **Reforma de locales comerciales y oficinas**: acondicionamiento de locales, distribución de espacios, instalaciones y acabados.
+
+**Lo que hacemos (trabajos incluidos):**
+- Albañilería: construcción y derribo de tabiques y muros, obra general
+- Cambio de distribución de espacios
+- Montaje de pladur, falsos techos y trasdosados
+- Solado y alicatado: revestimiento de suelos y paredes (gres, porcelánico, microcemento, parquet)
 - Carpintería de aluminio y PVC
-- Cerramientos
-- Instalación de ventanas y persianas
-- Montaje de pladur y falsos techos
-- Reformas completas de viviendas
-- Reformas de baños y cocinas
-- Acabados en construcción
-- Instalación de RJ-45 (red de datos)
-- Instalación de antenas
-- Montaje de puertas correderas
-- Construcción de tabiques y muros
-- Revestimiento de suelos y paredes
-- Reparación de humedades y grietas
+- Cerramientos de terrazas y balcones
+- Instalación de ventanas, persianas y puertas (correderas, abatibles, blindadas)
 - Aislamiento térmico y acústico
+- Reparación de humedades, grietas e impermeabilización
+- Pintura y acabados decorativos
+- Renovación completa de instalaciones eléctricas y de fontanería de la vivienda
+- Instalación de climatización dentro de la reforma
+- Instalación de RJ-45 (red de datos) y antenas
+- Acabados de construcción de primera calidad
+
+**Cómo trabajamos una reforma:**
+- Visita técnica gratuita para entender lo que el cliente quiere y tomar medidas.
+- Presupuesto detallado y cerrado por partidas, sin sorpresas.
+- Un único equipo coordina todos los gremios.
+- Cumplimiento de los plazos acordados y limpieza de obra al finalizar.
+- 2 años de garantía en mano de obra y materiales.
 
 ---
 
@@ -150,6 +164,22 @@ Depende del tamaño y distribución. Para espacios pequeños o una sola habitaci
 
 **¿Con qué frecuencia debo revisar mi sistema de climatización?**
 Recomendamos una revisión anual antes de la temporada de mayor uso (primavera para aire acondicionado, otoño para calefacción). El mantenimiento preventivo prolonga la vida útil del equipo, reduce el consumo energético y previene averías.
+
+### Reformas
+**¿Hacéis reformas integrales o solo arreglos pequeños?**
+Hacemos ambas cosas: desde reformas integrales de viviendas y locales (llave en mano) hasta reformas parciales como un baño, una cocina, cambiar el suelo o pintar. Nos adaptamos a lo que necesites.
+
+**¿Tengo que contratar a varios gremios (electricista, fontanero, albañil...)?**
+No. Nos encargamos de todo con un único equipo e interlocutor. Coordinamos albañilería, electricidad, fontanería, climatización, carpintería y acabados para que no tengas que tratar con varias empresas.
+
+**¿Cuánto cuesta reformar un baño o una cocina?**
+Cada reforma es distinta según el estado, los metros y los materiales elegidos. Por eso hacemos una visita técnica gratuita y te entregamos un presupuesto cerrado por partidas, sin sorpresas ni compromiso.
+
+**¿Cuánto tarda una reforma?**
+El plazo depende del alcance de la obra. En la visita técnica valoramos el proyecto y te damos un plazo concreto, que después cumplimos según lo acordado.
+
+**¿La reforma incluye los acabados y la limpieza?**
+Sí. Trabajamos con acabados de primera calidad y entregamos la obra limpia y terminada. Todo el trabajo cuenta con 2 años de garantía.
 
 ### General
 **¿Ofrecen presupuestos sin compromiso?**
