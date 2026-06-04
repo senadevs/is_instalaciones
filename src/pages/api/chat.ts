@@ -116,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const result = streamText({
-      model: openrouter('google/gemma-4-26b-a4b:free'),
+      model: openrouter('google/gemma-4-26b-a4b-it:free'),
       system: buildSystemPrompt(),
       messages,
       maxTokens: 400,
