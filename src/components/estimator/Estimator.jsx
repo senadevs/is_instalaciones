@@ -9,6 +9,7 @@ import {
   FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor,
 } from './catalog.js';
 import { scaleRoomsToArea, findFreeSpot } from './geometry.js';
+import { downloadPlanPNG } from './plan2d.js';
 
 let uid = 1;
 let fuid = 1;
@@ -106,6 +107,8 @@ export default function Estimator() {
     return [...base, { id: 'f' + (fuid++), key, px: spot.x, pz: spot.z, rot: 0 }];
   });
 
+  const descargarPlano = () => downloadPlanPNG(rooms, setup);
+
   function solicitar() {
     let msg = `Hola, quiero presupuesto para reformar mi ${VIVIENDAS[setup.vivienda].label.toLowerCase()}`;
     if (setup.m2) msg += ` de unos ${setup.m2} m²`;
@@ -124,6 +127,9 @@ export default function Estimator() {
     if (ex.length) msg += `\nExtras: ${ex.join(', ')}.`;
     if (setup.notas) msg += `\nNotas: ${setup.notas}`;
     msg += `\n\nTotal: ${rooms.length} estancias · ${totalM2.toFixed(1)} m². ¿Me dais presupuesto?`;
+    msg += '\n\n📐 Adjunto el plano de la reforma (descargado en mi dispositivo).';
+    // Descarga el plano para que el cliente lo adjunte al chat.
+    try { descargarPlano(); } catch (e) { /* noop */ }
     window.open('https://wa.me/34637591736?text=' + encodeURIComponent(msg), '_blank');
   }
 
@@ -137,6 +143,7 @@ export default function Estimator() {
         onToggleService={toggleService} onToggleOpt={toggleOpt} onSetOpening={setOpening}
         interior={interior} onEnterInterior={setInterior} onSolicitar={solicitar}
         onScaleArea={scaleArea} onShowPlan={() => setView('plan')}
+        onDownloadPlan={descargarPlano}
       />
 
       <div className="relative flex-1 min-h-[400px]">

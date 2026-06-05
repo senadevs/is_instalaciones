@@ -47,7 +47,7 @@ export default function Panel({
   setup, setSetup, rooms, totalM2,
   selectedId, setSelectedId, addType, setAddType,
   onAdd, onRemove, onUpdate, onToggleService, onToggleOpt, onSetOpening,
-  interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan,
+  interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan, onDownloadPlan,
 }) {
   const [openInmueble, setOpenInmueble] = useState(true);
   const [query, setQuery] = useState('');
@@ -249,6 +249,9 @@ export default function Panel({
           <p className="text-[13px] text-white/90 mb-3">Presupuesto <strong>gratuito</strong> tras visita técnica. Sin compromiso.</p>
           <button onClick={onSolicitar} disabled={!rooms.length} className="w-full flex items-center justify-center gap-2 bg-white text-primary font-bold py-2.5 rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50">
             <Icon name="message-circle" size={16} /> Solicitar presupuesto
+          </button>
+          <button onClick={onDownloadPlan} disabled={!rooms.length} className="w-full flex items-center justify-center gap-2 mt-2 bg-primary/20 text-white font-semibold py-2 rounded-md hover:bg-white/20 transition-colors disabled:opacity-50">
+            <Icon name="download" size={15} /> Descargar plano (PNG)
           </button>
         </div>
       </div>
