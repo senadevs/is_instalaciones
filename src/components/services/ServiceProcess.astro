@@ -1,0 +1,62 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  servicio?: string;
+}
+const { servicio = 'tu proyecto' } = Astro.props;
+
+const pasos = [
+  {
+    icon: 'lucide:phone-call',
+    title: '1. Contacto',
+    description: `Cuéntanos qué necesitas por teléfono, WhatsApp o el formulario. Te respondemos en menos de 24 horas.`,
+  },
+  {
+    icon: 'lucide:clipboard-list',
+    title: '2. Visita y presupuesto',
+    description: `Hacemos una visita técnica gratuita para valorar ${servicio} y te entregamos un presupuesto detallado y cerrado, sin sorpresas ni compromiso.`,
+  },
+  {
+    icon: 'lucide:hammer',
+    title: '3. Ejecución',
+    description: `Nuestros técnicos autorizados realizan el trabajo con materiales de primera calidad, cumpliendo los plazos acordados y dejando todo limpio.`,
+  },
+  {
+    icon: 'lucide:shield-check',
+    title: '4. Garantía',
+    description: `Te entregamos el trabajo terminado con 2 años de garantía en mano de obra y materiales. Tu tranquilidad es lo primero.`,
+  },
+];
+---
+
+<section class="py-12 md:py-16 bg-gray-50 border-y border-primary/10" aria-label="Cómo trabajamos">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-10">
+        <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+          <Icon name="lucide:route" class="w-4 h-4" />
+          Cómo trabajamos
+        </div>
+        <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">Tu proyecto en 4 pasos sencillos</h2>
+        <p data-animate="fade-up" data-delay="200" class="text-gray-600 max-w-2xl mx-auto mt-3">
+          Un proceso claro y transparente, desde la primera llamada hasta la entrega con garantía.
+        </p>
+      </div>
+      <div data-stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {pasos.map(paso => (
+          <div data-animate="fade-up" class="cta-service-card bg-white p-6 rounded-2xl shadow-md border border-gray-100 relative overflow-hidden group">
+            <div class="cta-stat-shine"></div>
+            <div class="relative z-[1]">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Icon name={paso.icon} class="w-6 h-6 text-primary" />
+              </div>
+              <h3 class="font-bold text-slate-800 mb-2">{paso.title}</h3>
+              <p class="text-sm text-gray-600 leading-snug">{paso.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

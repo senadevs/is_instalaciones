@@ -2,8 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 import Panoramic from "../../components/sections/Panoramic.astro";
 import ContactSection from '../../components/contact/ContactSection.astro';
+import ServiceDetail from '../../components/services/ServiceDetail.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
 import { Icon } from 'astro-icon/components';
-import aire from '../../assets/tecnico-aire-acondicionado.png'
 
 const services = [
   { title: "Instalación de aire acondicionado por conducto." },
@@ -11,6 +13,34 @@ const services = [
   { title: "Climatización de viviendas." },
   { title: "Instalación de splits de aire acondicionado." },
   { title: "Carga de nitrogeno." },
+];
+
+// Sub-servicios en detalle (con imagen, copy persuasivo y palabras clave SEO)
+const detalle = [
+  {
+    title: 'Aire acondicionado split y multisplit',
+    image: '/trabajos/ac-exterior-mitsubishi.jpeg',
+    text: 'Instalamos aire acondicionado split y multisplit de las mejores marcas en Barcelona. La solución más eficiente para climatizar una o varias estancias, con bajo consumo, funcionamiento silencioso y frío en verano y calor en invierno gracias a la bomba de calor.',
+    bullets: ['Split y multisplit', 'Marcas líderes del mercado', 'Frío y calor (bomba de calor)', 'Bajo consumo y silencioso'],
+  },
+  {
+    title: 'Aire acondicionado por conductos',
+    image: '/trabajos/climatizacion-conductos.jpeg',
+    text: 'Para viviendas grandes o locales, el aire acondicionado por conductos ofrece una climatización uniforme e integrada en el falso techo, sin equipos a la vista. Diseñamos la instalación a medida para repartir la temperatura de forma homogénea por toda la casa.',
+    bullets: ['Climatización integrada y discreta', 'Reparto uniforme de temperatura', 'Ideal para viviendas grandes', 'Diseño a medida'],
+  },
+  {
+    title: 'Calefacción y suelo radiante',
+    image: '/trabajos/conductos-aislados.jpeg',
+    text: 'Instalamos sistemas de calefacción y suelo radiante para un confort térmico óptimo en los meses fríos. El suelo radiante reparte el calor de forma uniforme y eficiente, con un consumo menor que los sistemas tradicionales.',
+    bullets: ['Suelo radiante y calefactable', 'Calor uniforme y confortable', 'Mayor eficiencia energética', 'Compatible con aerotermia'],
+  },
+  {
+    title: 'Mantenimiento y reparación',
+    image: '/trabajos/mantenimiento-ac.jpeg',
+    text: 'Ofrecemos mantenimiento preventivo y reparación de equipos de climatización: carga de gas refrigerante, limpieza, revisión y solución de averías. Con nuestros contratos de mantenimiento alargas la vida de tu equipo y evitas sustos en plena ola de calor.',
+    bullets: ['Mantenimiento preventivo', 'Carga de gas refrigerante', 'Reparación de averías', 'Contratos de mantenimiento'],
+  },
 ];
 
 const incidencias = [
@@ -88,6 +118,9 @@ const faqSchema = {
               Además, ofrecemos <strong>contratos de mantenimiento preventivo</strong> y un servicio de urgencias 24/7 para resolver cualquier avería con la mayor rapidez. Si tu aire acondicionado no enfría, tu caldera no arranca o necesitas una instalación nueva, contacta con nosotros para un presupuesto gratuito y sin compromiso.
             </p>
           </div>
+
+          <!-- Servicios en detalle -->
+          <ServiceDetail items={detalle} />
 
           <!-- Services + Incidencias grid -->
           <div class="grid md:grid-cols-2 gap-8 mb-14">
@@ -185,6 +218,15 @@ const faqSchema = {
         </div>
       </div>
     </section>
+
+    <!-- Proceso de trabajo -->
+    <ServiceProcess servicio="tu sistema de climatización" />
+
+    <!-- CTA -->
+    <ServiceCTABanner
+      title="¿Quieres instalar aire acondicionado o calefacción?"
+      text="Pide tu presupuesto de climatización gratuito y sin compromiso. Técnicos certificados en gases fluorados, estudio personalizado y 2 años de garantía."
+    />
 
     <ContactSection />
   </main>

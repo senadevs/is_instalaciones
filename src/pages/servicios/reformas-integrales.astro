@@ -1,141 +1,250 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import ServiceDetail from '../../components/services/ServiceDetail.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
+import ContactSection from '../../components/contact/ContactSection.astro';
 import { Icon } from 'astro-icon/components';
-import reformas from '../../assets/reformas-integrales.jpg'
-const services = [
-  {
-    title: "Montaje de Pladur"
-  },
-  {
-    title: "Carpintería de Aluminio"
-  },
-  {
-    title: "Instalación de Ventanas"
-  },
-  {
-    title: "Reformas de Vivienda"
-  },
-  {
-    title: "Acabados en Construcción"
-  },
-  {title: "Instalación RJ-45"},
 
-  {title: "Instalación de antenas"},
+// Sub-servicios en detalle (con imagen, copy persuasivo y palabras clave SEO)
+const detalle = [
+  {
+    title: 'Reforma integral de viviendas y locales',
+    image: '/trabajos/reforma-salon-led.jpeg',
+    text: 'Transformamos tu piso, casa o local de principio a fin con nuestro servicio de reforma integral llave en mano en Barcelona. Nos encargamos de todo —distribución, instalaciones, suelos, paredes y acabados— con un único interlocutor, para que no tengas que coordinar a varios gremios ni preocuparte por nada.',
+    bullets: ['Cambio de distribución y obra', 'Renovación de instalaciones eléctricas y de agua', 'Acabados de primera calidad', 'Un solo equipo, un solo presupuesto'],
+  },
+  {
+    title: 'Reformas de baños',
+    image: '/trabajos/pladur-bano.jpeg',
+    text: 'Convertimos tu baño en un espacio moderno y funcional. Realizamos el cambio de bañera por plato de ducha, alicatado y solado, instalación de sanitarios, grifería y muebles, además de la fontanería y electricidad del baño. Reformas de baño en Barcelona con materiales de calidad y plazos cumplidos.',
+    bullets: ['Cambio de bañera por ducha', 'Alicatado y solado', 'Sanitarios, grifería y mobiliario', 'Impermeabilización garantizada'],
+  },
+  {
+    title: 'Reformas de cocinas',
+    image: '/trabajos/reforma-cocina.jpeg',
+    text: 'Diseñamos y ejecutamos la reforma de cocina que necesitas, optimizando cada metro. Nos ocupamos de la distribución, la instalación eléctrica y de agua, el alicatado, las encimeras, los muebles y la iluminación. Una cocina nueva, práctica y a tu medida, sin sorpresas en el presupuesto.',
+    bullets: ['Distribución y nueva instalación', 'Encimeras y mobiliario a medida', 'Alicatado e iluminación LED', 'Conexión de electrodomésticos'],
+  },
+  {
+    title: 'Pladur, falsos techos y aislamiento',
+    image: '/trabajos/reforma-pladur.jpeg',
+    text: 'Montamos tabiques de pladur, falsos techos y trasdosados para redistribuir y modernizar tus espacios. Aprovechamos para mejorar el aislamiento térmico y acústico de tu vivienda, reduciendo el ruido y tu factura energética. Soluciones rápidas, limpias y de acabado profesional.',
+    bullets: ['Tabiques y falsos techos de pladur', 'Aislamiento térmico y acústico', 'Reparación de humedades y grietas', 'Acabado liso listo para pintar'],
+  },
 ];
 
+const services = [
+  { title: 'Reforma integral de viviendas y locales (llave en mano)' },
+  { title: 'Reformas de baños y cocinas' },
+  { title: 'Albañilería: tabiques, muros y obra general' },
+  { title: 'Montaje de pladur y falsos techos' },
+  { title: 'Solado y alicatado de suelos y paredes' },
+  { title: 'Carpintería de aluminio y PVC, ventanas y puertas' },
+  { title: 'Aislamiento térmico y acústico' },
+  { title: 'Reparación de humedades, grietas e impermeabilización' },
+];
+
+const tipos = [
+  { title: 'Reforma integral', description: 'Renovación completa de tu vivienda o local, de la distribución a los acabados.' },
+  { title: 'Reforma de baños', description: 'Cambio de bañera por ducha, alicatado, sanitarios y fontanería.' },
+  { title: 'Reforma de cocinas', description: 'Distribución, encimeras, muebles, instalaciones e iluminación.' },
+  { title: 'Reforma parcial y locales', description: 'Cambiar el suelo, pintar, una habitación o acondicionar un local.' },
+];
+
+const benefits = [
+  { icon: 'lucide:users', title: 'Equipo Multidisciplinar', description: 'Albañiles, electricistas, fontaneros y carpinteros coordinados en un solo equipo.' },
+  { icon: 'lucide:key', title: 'Reforma Llave en Mano', description: 'Un único interlocutor gestiona todo el proyecto para que tú no tengas que hacerlo.' },
+  { icon: 'lucide:file-text', title: 'Presupuesto Cerrado', description: 'Precio detallado por partidas y sin sorpresas tras una visita técnica gratuita.' },
+  { icon: 'lucide:award', title: 'Garantía de 2 Años', description: 'Todos nuestros trabajos cuentan con 2 años de garantía en mano de obra y materiales.' },
+];
+
+const faqItems = [
+  {
+    question: '¿Hacéis reformas integrales o solo arreglos pequeños?',
+    answer: 'Hacemos ambas cosas: desde reformas integrales de viviendas y locales (llave en mano) hasta reformas parciales como un baño, una cocina, cambiar el suelo o pintar. Nos adaptamos a lo que necesites y a tu presupuesto.',
+  },
+  {
+    question: '¿Tengo que contratar a varios gremios por mi cuenta?',
+    answer: 'No. Nos encargamos de todo con un único equipo e interlocutor. Coordinamos albañilería, electricidad, fontanería, climatización, carpintería y acabados para que no tengas que tratar con varias empresas ni coordinar horarios.',
+  },
+  {
+    question: '¿Cuánto cuesta reformar un baño o una cocina?',
+    answer: 'Cada reforma es distinta según el estado, los metros y los materiales elegidos. Por eso hacemos una visita técnica gratuita y te entregamos un presupuesto cerrado por partidas, sin sorpresas ni compromiso.',
+  },
+  {
+    question: '¿Cuánto tarda una reforma?',
+    answer: 'El plazo depende del alcance de la obra. En la visita técnica valoramos el proyecto y te damos un plazo concreto, que después cumplimos según lo acordado. Trabajamos con la máxima limpieza y entregamos la obra terminada.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
 ---
 
-<Layout title="Servicios de Mantenimiento y Reformas - IS INSTALACIONES">
-  
+<Layout
+  title="Reformas Integrales en Barcelona | Baños, Cocinas y Viviendas - IS.INSTALACIONES"
+  description="Reformas integrales y parciales en Barcelona: reforma de baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado gratuito y 2 años de garantía."
+  additionalSchema={faqSchema}
+>
+
   <main class="pt-20">
+    <Panoramic
+      imagen="/trabajos/reforma-salon-led.jpeg"
+      texto="Reformas Integrales"
+    />
 
-  
-
-      <Panoramic
-      imagen="/trabajos/pladur-bano.jpeg"
-      texto="Reformas Integrales"/>
-
-
-    <section class="py-20">
+    <section class="py-12 md:py-16" aria-label="Sección de servicios">
       <div class="container mx-auto px-4">
-        
-        <div class="mb-12">
+        <div class="max-w-6xl mx-auto">
+
+          <!-- Title + badge -->
+          <div class="text-center mb-10">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:hammer" class="w-4 h-4" />
+              Empresa de reformas en Barcelona
+            </div>
+            <h1 data-animate="fade-up" class="text-3xl md:text-4xl font-bold mb-6">Reformas Integrales en Barcelona</h1>
+          </div>
+
+          <!-- SEO text -->
+          <div data-animate="fade-up" data-delay="200" class="max-w-4xl mx-auto mb-14 space-y-4">
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              En <strong>IS Instalaciones</strong> somos especialistas en <strong>reformas integrales en Barcelona</strong> y área metropolitana. Reformamos viviendas, pisos y locales comerciales de principio a fin, con un servicio <strong>llave en mano</strong>: coordinamos albañilería, electricidad, fontanería, climatización, carpintería y acabados con un único interlocutor, para que tú no tengas que tratar con varios gremios.
+            </p>
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              Realizamos tanto <strong>reformas integrales</strong> como reformas parciales: <strong>reforma de baños</strong>, <strong>reforma de cocinas</strong>, cambio de suelos, montaje de pladur, aislamiento o el acondicionamiento de un local. Trabajamos con materiales de primera calidad y acabados de gama alta, cumpliendo siempre los plazos acordados y entregando la obra limpia y terminada.
+            </p>
+            <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+              Con más de 8 años de experiencia y más de 500 proyectos realizados, somos la <strong>empresa de reformas de confianza</strong> de cientos de familias en Barcelona. Solicita tu <strong>presupuesto gratuito y cerrado</strong>, sin sorpresas ni compromiso, y da el primer paso para transformar tu hogar.
+            </p>
+          </div>
+
+          <!-- Servicios en detalle -->
+          <ServiceDetail items={detalle} />
+
+          <!-- Servicios + Tipos grid -->
+          <div class="grid md:grid-cols-2 gap-8 mb-14">
+
+            <!-- Left: Nuestros Servicios -->
             <div data-animate="fade-left" class="cta-service-card bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-100 border-l-4 border-l-primary relative overflow-hidden">
+              <div class="cta-stat-shine"></div>
+              <div class="relative z-[1]">
+                <div class="flex items-center gap-3 mb-6">
+                  <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Icon name="lucide:list-checks" class="w-5 h-5 text-primary" />
+                  </div>
+                  <h2 class="text-xl font-bold text-slate-800">Nuestros Servicios</h2>
+                </div>
+                <ul class="space-y-3">
+                  {services.map(service => (
+                    <li class="flex items-start text-gray-600 text-sm leading-snug">
+                      <Icon name="lucide:circle-check" class="w-4 h-4 text-primary mr-2.5 mt-0.5 flex-shrink-0" />
+                      <h3>{service.title}</h3>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Right: Tipos de reforma -->
+            <div data-animate="fade-right">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <Icon name="lucide:layout-grid" class="w-5 h-5 text-primary" />
+                </div>
+                <h2 class="text-xl font-bold text-slate-800">Tipos de Reforma</h2>
+              </div>
+              <div data-stagger class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {tipos.map(tipo => (
+                  <div data-animate="fade-up" class="cta-service-card bg-white p-5 rounded-2xl shadow-md border border-gray-100 border-l-4 border-l-primary relative overflow-hidden group">
+                    <div class="cta-stat-shine"></div>
+                    <div class="relative z-[1]">
+                      <h3 class="font-bold text-slate-800 mb-1.5 group-hover:text-primary transition-colors">{tipo.title}</h3>
+                      <p class="text-gray-600 text-sm leading-snug">{tipo.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefits -->
+          <div class="mb-4">
+            <div class="text-center mb-8">
+              <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+                <Icon name="lucide:award" class="w-4 h-4" />
+                Nuestras garantías
+              </div>
+              <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">¿Por qué Elegir IS Instalaciones?</h2>
+            </div>
+            <div data-stagger class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
+              {benefits.map(benefit => (
+                <div data-animate="fade-up" class="cta-service-card bg-white text-center p-6 rounded-2xl shadow-md border border-gray-100 relative overflow-hidden group">
+                  <div class="cta-stat-shine"></div>
+                  <div class="relative z-[1]">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <Icon name={benefit.icon} class="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 class="font-bold text-slate-800 mb-2">{benefit.title}</h3>
+                    <p class="text-sm text-gray-600 leading-snug">{benefit.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Proceso de trabajo -->
+    <ServiceProcess servicio="tu reforma" />
+
+    <!-- CTA -->
+    <ServiceCTABanner
+      title="¿Quieres reformar tu casa o local?"
+      text="Pide tu presupuesto de reforma gratuito y sin compromiso. Te visitamos, valoramos tu proyecto y te damos un precio cerrado en menos de 24 horas."
+    />
+
+    <!-- FAQ -->
+    <section class="py-12 md:py-16 bg-gray-50" aria-label="Preguntas frecuentes">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-8">
+            <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+              <Icon name="lucide:help-circle" class="w-4 h-4" />
+              Resolvemos tus dudas
+            </div>
+            <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold">Preguntas Frecuentes sobre Reformas</h2>
+          </div>
+          <div data-stagger class="space-y-4">
+            {faqItems.map(item => (
+              <div data-animate="fade-up" class="cta-service-card bg-white rounded-2xl p-6 shadow-md border border-gray-100 relative overflow-hidden group">
                 <div class="cta-stat-shine"></div>
                 <div class="relative z-[1]">
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Icon name="lucide:list-checks" class="w-5 h-5 text-primary" />
-                    </div>
-                    <h2 class="text-xl font-bold text-slate-800">Nuestros Servicios</h2>
-                  </div>
-                  <ul class="space-y-3">
-                    {services.map(service => (
-                      <li class="flex items-start text-gray-600 text-sm leading-snug">
-                        <Icon name="lucide:circle-check" class="w-4 h-4 text-primary mr-2.5 mt-0.5 flex-shrink-0" />
-                        <h3>{service.title}</h3>
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">{item.question}</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">{item.answer}</p>
                 </div>
-            </div>
-        </div>
-
-        <div class=" p-8 rounded-lg border border-primary/20 hover:border-primary/30 transition-colors">
-          <h2 data-animate="fade-up" class="text-2xl text-center font-bold mb-4">Servicios de Reformas</h2>
-          <div data-stagger class="grid md:grid-cols-3 gap-6">
-            <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
-                <h3 class="font-bold text-xl mb-4">Servicios de Carpintería y Ventanas</h3>
-                <ul class="space-y-2">
-                  <li class="flex items-center">
-                   ✓
-                    Instalación de ventanas de aluminio
-                  </li>
-                  <li class="flex items-center">
-                    ✓
-                    Cerramientos de aluminio y PVC
-                  </li>
-                  <li class="flex items-center">
-                    ✓
-                    Montaje de puertas correderas
-                  </li>
-                  <li class="flex items-center">
-                    ✓
-                    Fabricación de estructuras a medida
-                  </li>
-                  <li class="flex items-center">
-                   ✓
-                    Cambio de cristales y persianas
-                  </li>
-                </ul>
               </div>
-              
-            
-              <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
-                <h3 class="font-bold text-xl mb-4">Servicios de Albañilería y Reformas</h3>
-                <ul class="space-y-2">
-                  <li class="flex items-center">
-                    ✓
-                    Construcción de tabiques y muros
-                  </li>
-                  <li class="flex items-center">
-                    ✓
-                    Revestimiento de suelos y paredes
-                  </li>
-                  <li class="flex items-center">
-                   ✓
-                    Reforma de cocinas y baños
-                  </li>
-                  <li class="flex items-center">
-                    ✓
-                    Reparación de humedades y grietas
-                  </li>
-                  <li class="flex items-center">
-                   ✓
-                    Enfoscado y alicatado de superficies
-                  </li>
-                </ul>
-              </div>
-              
-            
-              <div data-animate="fade-up" class="bg-white p-6 rounded-lg shadow-sm border border-primary/20 hover:border-primary/30 transition-all hover:shadow-md">
-                <h3 class="font-bold text-xl mb-4">Servicios de Pladur y Falsos Techos</h3>
-                <ul class="space-y-2">
-                    <li>✓ Instalación de tabiques de pladur</li>
-                    <li>✓ Montaje de techos desmontables</li>
-                    <li>✓ Aislamiento térmico y acústico</li>
-                    <li>✓ Diseño de estanterías y muebles en pladur</li>
-                    <li>✓ Reparación de estructuras de pladur</li>
-                  </ul>
-                  
-              </div>
-              
-
+            ))}
           </div>
         </div>
       </div>
     </section>
+
+    <ContactSection />
   </main>
 
 </Layout>

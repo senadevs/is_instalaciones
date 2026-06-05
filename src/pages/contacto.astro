@@ -122,7 +122,7 @@ const faqSchema = {
     </section>
 
     <!-- Zonas de Servicio -->
-    <section class="py-16 bg-gray-50">
+    <section id="zonas" class="py-16 bg-gray-50 scroll-mt-28">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
           <div class="text-center mb-8">
@@ -134,7 +134,7 @@ const faqSchema = {
           </div>
           <div data-stagger class="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {serviceAreas.map(area => (
-              <div data-animate="fade-up" class="cta-service-card bg-white p-4 rounded-2xl shadow-md border border-gray-100 text-center relative overflow-hidden group">
+              <div data-zona={area.toLowerCase()} data-animate="fade-up" class="zona-card cta-service-card bg-white p-4 rounded-2xl shadow-md border border-gray-100 text-center relative overflow-hidden group transition-all duration-300">
                 <div class="cta-stat-shine"></div>
                 <div class="relative z-[1] flex items-center justify-center gap-2">
                   <Icon name="lucide:map-pin" class="w-4 h-4 text-primary flex-shrink-0" />
@@ -148,7 +148,7 @@ const faqSchema = {
     </section>
 
     <!-- Preguntas Frecuentes -->
-    <section class="py-16 bg-gray-50">
+    <section id="faq" class="py-16 bg-gray-50 scroll-mt-28">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-8">

@@ -2,8 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import Panoramic from '../../components/sections/Panoramic.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
+import ServiceDetail from '../../components/services/ServiceDetail.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
 import { Icon } from 'astro-icon/components';
-import fontanero from '../../assets/fontanero.jpg'
 
 const services = [
   { title: "Instalación de agua." },
@@ -11,6 +13,34 @@ const services = [
   { title: "Instalación de calderas termo electricas." },
   { title: "Instalación de calderas aerotermicas." },
   { title: "Instalación de circuito de agua fria y caliente." },
+];
+
+// Sub-servicios en detalle (con imagen, copy persuasivo y palabras clave SEO)
+const detalle = [
+  {
+    title: 'Instalación de agua fría y caliente',
+    image: '/trabajos/fontaneria-tuberias.jpeg',
+    text: 'Instalamos circuitos completos de agua fría y caliente en viviendas y locales de Barcelona, además de la acometida general. Utilizamos materiales de máxima durabilidad para garantizar una instalación de fontanería fiable, sin fugas y con buena presión en todos los puntos.',
+    bullets: ['Circuito de agua fría y caliente', 'Acometida general de aguas', 'Materiales de larga duración', 'Viviendas y locales'],
+  },
+  {
+    title: 'Detección y reparación de fugas',
+    image: '/trabajos/fontaneria-fregadero.jpeg',
+    text: 'Localizamos fugas de agua ocultas con equipos de detección no invasivos, sin romper más de lo necesario. Solucionamos humedades, goteos y roturas de tubería con rapidez para frenar el daño y el gasto en tu factura del agua.',
+    bullets: ['Detección sin obras', 'Reparación de humedades', 'Roturas de tubería', 'Servicio de urgencia 24/7'],
+  },
+  {
+    title: 'Calderas, termos y aerotermia',
+    image: '/trabajos/fontaneria-contadores.jpeg',
+    text: 'Instalamos y sustituimos calderas de condensación, termos eléctricos y sistemas aerotérmicos de alta eficiencia. Te asesoramos para elegir el equipo que más ahorra según tu vivienda, reduciendo tu consumo y tu factura energética.',
+    bullets: ['Calderas de condensación', 'Termos eléctricos', 'Sistemas aerotérmicos', 'Asesoramiento en eficiencia'],
+  },
+  {
+    title: 'Cambio de tuberías y desatascos',
+    image: '/trabajos/fontaneria-tuberias.jpeg',
+    text: 'Sustituimos tuberías antiguas por instalaciones modernas y resolvemos atascos y problemas de saneamiento. Recuperamos la presión del agua y dejamos tu red de desagües funcionando como el primer día.',
+    bullets: ['Cambio integral de tuberías', 'Desatascos y saneamiento', 'Recuperación de presión', 'Sustitución de grifería y sanitarios'],
+  },
 ];
 
 const incidencias = [
@@ -88,6 +118,9 @@ const faqSchema = {
               Contamos con un <strong>servicio de urgencias de fontanería 24/7</strong> para atender averías que no pueden esperar: fugas, roturas de tuberías, problemas con la caldera o atascos severos. Solicita tu presupuesto gratuito y descubre por qué somos el fontanero de confianza de cientos de hogares en Barcelona.
             </p>
           </div>
+
+          <!-- Servicios en detalle -->
+          <ServiceDetail items={detalle} />
 
           <!-- Services + Incidencias grid -->
           <div class="grid md:grid-cols-2 gap-8 mb-14">
@@ -185,6 +218,15 @@ const faqSchema = {
         </div>
       </div>
     </section>
+
+    <!-- Proceso de trabajo -->
+    <ServiceProcess servicio="tu instalación de fontanería" />
+
+    <!-- CTA -->
+    <ServiceCTABanner
+      title="¿Tienes una fuga o necesitas un fontanero?"
+      text="Pide tu presupuesto de fontanería gratuito y sin compromiso. Fontaneros autorizados, urgencias 24/7 y 2 años de garantía en cada trabajo."
+    />
 
     <ContactSection />
   </main>

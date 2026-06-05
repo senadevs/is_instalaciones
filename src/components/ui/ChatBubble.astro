@@ -135,6 +135,28 @@ import { Icon } from 'astro-icon/components';
         return { clean: clean, route: m[1].trim() };
       }
 
+      // Baja el chat al ultimo mensaje (tras render, con doble RAF para que
+      // el navegador haya recalculado la altura del contenido markdown).
+      function scrollToBottom() {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+          });
+        });
+      }
+
+      // Rutas validas del sitio. Si el agente pide navegar a una ruta que no
+      // existe, NO navegamos (evita 404 / "tool fallida").
+      var VALID_PATHS = {
+        '/': 1,
+        '/nosotros': 1,
+        '/contacto': 1,
+        '/servicios/instalaciones-electricas': 1,
+        '/servicios/fontaneria-y-saneamiento': 1,
+        '/servicios/climatizacion-y-calefaccion': 1,
+        '/servicios/reformas-integrales': 1
+      };
+
       // Nombre amigable de cada ruta para el loader.
       function routeLabel(route) {
         var map = {
@@ -151,70 +173,125 @@ import { Icon } from 'astro-icon/components';
         return map[route] || 'la página';
       }
 
-      // Inyecta una sola vez los keyframes del spinner.
+      // Inyecta una sola vez los estilos de animacion y resaltado.
       function ensureNavStyles() {
         if (document.getElementById('isbot-anim')) return;
         var st = document.createElement('style');
         st.id = 'isbot-anim';
-        st.textContent = '@keyframes isbot-spin{to{transform:rotate(360deg)}}';
+        st.textContent =
+          '@keyframes isbot-spin{to{transform:rotate(360deg)}}' +
+          '.isbot-focus{box-shadow:0 0 0 3px rgba(29,78,216,.55),0 0 26px rgba(29,78,216,.35)!important;border-radius:14px;transition:box-shadow .4s ease;scroll-margin-top:7rem;}' +
+          '.isbot-zona{box-shadow:0 0 0 3px rgba(29,78,216,.7)!important;transform:scale(1.05);z-index:2;}';
         document.head.appendChild(st);
       }
 
-      // Overlay bonito mientras saltamos a otra pagina.
+      // Overlay de carga. Va POR DEBAJO del chat (z-55 < chat z-60) para que
+      // el usuario siga viendo lo que dice el agente mientras navega.
       function showNavOverlay(label) {
         ensureNavStyles();
         var accent = '#1d4ed8';
         try {
           var h = document.querySelector('header');
-          if (h) { var c = getComputedStyle(h).backgroundColor; if (c) accent = c; }
+          if (h) { var c = getComputedStyle(h).backgroundColor; if (c && c !== 'rgba(0, 0, 0, 0)') accent = c; }
         } catch (e) {}
         var ov = document.createElement('div');
         ov.id = 'isbot-nav-overlay';
-        ov.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .25s ease;';
-        ov.innerHTML = '<div style="background:#fff;padding:22px 26px;border-radius:16px;box-shadow:0 12px 45px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:14px;max-width:260px;text-align:center;transform:translateY(8px);transition:transform .25s ease;">'
-          + '<div style="width:38px;height:38px;border:3px solid #e5e7eb;border-top-color:' + accent + ';border-radius:50%;animation:isbot-spin .8s linear infinite;"></div>'
-          + '<p style="font-size:14px;color:#374151;margin:0;font-weight:500;">Te llevo a <b>' + label + '</b>…</p></div>';
-        document.body.appendChild(ov);
-        requestAnimationFrame(function () {
-          ov.style.opacity = '1';
-          ov.firstChild.style.transform = 'translateY(0)';
+        ov.style.cssText = 'position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .25s ease;';
+        ov.innerHTML = '<div style="background:#fff;padding:20px 24px;border-radius:16px;box-shadow:0 12px 45px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:240px;text-align:center;">'
+          + '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:' + accent + ';border-radius:50%;animation:isbot-spin .8s linear infinite;"></div>'
+          + '<p style="font-size:13px;color:#374151;margin:0;font-weight:500;">Te llevo a <b>' + label + '</b>…</p></div>';
+        // Lo anexamos dentro del widget (que es z-50) para que el chat-window
+        // (z-60) quede por encima del overlay (z-55) y siga visible.
+        var widget = document.getElementById('chat-widget') || document.body;
+        widget.appendChild(ov);
+        requestAnimationFrame(function () { ov.style.opacity = '1'; });
+      }
+
+      // Indicador de navegacion DENTRO del chat (load en el propio chat).
+      function showChatNav(label) {
+        ensureNavStyles();
+        removeChatNav();
+        var div = document.createElement('div');
+        div.id = 'chat-nav-indicator';
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />'
+          + '<div class="bg-primary/10 text-primary p-3 rounded-2xl rounded-tl-sm border border-primary/20 max-w-[85%] flex items-center gap-2">'
+          + '<span style="width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:isbot-spin .8s linear infinite;"></span>'
+          + '<span class="text-sm font-medium">Te llevo a ' + label + '…</span></div>';
+        messagesEl.appendChild(div);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+      function removeChatNav() {
+        var e = document.getElementById('chat-nav-indicator');
+        if (e) e.remove();
+      }
+
+      // Resaltado (glow) de la seccion de destino, como "seleccion" de contexto.
+      function focusSection(el) {
+        ensureNavStyles();
+        el.classList.add('isbot-focus');
+        setTimeout(function () { el.classList.remove('isbot-focus'); }, 2400);
+      }
+
+      // Busca en la conversacion reciente una zona de cobertura mencionada.
+      var ZONAS = ['barcelona', 'hospitalet', 'badalona', 'santa coloma', 'sant adria', 'cornella', 'esplugues', 'sant just', 'sant joan'];
+      function detectZona() {
+        var recent = chatHistory.slice(-3).map(function (m) { return (m.content || '').toLowerCase(); }).join(' ');
+        for (var i = 0; i < ZONAS.length; i++) {
+          if (recent.indexOf(ZONAS[i]) >= 0) return ZONAS[i];
+        }
+        return null;
+      }
+      // Resalta la tarjeta de una zona concreta dentro de la seccion de zonas.
+      function highlightZona(zona) {
+        if (!zona) return;
+        var cards = document.querySelectorAll('[data-zona]');
+        cards.forEach(function (card) {
+          if ((card.getAttribute('data-zona') || '').indexOf(zona) >= 0) {
+            card.classList.add('isbot-zona');
+            setTimeout(function () { card.classList.remove('isbot-zona'); }, 3000);
+          }
         });
       }
 
-      // Destello sutil en la seccion de destino (scroll en la misma pagina).
-      function flashSection(el) {
-        var prev = el.style.boxShadow;
-        el.style.transition = 'box-shadow .5s ease';
-        el.style.boxShadow = 'inset 0 0 0 3px rgba(29,78,216,.45)';
-        setTimeout(function () { el.style.boxShadow = prev; }, 1400);
-      }
-
-      // Ejecuta la navegacion asistida: scroll suave si es la misma pagina,
-      // o redireccion (conservando el chat) si es otra.
+      // Ejecuta la navegacion asistida. Devuelve true si pudo, false si la
+      // "tool" fallo (ruta invalida o seccion inexistente) para que el chat
+      // lo sepa y no deje al usuario colgado.
       function runNavigation(route) {
-        if (!route) return;
+        if (!route) return false;
         var hashIndex = route.indexOf('#');
         var path = hashIndex >= 0 ? route.slice(0, hashIndex) : route;
         var anchor = hashIndex >= 0 ? route.slice(hashIndex + 1) : '';
         if (path === '') path = window.location.pathname;
         var samePage = path === window.location.pathname;
+        var zona = anchor === 'zonas' ? detectZona() : null;
 
         if (samePage) {
           if (anchor) {
             var el = document.getElementById(anchor);
             if (el) {
               el.scrollIntoView({ behavior: 'smooth' });
-              flashSection(el);
-              return;
+              focusSection(el);
+              if (zona) setTimeout(function () { highlightZona(zona); }, 500);
+              return true;
             }
+            return false; // la seccion pedida no existe en esta pagina
           }
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          saveState();
-          showNavOverlay(routeLabel(route));
-          // Pequena pausa para que el usuario lea el mensaje antes de saltar.
-          setTimeout(function () { window.location.href = route; }, 1300);
+          return true;
         }
+
+        // Otra pagina: validamos que la ruta exista antes de saltar.
+        if (!VALID_PATHS[path]) return false;
+        try {
+          if (zona) sessionStorage.setItem('isbot-zona', zona);
+        } catch (e) {}
+        saveState();
+        showChatNav(routeLabel(route));
+        showNavOverlay(routeLabel(route));
+        // Pequena pausa para que el usuario lea el mensaje antes de saltar.
+        setTimeout(function () { window.location.href = route; }, 1400);
+        return true;
       }
 
       function toggleChat() {
@@ -367,6 +444,7 @@ import { Icon } from 'astro-icon/components';
           // Salvaguarda: si solo vino el marcador, ponemos un texto natural.
           if (!nav.clean && nav.route) nav.clean = 'Te llevo allí 👇';
           botTextEl.innerHTML = renderMarkdown(nav.clean);
+          scrollToBottom();
 
           chatHistory.push({ role: 'assistant', content: nav.clean });
 
@@ -376,8 +454,18 @@ import { Icon } from 'astro-icon/components';
           }
           saveState();
 
-          // Navegacion asistida: el agente lleva al usuario donde pidio
-          if (nav.route) runNavigation(nav.route);
+          // Navegacion asistida: el agente lleva al usuario donde pidio.
+          if (nav.route) {
+            var ok = runNavigation(nav.route);
+            if (!ok) {
+              // La navegacion fallo (ruta/seccion no valida): no dejamos al
+              // usuario colgado, ofrecemos seguir por aqui.
+              var fb = createBotMessage();
+              fb.innerHTML = renderMarkdown('No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente? 🙂');
+              chatHistory.push({ role: 'assistant', content: 'No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente?' });
+              scrollToBottom();
+            }
+          }
 
         } catch (err) {
           removeTyping();
@@ -419,11 +507,26 @@ import { Icon } from 'astro-icon/components';
             }
           });
           chatHistory = state.history;
+          scrollToBottom();
         }
         if (state.open) {
           isOpen = false;
           toggleChat();
+          scrollToBottom();
         }
+      })();
+
+      // Tras aterrizar por navegacion asistida, resaltamos la seccion (y la
+      // zona concreta, si la habia) para dar contexto visual al usuario.
+      (function pendingFocus() {
+        var zona;
+        try { zona = sessionStorage.getItem('isbot-zona'); sessionStorage.removeItem('isbot-zona'); } catch (e) {}
+        var hash = window.location.hash ? window.location.hash.substring(1) : '';
+        if (hash) {
+          var sec = document.getElementById(hash);
+          if (sec) setTimeout(function () { focusSection(sec); }, 500);
+        }
+        if (zona) setTimeout(function () { highlightZona(zona); }, 800);
       })();
     }
 

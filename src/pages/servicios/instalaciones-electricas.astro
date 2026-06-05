@@ -2,8 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import Panoramic from '../../components/sections/Panoramic.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
+import ServiceDetail from '../../components/services/ServiceDetail.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
 import { Icon } from 'astro-icon/components';
-import electricista from '../../assets/ELECTRICISTA-FUNCIONES.jpg'
 
 const services = [
   { title: "Instalación electrica de baja tensión." },
@@ -11,6 +13,34 @@ const services = [
   { title: "Montante electrico." },
   { title: "Instalación de punto tierra." },
   { title: "Instalación general de viviendas o edificios." },
+];
+
+// Sub-servicios en detalle (con imagen, copy persuasivo y palabras clave SEO)
+const detalle = [
+  {
+    title: 'Instalación eléctrica completa de viviendas y locales',
+    image: '/trabajos/reforma-electricidad.jpeg',
+    text: 'Realizamos la instalación eléctrica completa de pisos, casas y locales en Barcelona, cumpliendo siempre la normativa REBT. Desde el cableado y los mecanismos hasta la puesta a tierra, dejamos tu instalación segura, certificada y lista para el día a día.',
+    bullets: ['Cableado y mecanismos', 'Puesta a tierra', 'Cumplimiento normativa REBT', 'Locales y viviendas nuevas'],
+  },
+  {
+    title: 'Cuadros eléctricos y protecciones',
+    image: '/trabajos/montaje_fusibles.jpeg',
+    text: 'Instalamos y renovamos cuadros eléctricos con todas las protecciones (diferenciales y magnetotérmicos) para evitar sobrecargas y cortocircuitos. Protege tu hogar y tus electrodomésticos con una instalación moderna y segura.',
+    bullets: ['Diferenciales y magnetotérmicos', 'Ampliación de potencia', 'Renovación de cuadros antiguos', 'Protección contra sobrecargas'],
+  },
+  {
+    title: 'Centralización de contadores y boletines (CIE)',
+    image: '/trabajos/contadores-electricos.jpeg',
+    text: 'Tramitamos el boletín eléctrico (CIE), obligatorio para dar de alta o aumentar la potencia, y realizamos la centralización de contadores en comunidades y edificios. Te ayudamos con todo el papeleo para que el alta sea rápida y sin complicaciones.',
+    bullets: ['Boletín eléctrico (CIE)', 'Alta y aumento de potencia', 'Centralización de contadores', 'Montante eléctrico'],
+  },
+  {
+    title: 'Iluminación LED, porteros y automatismos',
+    image: '/trabajos/instalacion-interfono.jpeg',
+    text: 'Renueva tu iluminación con LED de bajo consumo y reduce tu factura de luz. Instalamos también porteros automáticos, videoporteros e interfonos para mejorar la comodidad y la seguridad de tu hogar o comunidad.',
+    bullets: ['Iluminación LED de bajo consumo', 'Porteros y videoporteros', 'Interfonos y automatismos', 'Ahorro energético'],
+  },
 ];
 
 const incidencias = [
@@ -90,6 +120,9 @@ const faqSchema = {
               Disponemos de un <strong>servicio de urgencias eléctricas 24/7</strong> para resolver cualquier avería con rapidez y profesionalidad. No importa la hora ni el día: si tienes un problema eléctrico, estamos a tu disposición. Solicita tu presupuesto sin compromiso y descubre por qué cientos de clientes en Barcelona confían en nosotros.
             </p>
           </div>
+
+          <!-- Servicios en detalle -->
+          <ServiceDetail items={detalle} />
 
           <!-- Services + Incidencias grid -->
           <div class="grid md:grid-cols-2 gap-8 mb-14">
@@ -187,6 +220,15 @@ const faqSchema = {
         </div>
       </div>
     </section>
+
+    <!-- Proceso de trabajo -->
+    <ServiceProcess servicio="tu instalación eléctrica" />
+
+    <!-- CTA -->
+    <ServiceCTABanner
+      title="¿Necesitas un electricista en Barcelona?"
+      text="Pide tu presupuesto eléctrico gratuito y sin compromiso. Técnicos autorizados, urgencias 24/7 y trabajo garantizado 2 años."
+    />
 
     <ContactSection />
   </main>
