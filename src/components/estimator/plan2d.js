@@ -4,8 +4,8 @@
 //  servicios por zona. Exportable a PNG. Sin estado: función pura de datos.
 // ============================================================================
 
-import { ROOM_TYPES, SERVICES, VIVIENDAS, EXTRAS, FURNITURE_BY_KEY, autoFurnish, showsInPlan } from './catalog.js';
-import { placeRooms, computeWalls, getOpening, pickEntrance, footprint } from './geometry.js';
+import { ROOM_TYPES, SERVICES, VIVIENDAS, EXTRAS, FINISHES, REFORMS } from './catalog.js';
+import { placeRooms, computeWalls, getOpening, pickEntrance } from './geometry.js';
 
 const PXM = 46;          // píxeles por metro
 const PAD = 1.0;         // margen alrededor del plano (m)
@@ -13,7 +13,6 @@ const LEGEND_W = 340;    // ancho de la leyenda (px)
 const HEAD = 70;         // alto de la cabecera (px)
 const FOOT = 34;         // alto del pie (px)
 const WALL = '#1f2937';
-const CAT_COLOR = { salon: '#10b981', comedor: '#14b8a6', dormitorio: '#8b5cf6', cocina: '#f97316', bano: '#3b82f6', oficina: '#0ea5e9', luz: '#eab308', deco: '#94a3b8' };
 
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
@@ -68,23 +67,12 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
     // suelo
     parts.push(`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${t.color}" fill-opacity="0.12" stroke="${WALL}" stroke-width="3"/>`);
 
-    // mobiliario (manual o auto-amueblado)
-    const furn = (r.furniture && r.furniture.length)
-      ? r.furniture
-      : (r.services?.mobiliario?.on ? autoFurnish(r.type, r.width, r.length) : []);
-    furn.forEach((f) => {
-      const c = FURNITURE_BY_KEY[f.key]; if (!c) return;
-      if (!showsInPlan(f.key)) return; // sillas, mesas y deco no van en el plano
-      const fp = footprint(c, f.rot || 0);
-      const cxpx = sx(r.cx + (f.px || 0) + dx), cypx = sy(r.cz + (f.pz || 0));
-      const fw = fp.w * PXM, fh = fp.d * PXM;
-      parts.push(`<rect x="${(cxpx - fw / 2).toFixed(1)}" y="${(cypx - fh / 2).toFixed(1)}" width="${fw.toFixed(1)}" height="${fh.toFixed(1)}" rx="2" fill="${CAT_COLOR[c.cat] || '#94a3b8'}" fill-opacity="0.6" stroke="#475569" stroke-width="0.8"/>`);
-    });
-
     // puertas / ventanas: "corta" la pared y dibuja el símbolo según el tipo
     const windows = r.services?.carpinteria?.on && r.services.carpinteria.ventanas;
     const L = (x1, y1, x2, y2, col, sw, dash) => parts.push(`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${col}" stroke-width="${sw}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`);
     const Jamb = (px, py) => parts.push(`<rect x="${(px - 1.5).toFixed(1)}" y="${(py - 1.5).toFixed(1)}" width="3" height="3" fill="${WALL}"/>`);
+    // Símbolo de puerta: hoja + arco de barrido (gozne en el origen del grupo).
+    const swing = (gx, gy, rot, ow) => parts.push(`<g transform="translate(${gx.toFixed(1)} ${gy.toFixed(1)}) rotate(${rot})"><line x1="0" y1="0" x2="0" y2="${ow.toFixed(1)}" stroke="#475569" stroke-width="2"/><path d="M0 ${ow.toFixed(1)} A ${ow.toFixed(1)} ${ow.toFixed(1)} 0 0 1 ${ow.toFixed(1)} 0" fill="none" stroke="#94a3b8" stroke-width="1"/></g>`);
     ['n', 's', 'e', 'w'].forEach((side) => {
       const op = getOpening(r, side, walls[i][side], { windows, entrance: entrance && entrance.roomId === r.id && entrance.side === side });
       if (!op) return;
@@ -116,13 +104,10 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
       } else if (op.role === 'open' || op.kind === 'arco' || op.kind === 'hueco') {
         Jamb(e1x, e1y); Jamb(e2x, e2y); // paso abierto, sin hoja
       } else {
-        // batiente / doble / entrada: hoja(s) abatidas hacia el interior + barrido
+        // batiente / doble / entrada: hoja + arco de barrido (símbolo de plano)
         Jamb(e1x, e1y); Jamb(e2x, e2y);
-        L(e1x, e1y, e1x + ix * openW, e1y + iy * openW, '#475569', 2);
-        L(e1x + ix * openW, e1y + iy * openW, e2x, e2y, '#cbd5e1', 1, '3 3');
-        if (op.kind === 'doble') {
-          L(e2x, e2y, e2x + ix * openW, e2y + iy * openW, '#475569', 2);
-        }
+        const g = side === 'n' ? [e1x, e1y, 0] : side === 's' ? [e2x, e2y, 180] : side === 'e' ? [e1x, e1y, 90] : [e2x, e2y, -90];
+        swing(g[0], g[1], g[2], openW);
       }
     });
 
@@ -164,6 +149,56 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
 
   parts.push(`</svg>`);
   return { svg: parts.join(''), width, height };
+}
+
+// Abre una página imprimible (plano + memoria explicativa) para guardar como
+// PDF desde el navegador ("Imprimir → Guardar como PDF"). Sin dependencias.
+export function openPlanPDF(rooms, setup = {}) {
+  const date = new Date().toLocaleDateString('es-ES');
+  const { svg } = buildPlanSVG(rooms, setup, date);
+  const totalM2 = rooms.reduce((s, r) => s + r.width * r.length, 0);
+  const multi = rooms.some((r) => (r.level || 0) > 0);
+
+  const filas = rooms.map((r) => {
+    const t = ROOM_TYPES[r.type];
+    const svcs = Object.entries(SERVICES).filter(([k]) => r.services?.[k]?.on).map(([k, svc]) => {
+      const chosen = svc.opts.filter((o) => r.services[k][o.key]).map((o) => esc(o.label));
+      return `<li><b>${esc(svc.label)}</b>${chosen.length ? ': ' + chosen.join(', ') : ''}</li>`;
+    }).join('');
+    const lv = multi ? ` <span class="lv">${(r.level || 0) === 0 ? 'P. baja' : 'P. ' + (r.level || 0)}</span>` : '';
+    const km = r.openKitchen ? '<li>Cocina americana</li>' : '';
+    return `<tr><td><b>${esc(t.label)}</b>${lv}</td><td>${r.width}×${r.length} m<br><small>${(r.width * r.length).toFixed(1)} m²</small></td><td>${esc(REFORMS[r.reform] || '')}<br><small>${esc(FINISHES[r.finish] || '')}</small></td><td><ul>${svcs || '<li>reforma general</li>'}${km}</ul></td></tr>`;
+  }).join('');
+
+  const extras = EXTRAS.filter((e) => setup.extras?.[e.key]).map((e) => esc(e.label));
+  const notas = setup.notas ? `<h2>Notas</h2><p>${esc(setup.notas)}</p>` : '';
+
+  const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Plano de reforma · IS Instalaciones</title>
+<style>
+  *{box-sizing:border-box} body{font-family:system-ui,Segoe UI,sans-serif;color:#0f172a;margin:0;padding:28px;}
+  h1{color:#046a53;margin:0 0 2px;font-size:22px} .sub{color:#64748b;font-size:13px;margin:0 0 16px}
+  .plano{border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:20px} .plano svg{width:100%;height:auto;display:block}
+  h2{font-size:15px;color:#046a53;border-bottom:2px solid #e2e8f0;padding-bottom:4px;margin:18px 0 8px}
+  table{width:100%;border-collapse:collapse;font-size:12px} th,td{text-align:left;vertical-align:top;padding:6px 8px;border-bottom:1px solid #eef2f6}
+  th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+  ul{margin:0;padding-left:16px} small{color:#64748b} .lv{background:#ecfdf5;color:#046a53;border-radius:4px;padding:1px 5px;font-size:10px}
+  .foot{margin-top:20px;color:#94a3b8;font-size:11px;border-top:1px solid #e2e8f0;padding-top:8px}
+  @media print{body{padding:0}.noprint{display:none}}
+</style></head><body>
+  <h1>Plano de reforma</h1>
+  <p class="sub">${esc(VIVIENDAS[setup.vivienda]?.label || 'Vivienda')} · ${rooms.length} zonas · ${totalM2.toFixed(1)} m² · ${esc(date)}</p>
+  <div class="plano">${svg}</div>
+  <h2>Detalle por zona y servicios</h2>
+  <table><thead><tr><th>Zona</th><th>Medidas</th><th>Reforma</th><th>Servicios</th></tr></thead><tbody>${filas}</tbody></table>
+  ${extras.length ? `<h2>Extras del inmueble</h2><p>${extras.join(', ')}</p>` : ''}
+  ${notas}
+  <p class="foot">Plano y memoria orientativos generados con el configurador 3D de IS Instalaciones. No constituye proyecto técnico. Presupuesto sujeto a visita técnica.</p>
+  <script>window.onload=function(){setTimeout(function(){window.print();},350);};</script>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  if (!w) return;
+  w.document.open(); w.document.write(html); w.document.close();
 }
 
 // Rasteriza el SVG a PNG y dispara la descarga (solo cliente).

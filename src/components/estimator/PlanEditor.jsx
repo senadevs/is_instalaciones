@@ -1,9 +1,9 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 import {
-  ROOM_TYPES, FURNITURE_CATALOG, FURNITURE_CATS, FURNITURE_BY_KEY, autoFurnish,
+  ROOM_TYPES, FURNITURE_CATALOG, FURNITURE_CATS, FURNITURE_BY_KEY,
   catsFor, furnitureAllowed,
 } from './catalog.js';
-import { placeRooms, furnitureFits, snapToWalls, clearances } from './geometry.js';
+import { placeRooms, furnitureFits, snapToWalls, clearances, fittedAuto } from './geometry.js';
 import { Icon } from './ui.jsx';
 
 const CAT_COLOR = {
@@ -30,7 +30,7 @@ function roomItems(room) {
 
 export default function PlanEditor({
   rooms, selectedId, onSelect,
-  plantas = 1, activeLevel = 0, setActiveLevel,
+  plantas = 1, activeLevel = 0, setActiveLevel, onRotateRoom,
   onBakeAll, onAddFurniture, onMoveFurniture, onRotateFurniture, onRemoveFurniture,
   onAutoFurnish, onClearFurniture,
 }) {
@@ -152,7 +152,7 @@ export default function PlanEditor({
             const x = pos.cx - r.width / 2, y = pos.cz - r.length / 2;
             const items = roomItems(r);
             const showAuto = items.length === 0 && r.services?.mobiliario?.on;
-            const autoItems = showAuto ? autoFurnish(r.type, r.width, r.length).map((f) => ({ ...f, w: FURNITURE_BY_KEY[f.key]?.w || 0.5, d: FURNITURE_BY_KEY[f.key]?.d || 0.5 })) : [];
+            const autoItems = showAuto ? fittedAuto(r.type, r.width, r.length).map((f) => ({ ...f, w: FURNITURE_BY_KEY[f.key]?.w || 0.5, d: FURNITURE_BY_KEY[f.key]?.d || 0.5 })) : [];
             return (
               <g key={r.id}>
                 {/* suelo / zona */}
@@ -222,6 +222,7 @@ export default function PlanEditor({
         )}
         {selectedId && (
           <div className="absolute left-3 flex gap-2" style={{ top: plantas > 1 ? 48 : 12 }}>
+            <button onClick={() => onRotateRoom(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="rotate-cw" size={13} /> Rotar zona</button>
             <button onClick={() => onAutoFurnish(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="wand-sparkles" size={13} /> Auto-amueblar</button>
             <button onClick={() => onClearFurniture(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="eraser" size={13} /> Vaciar</button>
           </div>

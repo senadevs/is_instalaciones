@@ -3,8 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Grid, Html, ContactShadows, Sky, PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Model, MODELS, getFurniture } from './models.jsx';
-import { ROOM_TYPES, VIVIENDAS, WALL_DEFAULT, FURNITURE_BY_KEY, autoFurnish, FLOOR_H } from './catalog.js';
-import { placeRooms, computeWalls, getOpening, pickEntrance } from './geometry.js';
+import { ROOM_TYPES, VIVIENDAS, WALL_DEFAULT, FURNITURE_BY_KEY, FLOOR_H } from './catalog.js';
+import { placeRooms, computeWalls, getOpening, pickEntrance, fittedAuto } from './geometry.js';
 
 // Helpers para leer el nuevo modelo de servicios.
 const svcOn = (r, s) => !!r.services?.[s]?.on;
@@ -206,7 +206,7 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
 
   const furniture = room.furniture?.length
     ? room.furniture
-    : (svcOn(room, 'mobiliario') ? autoFurnish(type, w, l).map((f, i) => ({ ...f, id: 'a' + i })) : []);
+    : (svcOn(room, 'mobiliario') ? fittedAuto(type, w, l).map((f, i) => ({ ...f, id: 'a' + i })) : []);
 
   return (
     <group position={[room.cx, (room.level || 0) * FLOOR_H, room.cz]}

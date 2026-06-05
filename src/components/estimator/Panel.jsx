@@ -47,7 +47,7 @@ export default function Panel({
   setup, setSetup, onVivienda, rooms, totalM2,
   plantas = 1, activeLevel = 0, setActiveLevel,
   selectedId, setSelectedId, addType, setAddType,
-  onAdd, onRemove, onUpdate, onToggleService, onToggleOpt, onSetOpening,
+  onAdd, onRemove, onUpdate, onRotateRoom, onToggleService, onToggleOpt, onSetOpening,
   interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan, onDownloadPlan,
 }) {
   const [openInmueble, setOpenInmueble] = useState(true);
@@ -180,6 +180,9 @@ export default function Panel({
                   <div><label className={lbl}>Largo</label><input type="number" min="1" max="20" step="0.5" className={inp} value={r.length} onChange={(e) => onUpdate(r.id, { length: Number(e.target.value) })} /></div>
                   <div><label className={lbl}>Alto</label><input type="number" min="2" max="4" step="0.1" className={inp} value={r.height} onChange={(e) => onUpdate(r.id, { height: Number(e.target.value) })} /></div>
                 </div>
+                <button onClick={() => onRotateRoom(r.id)} className="flex items-center justify-center gap-1.5 w-full text-[12px] font-medium py-1.5 rounded-md border border-gray-200 text-gray-600 hover:border-primary hover:text-primary transition-colors">
+                  <Icon name="rotate-cw" size={13} /> Rotar zona (orientar pasillo)
+                </button>
                 <div className="grid grid-cols-2 gap-2">
                   <div><label className={lbl}>Reforma</label><select className={inp} value={r.reform} onChange={(e) => onUpdate(r.id, { reform: e.target.value })}>{Object.entries(REFORMS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></div>
                   <div><label className={lbl}>Acabado</label><select className={inp} value={r.finish} onChange={(e) => onUpdate(r.id, { finish: e.target.value })}>{Object.entries(FINISHES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></div>
@@ -266,7 +269,7 @@ export default function Panel({
             <Icon name="message-circle" size={16} /> Solicitar presupuesto
           </button>
           <button onClick={onDownloadPlan} disabled={!rooms.length} className="w-full flex items-center justify-center gap-2 mt-2 bg-primary/20 text-white font-semibold py-2 rounded-md hover:bg-white/20 transition-colors disabled:opacity-50">
-            <Icon name="download" size={15} /> Descargar plano (PNG)
+            <Icon name="download" size={15} /> Plano en PDF
           </button>
         </div>
       </div>

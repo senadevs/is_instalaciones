@@ -5,11 +5,11 @@ import PlanEditor from './PlanEditor.jsx';
 import { Icon } from './ui.jsx';
 import {
   ROOM_TYPES, VIVIENDAS, FINISHES, REFORMS,
-  SERVICES, DEFAULT_SERVICES, EXTRAS, autoFurnish,
+  SERVICES, DEFAULT_SERVICES, EXTRAS,
   FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor, plantasFor,
 } from './catalog.js';
-import { scaleRoomsToArea, findFreeSpot } from './geometry.js';
-import { downloadPlanPNG } from './plan2d.js';
+import { scaleRoomsToArea, findFreeSpot, fittedAuto, placeRooms, computeWalls, getOpening, clearDoorway } from './geometry.js';
+import { openPlanPDF } from './plan2d.js';
 
 let uid = 1;
 let fuid = 1;
@@ -37,7 +37,10 @@ function newRoom(type, level = 0) {
 
 export default function Estimator() {
   const [setup, setSetup] = useState({ vivienda: 'piso', m2: 80, notas: '', extras: {} });
-  const [rooms, setRooms] = useState([newRoom('salon'), newRoom('cocina'), newRoom('bano')]);
+  const [rooms, setRooms] = useState(() => [
+    newRoom('recibidor'), newRoom('pasillo'), newRoom('salon'),
+    newRoom('cocina'), newRoom('bano'), newRoom('dormitorio'), newRoom('dormitorio'),
+  ]);
   const [selectedId, setSelectedId] = useState(null);
   const [interior, setInterior] = useState(null);
   const [addType, setAddType] = useState('dormitorio');
@@ -49,7 +52,14 @@ export default function Estimator() {
   // Cambiar el tipo de inmueble: ajusta plantas (colapsa si el nuevo no las tiene).
   const changeVivienda = (v) => {
     setSetup({ ...setup, vivienda: v });
-    if (plantasFor(v) === 1) { setRooms((rs) => rs.map((r) => (r.level ? { ...r, level: 0 } : r))); setActiveLevel(0); }
+    if (plantasFor(v) === 1) {
+      // colapsa a una planta y quita elementos verticales que ya no aplican
+      setRooms((rs) => rs.filter((r) => !['escalera', 'ascensor', 'rampa'].includes(r.type)).map((r) => (r.level ? { ...r, level: 0 } : r)));
+      setActiveLevel(0);
+    } else {
+      // dúplex/casa: asegura una escalera en planta baja (alineada, por estética y conexión)
+      setRooms((rs) => (rs.some((r) => ['escalera', 'ascensor', 'rampa'].includes(r.type)) ? rs : [...rs, newRoom('escalera', 0)]));
+    }
   };
 
   const totalM2 = rooms.reduce((s, r) => s + r.width * r.length, 0);
@@ -66,6 +76,8 @@ export default function Estimator() {
   const scaleArea = () => setRooms((rs) => scaleRoomsToArea(rs, Number(setup.m2)));
   const removeRoom = (id) => { setRooms((rs) => rs.filter((r) => r.id !== id)); if (selectedId === id) setSelectedId(null); if (interior === id) setInterior(null); };
   const updateRoom = (id, patch) => setRooms((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  // Rotar la zona 90°: intercambia ancho y largo (para orientar p. ej. el pasillo).
+  const rotateRoom = (id) => setRooms((rs) => rs.map((r) => (r.id === id ? { ...r, width: r.length, length: r.width } : r)));
 
   const toggleService = (id, svc) => setRooms((rs) => rs.map((r) => {
     if (r.id !== id) return r;
@@ -80,12 +92,24 @@ export default function Estimator() {
     r.id === id ? { ...r, services: { ...r.services, [svc]: { ...r.services[svc], on: true, [key]: !r.services[svc]?.[key] } } } : r
   )));
 
-  const setOpening = (id, side, val) => setRooms((rs) => rs.map((r) => {
-    if (r.id !== id) return r;
-    const openings = { ...r.openings };
-    if (val) openings[side] = val; else delete openings[side];
-    return { ...r, openings };
-  }));
+  const setOpening = (id, side, val) => setRooms((rs) => {
+    const next = rs.map((r) => {
+      if (r.id !== id) return r;
+      const openings = { ...r.openings };
+      if (val) openings[side] = val; else delete openings[side];
+      return { ...r, openings };
+    });
+    if (!val) return next;
+    // Libera el hueco: mueve/quita los muebles que tapen la nueva puerta.
+    const placed = placeRooms(next);
+    const walls = computeWalls(placed);
+    const i = placed.findIndex((p) => p.id === id);
+    if (i < 0) return next;
+    const op = getOpening(placed[i], side, walls[i][side], {});
+    if (!op || op.role === 'window') return next;
+    const cleaned = clearDoorway(placed[i], side, op);
+    return next.map((r) => (r.id === id ? { ...r, furniture: cleaned } : r));
+  });
 
   // ---- Posición de zonas (drag en planta) ----
   const bakeAll = (positions) => setRooms((rs) => rs.map((r) => (
@@ -98,21 +122,21 @@ export default function Estimator() {
     // Si la zona estaba auto-amueblada (sin muebles manuales), sembramos el
     // auto-amueblado antes de añadir, para no perder la distribución base.
     const base = (f.length === 0 && r.services?.mobiliario?.on)
-      ? autoFurnish(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) }))
+      ? fittedAuto(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) }))
       : f;
     return [...base, { id: 'f' + (fuid++), key, px, pz, rot }];
   });
   const moveFurniture = (roomId, fId, px, pz) => mapFurn(roomId, (f) => f.map((it) => (it.id === fId ? { ...it, px, pz } : it)));
   const rotateFurniture = (roomId, fId) => mapFurn(roomId, (f) => f.map((it) => (it.id === fId ? { ...it, rot: ((it.rot || 0) + Math.PI / 2) % (Math.PI * 2) } : it)));
   const removeFurniture = (roomId, fId) => mapFurn(roomId, (f) => f.filter((it) => it.id !== fId));
-  const autoFurnishRoom = (roomId) => mapFurn(roomId, (_f, r) => autoFurnish(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) })));
+  const autoFurnishRoom = (roomId) => mapFurn(roomId, (_f, r) => fittedAuto(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) })));
   const clearFurniture = (roomId) => mapFurn(roomId, () => []);
 
   // Colocar un elemento en la zona actual mientras navegas (busca hueco libre).
   const addInside = (key) => mapFurn(interior, (f, r) => {
     const item = FURNITURE_BY_KEY[key];
     const base = (f.length === 0 && r.services?.mobiliario?.on)
-      ? autoFurnish(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) }))
+      ? fittedAuto(r.type, r.width, r.length).map((it) => ({ ...it, id: 'f' + (fuid++) }))
       : f;
     const others = base.map((it) => { const c = FURNITURE_BY_KEY[it.key] || { w: 0.5, d: 0.5 }; return { ...it, w: c.w, d: c.d }; });
     const spot = findFreeSpot(r, item, others);
@@ -120,7 +144,7 @@ export default function Estimator() {
     return [...base, { id: 'f' + (fuid++), key, px: spot.x, pz: spot.z, rot: 0 }];
   });
 
-  const descargarPlano = () => downloadPlanPNG(rooms, setup);
+  const descargarPlano = () => openPlanPDF(rooms, setup);
 
   // Cambiar de planta en el modo interior (recorrer el dúplex por la escalera).
   const goFloor = (delta) => {
@@ -150,9 +174,7 @@ export default function Estimator() {
     if (ex.length) msg += `\nExtras: ${ex.join(', ')}.`;
     if (setup.notas) msg += `\nNotas: ${setup.notas}`;
     msg += `\n\nTotal: ${rooms.length} estancias · ${totalM2.toFixed(1)} m². ¿Me dais presupuesto?`;
-    msg += '\n\n📐 Adjunto el plano de la reforma (descargado en mi dispositivo).';
-    // Descarga el plano para que el cliente lo adjunte al chat.
-    try { descargarPlano(); } catch (e) { /* noop */ }
+    msg += '\n\n📐 Os adjunto el plano de la reforma en PDF.';
     window.open('https://wa.me/34637591736?text=' + encodeURIComponent(msg), '_blank');
   }
 
@@ -163,7 +185,7 @@ export default function Estimator() {
         plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
         selectedId={selectedId} setSelectedId={setSelectedId}
         addType={addType} setAddType={setAddType}
-        onAdd={addRoom} onRemove={removeRoom} onUpdate={updateRoom}
+        onAdd={addRoom} onRemove={removeRoom} onUpdate={updateRoom} onRotateRoom={rotateRoom}
         onToggleService={toggleService} onToggleOpt={toggleOpt} onSetOpening={setOpening}
         interior={interior} onEnterInterior={setInterior} onSolicitar={solicitar}
         onScaleArea={scaleArea} onShowPlan={() => setView('plan')}
@@ -209,6 +231,7 @@ export default function Estimator() {
           <PlanEditor
             rooms={rooms} selectedId={selectedId} onSelect={setSelectedId}
             plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
+            onRotateRoom={rotateRoom}
             onBakeAll={bakeAll} onAddFurniture={addFurniture} onMoveFurniture={moveFurniture}
             onRotateFurniture={rotateFurniture} onRemoveFurniture={removeFurniture}
             onAutoFurnish={autoFurnishRoom} onClearFurniture={clearFurniture}

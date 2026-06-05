@@ -4,7 +4,7 @@
 //  AABB para validar el drag&drop de mobiliario. Sin dependencias externas.
 // ============================================================================
 
-import { DOOR_KINDS, WINDOW_KINDS, FURNITURE_BY_KEY } from './catalog.js';
+import { DOOR_KINDS, WINDOW_KINDS, FURNITURE_BY_KEY, autoFurnish } from './catalog.js';
 
 // Construye la apertura de una ventana según su subtipo.
 function windowOpening(winKind) {
@@ -68,11 +68,14 @@ export function computeWalls(placed) {
       const B = edges(b);
       const zOv = Math.min(A.S, B.S) - Math.max(A.N, B.N) > 0.5;
       const xOv = Math.min(A.R, B.R) - Math.max(A.L, B.L) > 0.5;
-      const meta = { type: 'int', neighborId: b.id, neighborType: b.type };
-      if (Math.abs(A.R - B.L) < EPS && zOv) wall.e = meta;
-      if (Math.abs(A.L - B.R) < EPS && zOv) wall.w = meta;
-      if (Math.abs(A.S - B.N) < EPS && xOv) wall.s = meta;
-      if (Math.abs(A.N - B.S) < EPS && xOv) wall.n = meta;
+      // Centro (en mundo) del tramo común, para alinear la puerta en ambas zonas.
+      const midZ = (Math.max(A.N, B.N) + Math.min(A.S, B.S)) / 2;
+      const midX = (Math.max(A.L, B.L) + Math.min(A.R, B.R)) / 2;
+      const m = (mid) => ({ type: 'int', neighborId: b.id, neighborType: b.type, mid });
+      if (Math.abs(A.R - B.L) < EPS && zOv) wall.e = m(midZ);
+      if (Math.abs(A.L - B.R) < EPS && zOv) wall.w = m(midZ);
+      if (Math.abs(A.S - B.N) < EPS && xOv) wall.s = m(midX);
+      if (Math.abs(A.N - B.S) < EPS && xOv) wall.n = m(midX);
     });
     return wall;
   });
@@ -81,6 +84,21 @@ export function computeWalls(placed) {
 // ---- Apertura de una pared (puerta / ventana / hueco) -----------------------
 // Decide qué dibujar en cada pared según: override del usuario (room.openings),
 // si es interior/exterior, cocina americana, y si hay ventanas activas.
+// Offset del hueco a lo largo de la pared. En paredes compartidas usa el centro
+// del tramo común (puertas alineadas en ambas zonas); en exteriores evita
+// muebles. Siempre acotado para que el hueco quepa en la pared.
+function alignedOffset(room, side, wall, openW) {
+  const horiz = side === 'n' || side === 's';
+  const span = horiz ? room.width : room.length;
+  const lim = span / 2 - openW / 2 - 0.05;
+  if (lim <= 0) return 0;
+  if (wall && typeof wall.mid === 'number') {
+    const center = horiz ? room.cx : room.cz;
+    return Math.max(-lim, Math.min(lim, wall.mid - center));
+  }
+  return doorOffset(room, side, openW);
+}
+
 export function getOpening(room, side, wall, opts = {}) {
   const override = room.openings && room.openings[side];
   if (override) {
@@ -89,7 +107,7 @@ export function getOpening(room, side, wall, opts = {}) {
     if (override.kind.startsWith('win:')) return windowOpening(override.kind.slice(4));
     const k = DOOR_KINDS[override.kind] || DOOR_KINDS.batiente;
     const w = override.width || k.w;
-    return { kind: override.kind, width: w, hoja: k.hoja, role: 'door', offset: doorOffset(room, side, w) };
+    return { kind: override.kind, width: w, hoja: k.hoja, role: 'door', offset: alignedOffset(room, side, wall, w) };
   }
 
   // Cocina americana: pared compartida cocina <-> salón/comedor => hueco grande.
@@ -98,18 +116,18 @@ export function getOpening(room, side, wall, opts = {}) {
       (room.type === 'cocina' || wall.neighborType === 'cocina') &&
       openTypes.includes(room.type) && openTypes.includes(wall.neighborType)) {
     const w = DOOR_KINDS.hueco.w;
-    return { kind: 'hueco', width: w, hoja: 'none', role: 'open', offset: doorOffset(room, side, w) };
+    return { kind: 'hueco', width: w, hoja: 'none', role: 'open', offset: alignedOffset(room, side, wall, w) };
   }
 
   // Entrada principal forzada.
   if (opts.entrance) {
-    return { kind: 'entrance', width: 1.0, hoja: 'panel', role: 'entrance', offset: doorOffset(room, side, 1.0) };
+    return { kind: 'entrance', width: 1.0, hoja: 'panel', role: 'entrance', offset: alignedOffset(room, side, wall, 1.0) };
   }
 
   // Pared interior por defecto: puerta de paso batiente.
   if (wall.type === 'int') {
     const k = DOOR_KINDS.batiente;
-    return { kind: 'batiente', width: k.w, hoja: 'panel', role: 'door', offset: doorOffset(room, side, k.w) };
+    return { kind: 'batiente', width: k.w, hoja: 'panel', role: 'door', offset: alignedOffset(room, side, wall, k.w) };
   }
 
   // Pared exterior con ventanas activas: ventana fija por defecto.
@@ -169,6 +187,55 @@ export function snapToWalls(room, item, x, z, rot, thr = 0.35) {
   if (Math.abs(x + maxX) < thr) nx = -maxX; else if (Math.abs(x - maxX) < thr) nx = maxX;
   if (Math.abs(z + maxZ) < thr) nz = -maxZ; else if (Math.abs(z - maxZ) < thr) nz = maxZ;
   return { x: Math.max(-maxX, Math.min(maxX, nx)), z: Math.max(-maxZ, Math.min(maxZ, nz)) };
+}
+
+// Auto-amueblado AJUSTADO: descarta lo que no cabe y mete dentro de los muros
+// lo que se saldría (para que ningún elemento quede fuera de la zona).
+export function fittedAuto(type, w, l) {
+  return autoFurnish(type, w, l)
+    .filter((f) => {
+      const c = FURNITURE_BY_KEY[f.key]; if (!c) return false;
+      const fp = footprint(c, f.rot || 0);
+      return fp.w <= w - 0.1 && fp.d <= l - 0.1;
+    })
+    .map((f) => {
+      const c = FURNITURE_BY_KEY[f.key];
+      const fp = footprint(c, f.rot || 0);
+      const mx = Math.max(0, w / 2 - fp.w / 2 - 0.05);
+      const mz = Math.max(0, l / 2 - fp.d / 2 - 0.05);
+      return { ...f, px: Math.max(-mx, Math.min(mx, f.px)), pz: Math.max(-mz, Math.min(mz, f.pz)) };
+    });
+}
+
+// Libera el hueco de una puerta: mueve a un sitio libre (o quita) los muebles
+// que invaden el paso. Devuelve la nueva lista de furniture de la estancia.
+export function clearDoorway(room, side, opening) {
+  const items = room.furniture || [];
+  if (!opening || opening.role === 'window') return items;
+  const horiz = side === 'n' || side === 's';
+  const span = horiz ? room.width : room.length;
+  const openW = Math.min(opening.width || 0.9, span - 0.2);
+  const off = opening.offset || 0;
+  const borderPerp = horiz
+    ? (side === 'n' ? -room.length / 2 : room.length / 2)
+    : (side === 'w' ? -room.width / 2 : room.width / 2);
+  const depth = 0.6; // banda de paso frente a la puerta
+  const kept = [], relocate = [];
+  items.forEach((f) => {
+    const c = FURNITURE_BY_KEY[f.key]; if (!c) { kept.push(f); return; }
+    const fp = footprint(c, f.rot || 0);
+    const axisPos = horiz ? f.px : f.pz, perpPos = horiz ? f.pz : f.px;
+    const axisExt = horiz ? fp.w / 2 : fp.d / 2, perpExt = horiz ? fp.d / 2 : fp.w / 2;
+    const blocks = Math.abs(axisPos - off) < openW / 2 + axisExt && Math.abs(perpPos - borderPerp) < perpExt + depth;
+    (blocks ? relocate : kept).push(f);
+  });
+  relocate.forEach((f) => {
+    const c = FURNITURE_BY_KEY[f.key];
+    const others = kept.map((k) => { const kc = FURNITURE_BY_KEY[k.key] || { w: 0.5, d: 0.5 }; return { ...k, w: kc.w, d: kc.d }; });
+    const spot = findFreeSpot(room, c, others);
+    if (spot) kept.push({ ...f, px: spot.x, pz: spot.z }); // si no hay hueco, se quita
+  });
+  return kept;
 }
 
 // Holguras (m) del mueble a cada pared, para mostrar el espacio que queda.
