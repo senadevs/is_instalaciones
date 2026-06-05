@@ -6,7 +6,7 @@ import { Icon } from './ui.jsx';
 import {
   ROOM_TYPES, VIVIENDAS, FINISHES, REFORMS,
   SERVICES, DEFAULT_SERVICES, EXTRAS,
-  FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor, plantasFor,
+  FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor, plantasFor, templateFor,
 } from './catalog.js';
 import { scaleRoomsToArea, findFreeSpot, fittedAuto, placeRooms, computeWalls, getOpening, clearDoorway } from './geometry.js';
 import { openPlanPDF } from './plan2d.js';
@@ -35,12 +35,16 @@ function newRoom(type, level = 0) {
   };
 }
 
+// Crea las zonas iniciales de un tipo de inmueble a partir de su plantilla.
+function makeRooms(vivienda) {
+  const out = [];
+  templateFor(vivienda).forEach((zonas, level) => zonas.forEach((t) => out.push(newRoom(t, level))));
+  return out;
+}
+
 export default function Estimator() {
   const [setup, setSetup] = useState({ vivienda: 'piso', m2: 80, notas: '', extras: {} });
-  const [rooms, setRooms] = useState(() => [
-    newRoom('recibidor'), newRoom('pasillo'), newRoom('salon'),
-    newRoom('cocina'), newRoom('bano'), newRoom('dormitorio'), newRoom('dormitorio'),
-  ]);
+  const [rooms, setRooms] = useState(() => makeRooms('piso'));
   const [selectedId, setSelectedId] = useState(null);
   const [interior, setInterior] = useState(null);
   const [addType, setAddType] = useState('dormitorio');
@@ -49,17 +53,14 @@ export default function Estimator() {
   const [activeLevel, setActiveLevel] = useState(0);
   const plantas = plantasFor(setup.vivienda);
 
-  // Cambiar el tipo de inmueble: ajusta plantas (colapsa si el nuevo no las tiene).
+  // Cambiar el tipo de inmueble: carga su plantilla de zonas (el usuario refina
+  // a partir de ahí). En dúplex/casa la escalera queda alineada en ambas plantas.
   const changeVivienda = (v) => {
     setSetup({ ...setup, vivienda: v });
-    if (plantasFor(v) === 1) {
-      // colapsa a una planta y quita elementos verticales que ya no aplican
-      setRooms((rs) => rs.filter((r) => !['escalera', 'ascensor', 'rampa'].includes(r.type)).map((r) => (r.level ? { ...r, level: 0 } : r)));
-      setActiveLevel(0);
-    } else {
-      // dúplex/casa: asegura una escalera en planta baja (alineada, por estética y conexión)
-      setRooms((rs) => (rs.some((r) => ['escalera', 'ascensor', 'rampa'].includes(r.type)) ? rs : [...rs, newRoom('escalera', 0)]));
-    }
+    setRooms(makeRooms(v));
+    setActiveLevel(0);
+    setSelectedId(null);
+    setInterior(null);
   };
 
   const totalM2 = rooms.reduce((s, r) => s + r.width * r.length, 0);

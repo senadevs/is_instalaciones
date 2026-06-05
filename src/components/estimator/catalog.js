@@ -53,6 +53,20 @@ export const VIVIENDA_ZONAS = {
 };
 export const zonasFor = (v) => VIVIENDA_ZONAS[v] || Object.keys(ROOM_TYPES);
 
+// ---- PLANTILLA inicial por tipo de inmueble --------------------------------
+// Array de plantas; cada planta es una lista de tipos de zona. La 'escalera' va
+// la PRIMERA en cada planta del dúplex/casa para que quede alineada (mismo
+// origen de auto-distribución) arriba y abajo.
+export const TEMPLATES = {
+  piso:    [['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'dormitorio', 'dormitorio']],
+  atico:   [['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'dormitorio', 'terraza']],
+  duplex:  [['escalera', 'recibidor', 'salon', 'cocina', 'bano'], ['escalera', 'pasillo', 'dormitorio', 'dormitorio', 'bano']],
+  casa:    [['escalera', 'recibidor', 'salon', 'comedor', 'cocina', 'bano', 'terraza'], ['escalera', 'pasillo', 'dormitorio', 'dormitorio', 'bano']],
+  local:   [['recibidor', 'salon', 'bano', 'oficina']],
+  oficina: [['recibidor', 'oficina', 'salon', 'bano', 'cocina']],
+};
+export const templateFor = (v) => TEMPLATES[v] || TEMPLATES.piso;
+
 // ---- Acabados / reforma -----------------------------------------------------
 export const FINISHES = { estandar: 'Estándar', medio: 'Medio', premium: 'Premium', lujo: 'Lujo' };
 export const REFORMS = { integral: 'Integral', parcial: 'Parcial', estetica: 'Estética' };
