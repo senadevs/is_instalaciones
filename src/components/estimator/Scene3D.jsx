@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Grid, Html, ContactShadows, Sky, PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Model, MODELS, getFurniture } from './models.jsx';
-import { ROOM_TYPES, VIVIENDAS, WALL_DEFAULT, FURNITURE_BY_KEY, autoFurnish } from './catalog.js';
+import { ROOM_TYPES, VIVIENDAS, WALL_DEFAULT, FURNITURE_BY_KEY, autoFurnish, FLOOR_H } from './catalog.js';
 import { placeRooms, computeWalls, getOpening, pickEntrance } from './geometry.js';
 
 // Helpers para leer el nuevo modelo de servicios.
@@ -28,6 +28,40 @@ function LedStrips({ w, l, h, color }) {
       <Strip position={[-ww / 2, y, 0]} args={[0.05, 0.04, ll]} />
       <Strip position={[ww / 2, y, 0]} args={[0.05, 0.04, ll]} />
       <pointLight position={[0, y - 0.25, 0]} color={color} intensity={5} distance={Math.max(w, l) * 1.9} decay={2} />
+    </group>
+  );
+}
+
+// ---- Estructura vertical: escalera / rampa / ascensor ----------------------
+function VerticalStruct({ type, w, l }) {
+  if (type === 'rampa') {
+    const len = Math.hypot(l, FLOOR_H);
+    const ang = Math.atan2(FLOOR_H, l);
+    return (
+      <mesh rotation={[-ang, 0, 0]} position={[0, FLOOR_H / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[Math.min(w, 1.4), 0.12, len]} /><meshStandardMaterial color="#cbd5e1" roughness={0.85} />
+      </mesh>
+    );
+  }
+  if (type === 'ascensor') {
+    const cw = Math.min(w, 1.5) - 0.1, cl = Math.min(l, 1.5) - 0.1;
+    return (
+      <group>
+        <mesh position={[0, 1.1, 0]} castShadow><boxGeometry args={[cw, 2.2, cl]} /><meshStandardMaterial color="#94a3b8" metalness={0.6} roughness={0.3} /></mesh>
+        <mesh position={[0, 1.1, cl / 2]}><boxGeometry args={[cw * 0.7, 2, 0.04]} /><meshStandardMaterial color="#e2e8f0" metalness={0.7} roughness={0.2} /></mesh>
+      </group>
+    );
+  }
+  // escalera: peldaños que suben hasta la planta superior
+  const steps = 12;
+  const sh = FLOOR_H / steps, sd = (l - 0.3) / steps, sw = Math.min(w, 1.2);
+  return (
+    <group>
+      {Array.from({ length: steps }).map((_, i) => (
+        <mesh key={i} position={[0, sh * (i + 0.5), -l / 2 + 0.15 + sd * (i + 0.5)]} castShadow receiveShadow>
+          <boxGeometry args={[sw, sh, sd]} /><meshStandardMaterial color="#cbd5e1" roughness={0.8} />
+        </mesh>
+      ))}
     </group>
   );
 }
@@ -70,14 +104,15 @@ function FirstPerson({ start }) {
   const { camera, gl } = useThree();
   const keys = useRef({});
   const vel = useRef(new THREE.Vector3());
+  const eye = (start.y || 0) + 1.6;
   useEffect(() => {
-    camera.position.set(start.x, 1.6, start.z + 0.01);
+    camera.position.set(start.x, eye, start.z + 0.01);
     const dn = (e) => { keys.current[e.code] = true; };
     const up = (e) => { keys.current[e.code] = false; };
     window.addEventListener('keydown', dn);
     window.addEventListener('keyup', up);
     return () => { window.removeEventListener('keydown', dn); window.removeEventListener('keyup', up); };
-  }, [camera, start.x, start.z]);
+  }, [camera, start.x, start.z, eye]);
 
   useFrame((_, dt) => {
     const k = keys.current;
@@ -92,7 +127,7 @@ function FirstPerson({ start }) {
     if (k.KeyA || k.ArrowLeft) dir.sub(right);
     vel.current.lerp(dir.lengthSq() > 0 ? dir.normalize().multiplyScalar(speed) : new THREE.Vector3(), 0.3);
     camera.position.add(vel.current);
-    camera.position.y = 1.6;
+    camera.position.y = eye;
   });
 
   // ESC libera el ratón pero NO sale del interior (se sale con el botón).
@@ -106,9 +141,9 @@ function Wall({ len, h, opening = null, color = WALL_DEFAULT, thick = 0.1 }) {
     return <mesh position={[0, h / 2, 0]} castShadow receiveShadow><boxGeometry args={[len, h, thick]} />{wallMat}</mesh>;
   }
   const isWindow = opening.role === 'window';
-  const openW = isWindow ? Math.min(1.5, len * 0.55) : Math.min(opening.width || 0.9, len - 0.2);
-  const openBottom = isWindow ? 0.95 : 0;
-  const openTop = isWindow ? 2.05 : Math.min(h - 0.1, opening.kind === 'hueco' ? 2.25 : 2.1);
+  const openW = isWindow ? Math.min(1.6, len * 0.6) : Math.min(opening.width || 0.9, len - 0.2);
+  const openBottom = isWindow ? (opening.bottom ?? 0.95) : 0;
+  const openTop = isWindow ? Math.min(h - 0.05, opening.top ?? 2.05) : Math.min(h - 0.1, opening.kind === 'hueco' ? 2.25 : 2.1);
   // Offset del hueco a lo largo de la pared (eje X local); centrado si no hay.
   const maxOff = (len - openW) / 2 - 0.02;
   const off = Math.max(-maxOff, Math.min(maxOff, isWindow ? 0 : (opening.offset || 0)));
@@ -129,6 +164,10 @@ function Wall({ len, h, opening = null, color = WALL_DEFAULT, thick = 0.1 }) {
           <meshStandardMaterial color="#bae6fd" transparent opacity={0.4} roughness={0.05} metalness={0.4} emissive="#7dd3fc" emissiveIntensity={0.12} />
         </mesh>
       )}
+      {/* Montante central de ventana corredera */}
+      {opening.slide && (
+        <mesh position={[off, (openBottom + openTop) / 2, 0]}><boxGeometry args={[0.05, openTop - openBottom, 0.06]} /><meshStandardMaterial color="#e2e8f0" roughness={0.5} /></mesh>
+      )}
       {/* Hoja de puerta (panel) */}
       {opening.hoja === 'panel' && (
         <mesh position={[off - openW / 2 + (openW * 0.96) / 2, openTop / 2, 0.02]} rotation={[0, opening.kind === 'corredera' ? 0 : -0.5, 0]} castShadow>
@@ -148,12 +187,17 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
   const { width: w, length: l, height: h, type } = room;
   const t = ROOM_TYPES[type];
   const shape = t.shape;
-  const wallColor = opt(room, 'revestimientos', 'pintura') ? room.paint : WALL_DEFAULT;
-  const finish = room.finish;
-  const floorRough = finish === 'premium' || finish === 'lujo' ? 0.25 : finish === 'medio' ? 0.6 : 0.95;
-  const floorMetal = finish === 'premium' || finish === 'lujo' ? 0.2 : 0.05;
+  const rev = room.services?.revestimientos || {};
+  const parquet = rev.on && rev.tarima;
+  const tiled = rev.on && rev.alicatado;
+  const premium = room.finish === 'premium' || room.finish === 'lujo';
+  const wallColor = opt(room, 'revestimientos', 'pintura') ? room.paint : (tiled ? '#dde7ec' : WALL_DEFAULT);
+  const floorColor = selected ? '#dbeafe' : parquet ? '#b07d4f' : tiled ? '#e6edf1' : t.color;
+  const floorRough = tiled ? 0.2 : parquet ? 0.45 : premium ? 0.25 : room.finish === 'medio' ? 0.6 : 0.95;
+  const floorMetal = tiled ? 0.18 : parquet ? 0.05 : premium ? 0.2 : 0.05;
   const windows = opt(room, 'carpinteria', 'ventanas');
   const ledOn = opt(room, 'electricidad', 'led');
+  const vertical = !!t.vertical;
 
   const op = (side) => getOpening(room, side, wall[side], {
     windows,
@@ -165,13 +209,13 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
     : (svcOn(room, 'mobiliario') ? autoFurnish(type, w, l).map((f, i) => ({ ...f, id: 'a' + i })) : []);
 
   return (
-    <group position={[room.cx, 0, room.cz]}
+    <group position={[room.cx, (room.level || 0) * FLOOR_H, room.cz]}
       onClick={(e) => { e.stopPropagation(); onSelect(room.id); }}
       onDoubleClick={(e) => { e.stopPropagation(); onEnter(room.id); }}>
       {/* Suelo */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} receiveShadow>
         <planeGeometry args={[w, l]} />
-        <meshStandardMaterial color={selected ? '#dbeafe' : t.color} roughness={floorRough} metalness={floorMetal} />
+        <meshStandardMaterial color={floorColor} roughness={floorRough} metalness={floorMetal} />
       </mesh>
 
       {shape === 'piscina' && (
@@ -189,7 +233,8 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
           <group position={[w / 2, 0, 0]} rotation={[0, Math.PI / 2, 0]}><Wall len={l} h={h} opening={op('e')} color={wallColor} /></group>
 
           {ledOn && <LedStrips w={w} l={l} h={h} color={room.led} />}
-          <ServiceProps room={room} w={w} l={l} h={h} />
+          {vertical && <VerticalStruct type={type} w={w} l={l} />}
+          {!vertical && <ServiceProps room={room} w={w} l={l} h={h} />}
 
           {furniture.length > 0 && (
             <Suspense fallback={null}>
@@ -254,7 +299,7 @@ export default function Scene3D({ rooms, vivienda, selectedId, onSelect, interio
       ))}
 
       {interiorRoom ? (
-        <FirstPerson start={{ x: interiorRoom.cx, z: interiorRoom.cz }} />
+        <FirstPerson start={{ x: interiorRoom.cx, z: interiorRoom.cz, y: (interiorRoom.level || 0) * FLOOR_H }} />
       ) : (
         <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={2} maxDistance={140} maxPolarAngle={Math.PI / 2.04} />
       )}

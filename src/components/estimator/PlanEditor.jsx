@@ -30,11 +30,15 @@ function roomItems(room) {
 
 export default function PlanEditor({
   rooms, selectedId, onSelect,
+  plantas = 1, activeLevel = 0, setActiveLevel,
   onBakeAll, onAddFurniture, onMoveFurniture, onRotateFurniture, onRemoveFurniture,
   onAutoFurnish, onClearFurniture,
 }) {
   const svgRef = useRef(null);
-  const placed = useMemo(() => placeRooms(rooms), [rooms]);
+  const placed = useMemo(
+    () => placeRooms(rooms).filter((r) => plantas <= 1 || (r.level || 0) === activeLevel),
+    [rooms, plantas, activeLevel]
+  );
   const [drag, setDrag] = useState(null);     // {mode, ...} arrastre activo
   const [ghost, setGhost] = useState(null);   // mueble nuevo siguiendo el cursor
   const [selFurn, setSelFurn] = useState(null); // {roomId, fid}
@@ -206,8 +210,18 @@ export default function PlanEditor({
           </div>
         )}
 
+        {plantas > 1 && (
+          <div className="absolute top-3 left-3 flex bg-white rounded-md shadow border border-zinc-200 p-0.5">
+            {Array.from({ length: plantas }).map((_, lv) => (
+              <button key={lv} onClick={() => setActiveLevel(lv)}
+                className={`flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded ${activeLevel === lv ? 'bg-emerald-600 text-white' : 'text-zinc-500'}`}>
+                <Icon name="layers" size={12} /> {lv === 0 ? 'Baja' : `P${lv}`}
+              </button>
+            ))}
+          </div>
+        )}
         {selectedId && (
-          <div className="absolute top-3 left-3 flex gap-2">
+          <div className="absolute left-3 flex gap-2" style={{ top: plantas > 1 ? 48 : 12 }}>
             <button onClick={() => onAutoFurnish(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="wand-sparkles" size={13} /> Auto-amueblar</button>
             <button onClick={() => onClearFurniture(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="eraser" size={13} /> Vaciar</button>
           </div>

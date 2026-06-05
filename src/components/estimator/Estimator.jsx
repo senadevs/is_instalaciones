@@ -6,7 +6,7 @@ import { Icon } from './ui.jsx';
 import {
   ROOM_TYPES, VIVIENDAS, FINISHES, REFORMS,
   SERVICES, DEFAULT_SERVICES, EXTRAS, autoFurnish,
-  FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor,
+  FURNITURE_BY_KEY, FURNITURE_CATALOG, catsFor, plantasFor,
 } from './catalog.js';
 import { scaleRoomsToArea, findFreeSpot } from './geometry.js';
 import { downloadPlanPNG } from './plan2d.js';
@@ -26,10 +26,10 @@ function buildServices(type) {
   return out;
 }
 
-function newRoom(type) {
+function newRoom(type, level = 0) {
   const d = ROOM_TYPES[type].def;
   return {
-    id: uid++, type, width: d[0], length: d[1], height: 2.6,
+    id: uid++, type, level, width: d[0], length: d[1], height: 2.6,
     reform: 'integral', finish: 'medio', paint: '#f1f5f9', led: '#fff7cc',
     openKitchen: false, openings: {}, furniture: [], services: buildServices(type),
   };
@@ -43,13 +43,26 @@ export default function Estimator() {
   const [addType, setAddType] = useState('dormitorio');
   const [view, setView] = useState('3d');
   const [insideItem, setInsideItem] = useState('');
+  const [activeLevel, setActiveLevel] = useState(0);
+  const plantas = plantasFor(setup.vivienda);
+
+  // Cambiar el tipo de inmueble: ajusta plantas (colapsa si el nuevo no las tiene).
+  const changeVivienda = (v) => {
+    setSetup({ ...setup, vivienda: v });
+    if (plantasFor(v) === 1) { setRooms((rs) => rs.map((r) => (r.level ? { ...r, level: 0 } : r))); setActiveLevel(0); }
+  };
 
   const totalM2 = rooms.reduce((s, r) => s + r.width * r.length, 0);
   const totalSize = Math.max(9, Math.sqrt(totalM2) * 2.6);
   const interiorRoom = rooms.find((r) => r.id === interior);
   const insideItems = interiorRoom ? FURNITURE_CATALOG.filter((f) => catsFor(interiorRoom.type).includes(f.cat)) : [];
 
-  const addRoom = (type = addType) => { const r = newRoom(type); setRooms((rs) => [...rs, r]); setSelectedId(r.id); };
+  const addRoom = (type = addType) => {
+    const r = newRoom(type, activeLevel);
+    // Al añadir, reparte el total del inmueble entre todas las zonas.
+    setRooms((rs) => scaleRoomsToArea([...rs, r], Number(setup.m2)));
+    setSelectedId(r.id);
+  };
   const scaleArea = () => setRooms((rs) => scaleRoomsToArea(rs, Number(setup.m2)));
   const removeRoom = (id) => { setRooms((rs) => rs.filter((r) => r.id !== id)); if (selectedId === id) setSelectedId(null); if (interior === id) setInterior(null); };
   const updateRoom = (id, patch) => setRooms((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
@@ -109,6 +122,16 @@ export default function Estimator() {
 
   const descargarPlano = () => downloadPlanPNG(rooms, setup);
 
+  // Cambiar de planta en el modo interior (recorrer el dúplex por la escalera).
+  const goFloor = (delta) => {
+    if (!interiorRoom) return;
+    const target = (interiorRoom.level || 0) + delta;
+    const cands = rooms.filter((r) => (r.level || 0) === target);
+    if (!cands.length) return;
+    const stair = cands.find((r) => ['escalera', 'rampa', 'ascensor'].includes(r.type)) || cands[0];
+    setInterior(stair.id);
+  };
+
   function solicitar() {
     let msg = `Hola, quiero presupuesto para reformar mi ${VIVIENDAS[setup.vivienda].label.toLowerCase()}`;
     if (setup.m2) msg += ` de unos ${setup.m2} m²`;
@@ -136,7 +159,8 @@ export default function Estimator() {
   return (
     <div className="flex flex-col lg:flex-row h-[calc(100vh-5rem)] lg:h-[calc(100vh-7rem)] min-h-[560px] bg-zinc-900">
       <Panel
-        setup={setup} setSetup={setSetup} rooms={rooms} totalM2={totalM2}
+        setup={setup} setSetup={setSetup} onVivienda={changeVivienda} rooms={rooms} totalM2={totalM2}
+        plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
         selectedId={selectedId} setSelectedId={setSelectedId}
         addType={addType} setAddType={setAddType}
         onAdd={addRoom} onRemove={removeRoom} onUpdate={updateRoom}
@@ -160,6 +184,16 @@ export default function Estimator() {
             {interior && (
               <>
                 <button onClick={() => setInterior(null)} className="absolute top-3 right-3 bg-white text-primary text-sm font-semibold px-3 py-1.5 rounded-lg shadow hover:bg-gray-50">← Salir</button>
+                {plantas > 1 && (
+                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                    {rooms.some((r) => (r.level || 0) === (interiorRoom?.level || 0) + 1) && (
+                      <button onClick={() => goFloor(1)} className="flex items-center gap-1 bg-white text-primary text-xs font-semibold px-2.5 py-1.5 rounded-md shadow hover:bg-gray-50"><Icon name="chevron-up" size={14} /> Subir planta</button>
+                    )}
+                    {(interiorRoom?.level || 0) > 0 && (
+                      <button onClick={() => goFloor(-1)} className="flex items-center gap-1 bg-white text-primary text-xs font-semibold px-2.5 py-1.5 rounded-md shadow hover:bg-gray-50"><Icon name="chevron-down" size={14} /> Bajar planta</button>
+                    )}
+                  </div>
+                )}
                 <div className="absolute bottom-3 right-3 flex items-center gap-2 bg-white rounded-lg shadow-lg border border-gray-200 px-2 py-1.5">
                   <Icon name="plus-circle" size={16} className="text-primary" />
                   <select value={insideItem} onChange={(e) => setInsideItem(e.target.value)} className="text-sm px-2 py-1 rounded-md border border-gray-200 bg-white text-slate-700 max-w-[160px] outline-none">
@@ -174,6 +208,7 @@ export default function Estimator() {
         ) : (
           <PlanEditor
             rooms={rooms} selectedId={selectedId} onSelect={setSelectedId}
+            plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
             onBakeAll={bakeAll} onAddFurniture={addFurniture} onMoveFurniture={moveFurniture}
             onRotateFurniture={rotateFurniture} onRemoveFurniture={removeFurniture}
             onAutoFurnish={autoFurnishRoom} onClearFurniture={clearFurniture}

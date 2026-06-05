@@ -4,7 +4,7 @@
 //  servicios por zona. Exportable a PNG. Sin estado: función pura de datos.
 // ============================================================================
 
-import { ROOM_TYPES, SERVICES, VIVIENDAS, EXTRAS, FURNITURE_BY_KEY, autoFurnish } from './catalog.js';
+import { ROOM_TYPES, SERVICES, VIVIENDAS, EXTRAS, FURNITURE_BY_KEY, autoFurnish, showsInPlan } from './catalog.js';
 import { placeRooms, computeWalls, getOpening, pickEntrance, footprint } from './geometry.js';
 
 const PXM = 46;          // píxeles por metro
@@ -26,7 +26,10 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
   const zs = placed.flatMap((r) => [r.cz - r.length / 2, r.cz + r.length / 2]);
   const minX = Math.min(...xs, 0), maxX = Math.max(...xs, 1);
   const minZ = Math.min(...zs, 0), maxZ = Math.max(...zs, 1);
-  const planW = (maxX - minX + PAD * 2) * PXM;
+  const levels = [...new Set(placed.map((r) => r.level || 0))].sort((a, b) => a - b);
+  const spanX = maxX - minX, GAP = 1.5;
+  const dxLevel = (lv) => levels.indexOf(lv) * (spanX + GAP);
+  const planW = (spanX * levels.length + GAP * (levels.length - 1) + PAD * 2) * PXM;
   const planH = (maxZ - minZ + PAD * 2) * PXM;
 
   const sx = (x) => (x - minX + PAD) * PXM;
@@ -49,9 +52,18 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
   // Área del plano
   parts.push(`<g transform="translate(0 ${planTop})">`);
 
+  // Títulos de planta (si hay varias)
+  if (levels.length > 1) {
+    levels.forEach((lv) => {
+      const cxpx = sx((minX + maxX) / 2 + dxLevel(lv));
+      parts.push(`<text x="${cxpx.toFixed(1)}" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">${lv === 0 ? 'Planta baja' : 'Planta ' + lv}</text>`);
+    });
+  }
+
   placed.forEach((r, i) => {
     const t = ROOM_TYPES[r.type];
-    const x = sx(r.cx - r.width / 2), y = sy(r.cz - r.length / 2);
+    const dx = dxLevel(r.level || 0);
+    const x = sx(r.cx - r.width / 2 + dx), y = sy(r.cz - r.length / 2);
     const w = r.width * PXM, h = r.length * PXM;
     // suelo
     parts.push(`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${t.color}" fill-opacity="0.12" stroke="${WALL}" stroke-width="3"/>`);
@@ -62,36 +74,55 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
       : (r.services?.mobiliario?.on ? autoFurnish(r.type, r.width, r.length) : []);
     furn.forEach((f) => {
       const c = FURNITURE_BY_KEY[f.key]; if (!c) return;
+      if (!showsInPlan(f.key)) return; // sillas, mesas y deco no van en el plano
       const fp = footprint(c, f.rot || 0);
-      const cxpx = sx(r.cx + (f.px || 0)), cypx = sy(r.cz + (f.pz || 0));
+      const cxpx = sx(r.cx + (f.px || 0) + dx), cypx = sy(r.cz + (f.pz || 0));
       const fw = fp.w * PXM, fh = fp.d * PXM;
       parts.push(`<rect x="${(cxpx - fw / 2).toFixed(1)}" y="${(cypx - fh / 2).toFixed(1)}" width="${fw.toFixed(1)}" height="${fh.toFixed(1)}" rx="2" fill="${CAT_COLOR[c.cat] || '#94a3b8'}" fill-opacity="0.6" stroke="#475569" stroke-width="0.8"/>`);
     });
 
-    // puertas / ventanas: "corta" la pared y marca el hueco
+    // puertas / ventanas: "corta" la pared y dibuja el símbolo según el tipo
     const windows = r.services?.carpinteria?.on && r.services.carpinteria.ventanas;
+    const L = (x1, y1, x2, y2, col, sw, dash) => parts.push(`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${col}" stroke-width="${sw}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`);
+    const Jamb = (px, py) => parts.push(`<rect x="${(px - 1.5).toFixed(1)}" y="${(py - 1.5).toFixed(1)}" width="3" height="3" fill="${WALL}"/>`);
     ['n', 's', 'e', 'w'].forEach((side) => {
       const op = getOpening(r, side, walls[i][side], { windows, entrance: entrance && entrance.roomId === r.id && entrance.side === side });
       if (!op) return;
       const isWin = op.role === 'window';
-      const openW = (isWin ? Math.min(1.5, (side === 'n' || side === 's' ? r.width : r.length) * 0.55) : Math.min(op.width || 0.9, (side === 'n' || side === 's' ? r.width : r.length) - 0.2)) * PXM;
+      const horiz = side === 'n' || side === 's';
+      const spanM = horiz ? r.width : r.length;
+      const openW = (isWin ? Math.min(1.5, spanM * 0.55) : Math.min(op.width || 0.9, spanM - 0.2)) * PXM;
       const off = (isWin ? 0 : (op.offset || 0)) * PXM;
-      const cx = sx(r.cx), cy = sy(r.cz);
-      let gx, gy, gw, gh;
-      if (side === 'n') { gx = cx + off - openW / 2; gy = y - 3; gw = openW; gh = 6; }
-      else if (side === 's') { gx = cx + off - openW / 2; gy = y + h - 3; gw = openW; gh = 6; }
-      else if (side === 'w') { gx = x - 3; gy = cy + off - openW / 2; gw = 6; gh = openW; }
-      else { gx = x + w - 3; gy = cy + off - openW / 2; gw = 6; gh = openW; }
+      const cx = sx(r.cx + dx), cy = sy(r.cz);
+      // borde y vector hacia el interior
+      let bx, by, ix, iy;
+      if (side === 'n') { bx = cx + off; by = y; ix = 0; iy = 1; }
+      else if (side === 's') { bx = cx + off; by = y + h; ix = 0; iy = -1; }
+      else if (side === 'w') { bx = x; by = cy + off; ix = 1; iy = 0; }
+      else { bx = x + w; by = cy + off; ix = -1; iy = 0; }
+      // extremos del hueco a lo largo del borde
+      const e1x = horiz ? bx - openW / 2 : bx, e1y = horiz ? by : by - openW / 2;
+      const e2x = horiz ? bx + openW / 2 : bx, e2y = horiz ? by : by + openW / 2;
       // borra la pared en el hueco
-      parts.push(`<rect x="${gx.toFixed(1)}" y="${gy.toFixed(1)}" width="${gw.toFixed(1)}" height="${gh.toFixed(1)}" fill="#ffffff"/>`);
-      if (isWin) {
-        // ventana: línea azul a lo largo del hueco
-        if (side === 'n' || side === 's') parts.push(`<line x1="${gx.toFixed(1)}" y1="${(gy + gh / 2).toFixed(1)}" x2="${(gx + gw).toFixed(1)}" y2="${(gy + gh / 2).toFixed(1)}" stroke="#38bdf8" stroke-width="2"/>`);
-        else parts.push(`<line x1="${(gx + gw / 2).toFixed(1)}" y1="${gy.toFixed(1)}" x2="${(gx + gw / 2).toFixed(1)}" y2="${(gy + gh).toFixed(1)}" stroke="#38bdf8" stroke-width="2"/>`);
+      const gx = horiz ? bx - openW / 2 : bx - 3, gy = horiz ? by - 3 : by - openW / 2;
+      parts.push(`<rect x="${gx.toFixed(1)}" y="${gy.toFixed(1)}" width="${(horiz ? openW : 6).toFixed(1)}" height="${(horiz ? 6 : openW).toFixed(1)}" fill="#ffffff"/>`);
+
+      if (isWin || op.hoja === 'cristal') {
+        L(e1x, e1y, e2x, e2y, '#38bdf8', 2);
+        if (isWin) L(e1x + ix * 3, e1y + iy * 3, e2x + ix * 3, e2y + iy * 3, '#7dd3fc', 1.5);
+      } else if (op.kind === 'corredera') {
+        Jamb(e1x, e1y); Jamb(e2x, e2y);
+        L(e1x + ix * 5, e1y + iy * 5, e2x + ix * 5, e2y + iy * 5, '#64748b', 3); // hoja corrida
+      } else if (op.role === 'open' || op.kind === 'arco' || op.kind === 'hueco') {
+        Jamb(e1x, e1y); Jamb(e2x, e2y); // paso abierto, sin hoja
       } else {
-        // jambas de la puerta
-        parts.push(`<rect x="${gx.toFixed(1)}" y="${gy.toFixed(1)}" width="${(side === 'n' || side === 's' ? 2 : gw).toFixed(1)}" height="${(side === 'n' || side === 's' ? gh : 2).toFixed(1)}" fill="${WALL}"/>`);
-        parts.push(`<rect x="${(side === 'n' || side === 's' ? gx + gw - 2 : gx).toFixed(1)}" y="${(side === 'n' || side === 's' ? gy : gy + gh - 2).toFixed(1)}" width="${(side === 'n' || side === 's' ? 2 : gw).toFixed(1)}" height="${(side === 'n' || side === 's' ? gh : 2).toFixed(1)}" fill="${WALL}"/>`);
+        // batiente / doble / entrada: hoja(s) abatidas hacia el interior + barrido
+        Jamb(e1x, e1y); Jamb(e2x, e2y);
+        L(e1x, e1y, e1x + ix * openW, e1y + iy * openW, '#475569', 2);
+        L(e1x + ix * openW, e1y + iy * openW, e2x, e2y, '#cbd5e1', 1, '3 3');
+        if (op.kind === 'doble') {
+          L(e2x, e2y, e2x + ix * openW, e2y + iy * openW, '#475569', 2);
+        }
       }
     });
 
@@ -112,7 +143,8 @@ export function buildPlanSVG(rooms, setup = {}, dateStr = '') {
     const t = ROOM_TYPES[r.type];
     const svcs = Object.entries(SERVICES).filter(([k]) => r.services?.[k]?.on).map(([, s]) => s.label);
     parts.push(`<circle cx="${lx + 4}" cy="${ly - 4}" r="4" fill="${t.color}"/>`);
-    parts.push(`<text x="${lx + 14}" y="${ly}" font-size="12" font-weight="600" fill="#1e293b">${esc(t.label)} · ${(r.width * r.length).toFixed(1)} m²</text>`);
+    const lvTxt = levels.length > 1 ? ` · ${(r.level || 0) === 0 ? 'P.baja' : 'P.' + (r.level || 0)}` : '';
+    parts.push(`<text x="${lx + 14}" y="${ly}" font-size="12" font-weight="600" fill="#1e293b">${esc(t.label)} · ${(r.width * r.length).toFixed(1)} m²${lvTxt}</text>`);
     ly += 16;
     const line = svcs.length ? svcs.join(', ') : 'reforma general';
     parts.push(`<text x="${lx + 14}" y="${ly}" font-size="10.5" fill="#64748b">${esc(line.length > 46 ? line.slice(0, 45) + '…' : line)}</text>`);

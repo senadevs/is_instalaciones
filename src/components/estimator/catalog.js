@@ -16,6 +16,9 @@ export const ROOM_TYPES = {
   oficina:    { label: 'Oficina',     icon: 'lucide:monitor',       color: '#0ea5e9', def: [3, 3],    shape: 'room' },
   vestidor:   { label: 'Vestidor',    icon: 'lucide:shirt',         color: '#d946ef', def: [2.5, 2],  shape: 'room' },
   lavadero:   { label: 'Lavadero',    icon: 'lucide:washing-machine', color: '#64748b', def: [2, 1.8], shape: 'room' },
+  escalera:   { label: 'Escalera',    icon: 'lucide:chevrons-up',   color: '#a8a29e', def: [2, 3.5],  shape: 'room', vertical: true },
+  ascensor:   { label: 'Ascensor',    icon: 'lucide:arrow-up-down', color: '#78716c', def: [1.6, 1.6], shape: 'room', vertical: true },
+  rampa:      { label: 'Rampa',       icon: 'lucide:trending-up',   color: '#a8a29e', def: [1.6, 4.5], shape: 'room', vertical: true },
   terraza:    { label: 'Terraza',     icon: 'lucide:trees',         color: '#84cc16', def: [4, 3],    shape: 'terraza' },
   piscina:    { label: 'Piscina',     icon: 'lucide:waves',         color: '#06b6d4', def: [6, 3],    shape: 'piscina' },
   jacuzzi:    { label: 'Jacuzzi',     icon: 'lucide:bath',          color: '#22d3ee', def: [2.5, 2.5], shape: 'jacuzzi' },
@@ -34,11 +37,16 @@ export const VIVIENDAS = {
 // Zonas exteriores (solo en viviendas con espacio exterior).
 export const OUTDOOR = ['terraza', 'piscina', 'jacuzzi'];
 
+// Nº de plantas (niveles) disponibles por tipo de inmueble.
+export const VIVIENDA_PLANTAS = { piso: 1, casa: 2, duplex: 2, atico: 1, local: 1, oficina: 1 };
+export const plantasFor = (v) => VIVIENDA_PLANTAS[v] || 1;
+export const FLOOR_H = 3.05; // altura entre plantas (m)
+
 // ---- REGLA: qué tipos de zona admite cada tipo de inmueble ------------------
 export const VIVIENDA_ZONAS = {
   piso:    ['recibidor', 'pasillo', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza'],
-  casa:    ['recibidor', 'pasillo', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza', 'piscina', 'jacuzzi'],
-  duplex:  ['recibidor', 'pasillo', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza'],
+  casa:    ['recibidor', 'pasillo', 'escalera', 'ascensor', 'rampa', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza', 'piscina', 'jacuzzi'],
+  duplex:  ['recibidor', 'pasillo', 'escalera', 'ascensor', 'rampa', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza'],
   atico:   ['recibidor', 'pasillo', 'salon', 'comedor', 'cocina', 'bano', 'dormitorio', 'vestidor', 'lavadero', 'oficina', 'terraza', 'jacuzzi'],
   local:   ['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'oficina'],
   oficina: ['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'oficina'],
@@ -58,6 +66,16 @@ export const DOOR_KINDS = {
   cristal:   { label: 'Acristalada',     w: 1.0,  hoja: 'cristal' },
   arco:      { label: 'Arco / paso',     w: 1.3,  hoja: 'none' },
   hueco:     { label: 'Hueco abierto',   w: 2.2,  hoja: 'none' },
+};
+
+// ---- Tipos de ventana -------------------------------------------------------
+// bottom/top: altura del hueco (m). slide: corredera (montante central).
+export const WINDOW_KINDS = {
+  fija:      { label: 'Ventana fija',      bottom: 0.95, top: 2.05 },
+  corredera: { label: 'Ventana corredera', bottom: 0.95, top: 2.05, slide: true },
+  oscilo:    { label: 'Oscilobatiente',    bottom: 0.95, top: 2.05 },
+  abatible:  { label: 'Ventana abatible',  bottom: 0.95, top: 2.05 },
+  balconera: { label: 'Balconera',         bottom: 0.05, top: 2.15 },
 };
 
 // ---- Árbol de SERVICIOS -----------------------------------------------------
@@ -131,6 +149,28 @@ export const SERVICES = {
     ],
   },
 };
+
+// ---- REGLA: qué servicios tienen sentido en cada tipo de zona --------------
+// (un recibidor no necesita fontanería, un pasillo no se amuebla, etc.)
+export const ZONE_SERVICES = {
+  cocina:     ['electricidad', 'fontaneria', 'climatizacion', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  bano:       ['electricidad', 'fontaneria', 'climatizacion', 'revestimientos', 'carpinteria', 'obra'],
+  lavadero:   ['electricidad', 'fontaneria', 'revestimientos', 'obra'],
+  salon:      ['electricidad', 'climatizacion', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  comedor:    ['electricidad', 'climatizacion', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  dormitorio: ['electricidad', 'climatizacion', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  oficina:    ['electricidad', 'climatizacion', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  vestidor:   ['electricidad', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  recibidor:  ['electricidad', 'revestimientos', 'carpinteria', 'obra', 'mobiliario'],
+  pasillo:    ['electricidad', 'revestimientos', 'carpinteria', 'obra'],
+  escalera:   ['electricidad', 'revestimientos', 'obra'],
+  rampa:      ['electricidad', 'revestimientos', 'obra'],
+  ascensor:   ['electricidad', 'obra'],
+  terraza:    ['electricidad', 'fontaneria', 'revestimientos', 'obra', 'mobiliario'],
+  piscina:    ['fontaneria', 'electricidad', 'obra', 'revestimientos'],
+  jacuzzi:    ['fontaneria', 'electricidad', 'obra'],
+};
+export const servicesFor = (type) => ZONE_SERVICES[type] || Object.keys(SERVICES);
 
 // Servicios sugeridos por defecto según el tipo de estancia.
 export const DEFAULT_SERVICES = {
@@ -314,6 +354,9 @@ export const ZONE_CATS = {
   vestidor:   ['dormitorio', 'luz', 'deco'],
   lavadero:   ['cocina', 'deco'],
   pasillo:    ['luz', 'deco'],
+  escalera:   ['deco'],
+  rampa:      ['deco'],
+  ascensor:   ['deco'],
   recibidor:  ['dormitorio', 'luz', 'deco'],
   terraza:    ['comedor', 'salon', 'luz', 'deco'],
   piscina:    ['deco'],
@@ -326,3 +369,15 @@ export function furnitureAllowed(roomType, itemKey) {
   const it = FURNITURE_BY_KEY[itemKey];
   return !!it && catsFor(roomType).includes(it.cat);
 }
+
+// REGLA: elementos que NO se dibujan en el plano (mobiliario suelto/menor:
+// sillas, mesas, deco). Los fijos (estantería, armario, sanitarios, cocina,
+// electrodomésticos, camas, sofás…) sí aparecen.
+export const PLAN_HIDE = new Set([
+  'chair', 'chairCushion', 'chairModern', 'deskChair', 'stoolBar', 'bench',
+  'table', 'tableRound', 'tableGlass', 'coffeeTable', 'coffeeTableGlass', 'sideTable',
+  'plant', 'plantSmall', 'plantSmall2', 'rug', 'rugRound', 'rugSquare', 'doormat',
+  'books', 'radio', 'speaker', 'bear', 'trashcan',
+  'floorLamp', 'floorLampSquare', 'tableLamp', 'computer', 'laptop',
+]);
+export const showsInPlan = (itemKey) => !PLAN_HIDE.has(itemKey);

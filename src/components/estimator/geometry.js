@@ -4,38 +4,45 @@
 //  AABB para validar el drag&drop de mobiliario. Sin dependencias externas.
 // ============================================================================
 
-import { DOOR_KINDS, FURNITURE_BY_KEY } from './catalog.js';
+import { DOOR_KINDS, WINDOW_KINDS, FURNITURE_BY_KEY } from './catalog.js';
+
+// Construye la apertura de una ventana según su subtipo.
+function windowOpening(winKind) {
+  const def = WINDOW_KINDS[winKind] || WINDOW_KINDS.fija;
+  return { kind: 'window', winKind, role: 'window', hoja: 'cristal', bottom: def.bottom, top: def.top, slide: !!def.slide };
+}
 
 const EPS = 0.06; // tolerancia para considerar dos paredes pegadas (m)
 
-// ---- Disposición de estancias ----------------------------------------------
-// Devuelve cada estancia con su centro en coordenadas de mundo (cx, cz).
-// Si la estancia trae cx/cz (colocación manual por drag), se respeta.
-// El resto se auto-distribuye en filas y se centra el conjunto.
-export function placeRooms(rooms) {
+// Auto-distribuye en filas un grupo de estancias (de una misma planta), con la
+// esquina anclada en el origen. Respeta las que traen cx/cz manual (drag).
+function layoutGroupCorner(rooms) {
   const maxRow = 13;
   let x = 0, z = 0, rowDepth = 0;
-  // Primera pasada: asignar posición de esquina a las auto.
-  const tmp = rooms.map((r) => {
-    if (typeof r.cx === 'number' && typeof r.cz === 'number') {
-      return { ...r, manual: true };
-    }
+  return rooms.map((r) => {
+    if (typeof r.cx === 'number' && typeof r.cz === 'number') return { ...r, manual: true };
     if (x + r.width > maxRow && x > 0) { x = 0; z += rowDepth; rowDepth = 0; }
-    const out = { ...r, _px: x, _pz: z, manual: false };
+    const cx = x + r.width / 2, cz = z + r.length / 2;
     x += r.width; rowDepth = Math.max(rowDepth, r.length);
-    return out;
+    return { ...r, cx, cz, manual: false };
   });
-  // Centrar el conjunto de las auto-distribuidas.
-  const autos = tmp.filter((r) => !r.manual);
-  if (autos.length) {
-    const maxX = Math.max(...autos.map((r) => r._px + r.width));
-    const maxZ = Math.max(...autos.map((r) => r._pz + r.length));
-    autos.forEach((r) => {
-      r.cx = r._px + r.width / 2 - maxX / 2;
-      r.cz = r._pz + r.length / 2 - maxZ / 2;
-    });
+}
+
+// ---- Disposición de estancias (multi-planta, plantas alineadas) ------------
+// Cada planta se distribuye anclada al mismo origen y se centra TODO con el
+// mismo desplazamiento (el de la planta baja), de modo que las plantas encajan
+// una sobre otra (en 3D se apilan en Y; en plano se separan por nivel).
+export function placeRooms(rooms) {
+  const levels = [...new Set(rooms.map((r) => r.level || 0))].sort((a, b) => a - b);
+  const all = levels.flatMap((lv) => layoutGroupCorner(rooms.filter((r) => (r.level || 0) === lv)));
+  const base = all.filter((r) => (r.level || 0) === 0 && !r.manual);
+  const ref = base.length ? base : all.filter((r) => !r.manual);
+  if (ref.length) {
+    const maxX = Math.max(...ref.map((r) => r.cx + r.width / 2));
+    const maxZ = Math.max(...ref.map((r) => r.cz + r.length / 2));
+    all.forEach((r) => { if (!r.manual) { r.cx -= maxX / 2; r.cz -= maxZ / 2; } });
   }
-  return tmp.map(({ _px, _pz, ...r }) => r);
+  return all;
 }
 
 // Bordes de una estancia en mundo.
@@ -57,6 +64,7 @@ export function computeWalls(placed) {
     const A = edges(a);
     placed.forEach((b, j) => {
       if (i === j) return;
+      if ((a.level || 0) !== (b.level || 0)) return; // solo paredes del mismo nivel
       const B = edges(b);
       const zOv = Math.min(A.S, B.S) - Math.max(A.N, B.N) > 0.5;
       const xOv = Math.min(A.R, B.R) - Math.max(A.L, B.L) > 0.5;
@@ -77,7 +85,8 @@ export function getOpening(room, side, wall, opts = {}) {
   const override = room.openings && room.openings[side];
   if (override) {
     if (override.kind === 'none') return null;
-    if (override.kind === 'window') return { kind: 'window', width: null, hoja: 'cristal', role: 'window' };
+    if (override.kind === 'window') return windowOpening('fija');
+    if (override.kind.startsWith('win:')) return windowOpening(override.kind.slice(4));
     const k = DOOR_KINDS[override.kind] || DOOR_KINDS.batiente;
     const w = override.width || k.w;
     return { kind: override.kind, width: w, hoja: k.hoja, role: 'door', offset: doorOffset(room, side, w) };
@@ -103,9 +112,9 @@ export function getOpening(room, side, wall, opts = {}) {
     return { kind: 'batiente', width: k.w, hoja: 'panel', role: 'door', offset: doorOffset(room, side, k.w) };
   }
 
-  // Pared exterior con ventanas activas: ventana.
+  // Pared exterior con ventanas activas: ventana fija por defecto.
   if (wall.type === 'ext' && opts.windows) {
-    return { kind: 'window', width: null, hoja: 'cristal', role: 'window' };
+    return windowOpening('fija');
   }
   return null;
 }
@@ -178,6 +187,7 @@ export function pickEntrance(placed, walls) {
   const pref = ['recibidor', 'pasillo', 'salon', 'comedor'];
   let best = null;
   placed.forEach((r, i) => {
+    if ((r.level || 0) !== 0) return; // la entrada principal está en planta baja
     ['s', 'n', 'e', 'w'].forEach((side) => {
       if (walls[i][side].type !== 'ext') return;
       const score = (pref.indexOf(r.type) + 1 || 9) * 10 + (side === 's' ? 0 : 5);

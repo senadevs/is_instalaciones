@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import {
   ROOM_TYPES, VIVIENDAS, FINISHES, REFORMS, DOOR_KINDS,
-  SERVICES, EXTRAS, PAINT_PRESETS, LED_PRESETS, zonasFor,
-  FURNITURE_CATALOG, FURNITURE_CATS,
+  SERVICES, EXTRAS, PAINT_PRESETS, LED_PRESETS, zonasFor, servicesFor,
+  FURNITURE_CATALOG, FURNITURE_CATS, WINDOW_KINDS,
 } from './catalog.js';
 import { Icon, Toggle, Chip, ColorRow } from './ui.jsx';
 
@@ -10,7 +10,7 @@ const SIDES = [['n', 'Norte'], ['s', 'Sur'], ['e', 'Este'], ['w', 'Oeste']];
 const OPENING_OPTS = [
   ['', 'Auto'],
   ...Object.entries(DOOR_KINDS).map(([k, v]) => [k, v.label]),
-  ['window', 'Ventana'],
+  ...Object.entries(WINDOW_KINDS).map(([k, v]) => ['win:' + k, v.label]),
   ['none', 'Tapiada'],
 ];
 const AMERICAN = ['salon', 'comedor', 'cocina'];
@@ -44,7 +44,8 @@ function Node({ icon, iconColor, title, badge, open, onToggle, children, right }
 }
 
 export default function Panel({
-  setup, setSetup, rooms, totalM2,
+  setup, setSetup, onVivienda, rooms, totalM2,
+  plantas = 1, activeLevel = 0, setActiveLevel,
   selectedId, setSelectedId, addType, setAddType,
   onAdd, onRemove, onUpdate, onToggleService, onToggleOpt, onSetOpening,
   interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan, onDownloadPlan,
@@ -107,14 +108,16 @@ export default function Panel({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className={lbl}>Tipo</label>
-              <select className={inp} value={setup.vivienda} onChange={(e) => setSetup({ ...setup, vivienda: e.target.value })}>
+              <select className={inp} value={setup.vivienda} onChange={(e) => onVivienda(e.target.value)}>
                 {Object.entries(VIVIENDAS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
             <div>
               <label className={lbl}>Superficie m²</label>
               <div className="flex gap-1">
-                <input type="number" min="20" max="800" className={inp} value={setup.m2} onChange={(e) => setSetup({ ...setup, m2: e.target.value })} />
+                <input type="number" min="20" max="800" className={inp} value={setup.m2}
+                  onChange={(e) => setSetup({ ...setup, m2: e.target.value })}
+                  onBlur={onScaleArea} title="Al cambiar la superficie, las zonas se reparten para sumar el total" />
                 <button onClick={onScaleArea} title="Repartir esta superficie entre las zonas" className="shrink-0 px-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"><Icon name="scaling" size={15} /></button>
               </div>
             </div>
@@ -135,6 +138,18 @@ export default function Panel({
           </div>
         </Node>
 
+        {/* Selector de planta (dúplex / casa) */}
+        {plantas > 1 && (
+          <div className="flex gap-1.5">
+            {Array.from({ length: plantas }).map((_, lv) => (
+              <button key={lv} onClick={() => setActiveLevel(lv)}
+                className={`flex-1 flex items-center justify-center gap-1 text-xs font-semibold py-1.5 rounded-md border transition-colors ${activeLevel === lv ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary'}`}>
+                <Icon name="layers" size={13} /> {lv === 0 ? 'Planta baja' : `Planta ${lv}`}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* 2 · AÑADIR ZONA (filtrada por tipo de inmueble) */}
         <div className="flex gap-2">
           <select className={inp} value={addOptions.includes(addType) ? addType : addOptions[0]} onChange={(e) => setAddType(e.target.value)}>
@@ -147,7 +162,7 @@ export default function Panel({
 
         {/* 3 · ZONAS */}
         <div className="space-y-2">
-          {rooms.map((r) => {
+          {rooms.filter((r) => plantas <= 1 || (r.level || 0) === activeLevel).map((r) => {
             const t = ROOM_TYPES[r.type];
             const open = selectedId === r.id;
             const canAmerican = AMERICAN.includes(r.type);
@@ -183,7 +198,7 @@ export default function Panel({
                               onChange={(e) => onSetOpening(r.id, side, e.target.value ? { kind: e.target.value, width: ov?.width || DOOR_KINDS[e.target.value]?.w } : null)}>
                               {OPENING_OPTS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}
                             </select>
-                            {ov && ov.kind !== 'none' && ov.kind !== 'window' && (
+                            {ov && ov.kind !== 'none' && ov.kind !== 'window' && !ov.kind.startsWith('win:') && (
                               <input type="number" min="0.6" max="3" step="0.1" className={`${inp} !py-1 !px-1.5 w-14 text-[11px]`} value={ov.width}
                                 onChange={(e) => onSetOpening(r.id, side, { kind: ov.kind, width: Number(e.target.value) })} />
                             )}
@@ -204,7 +219,7 @@ export default function Panel({
                 <div>
                   <label className={lbl}>Servicios</label>
                   <div className="space-y-1.5">
-                    {Object.entries(SERVICES).map(([svcKey, svc]) => {
+                    {Object.entries(SERVICES).filter(([svcKey]) => servicesFor(r.type).includes(svcKey)).map(([svcKey, svc]) => {
                       const s = r.services?.[svcKey] || {};
                       return (
                         <div key={svcKey} className="rounded-md border border-gray-100 bg-white">

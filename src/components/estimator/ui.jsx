@@ -5,7 +5,8 @@ import {
   Shirt, WashingMachine, Trees, Waves, Zap, Hammer, ThermometerSun, Droplets,
   DoorClosed, Paintbrush, Armchair, Sun, Video, Plug, PlugZap, Shield, Box, Search,
   ChevronDown, ChevronRight, Trash2, Plus, Scaling, MessageCircle, Eye, LogOut,
-  House, RotateCw, WandSparkles, Eraser, LayoutGrid, PlusCircle, Download, Square,
+  House, RotateCw, WandSparkles, Eraser, LayoutGrid, PlusCircle, Download, Layers,
+  ChevronsUp, ArrowUpDown, TrendingUp, ChevronUp, Square,
 } from 'lucide-react';
 
 const ICONS = {
@@ -19,7 +20,8 @@ const ICONS = {
   'chevron-right': ChevronRight, 'trash-2': Trash2, plus: Plus, scaling: Scaling,
   'message-circle': MessageCircle, eye: Eye, 'log-out': LogOut, house: House,
   'rotate-cw': RotateCw, 'wand-sparkles': WandSparkles, eraser: Eraser,
-  'layout-grid': LayoutGrid, 'plus-circle': PlusCircle, download: Download,
+  'layout-grid': LayoutGrid, 'plus-circle': PlusCircle, download: Download, layers: Layers,
+  'chevrons-up': ChevronsUp, 'arrow-up-down': ArrowUpDown, 'trending-up': TrendingUp, 'chevron-up': ChevronUp,
 };
 
 // Icono lucide a partir de una clave 'lucide:nombre' (o 'nombre').
