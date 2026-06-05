@@ -1,0 +1,129 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<!-- Banner de contacto que emerge desde el lateral izquierdo y se esconde -->
+<div id="promo-banner" class="fixed left-0 top-1/2 -translate-y-1/2 z-40 w-[320px] max-w-[85vw]">
+  <div id="promo-card" class="promo-card bg-primary text-white rounded-r-2xl shadow-2xl p-5 pr-9 relative">
+    <button id="promo-close" type="button" class="absolute top-2.5 right-2.5 z-[2] text-white/70 hover:text-white transition-colors" aria-label="Cerrar aviso">
+      <Icon name="lucide:x" class="w-4 h-4" />
+    </button>
+    <div class="flex items-start gap-3">
+      <div class="promo-icon w-11 h-11 bg-white/15 rounded-xl flex items-center justify-center shrink-0">
+        <Icon name="lucide:sparkles" class="w-6 h-6 text-white" />
+      </div>
+      <div class="flex-1">
+        <p id="promo-text" class="text-[15px] font-semibold leading-snug mb-3">
+          ¿Tienes dudas? Habla con nuestro asistente virtual.
+        </p>
+        <button
+          id="promo-cta"
+          type="button"
+          class="inline-flex items-center gap-1.5 bg-white text-primary text-sm font-bold px-4 py-2 rounded-lg hover:gap-2.5 hover:shadow-lg transition-all"
+        >
+          <span id="promo-cta-text">Abrir asistente</span>
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #promo-card {
+    transform: translateX(-105%);
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1);
+    will-change: transform;
+  }
+  #promo-banner.promo-show #promo-card {
+    transform: translateX(0);
+  }
+  @keyframes promo-icon-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+  #promo-banner .promo-icon { animation: promo-icon-pulse 2.4s ease-in-out infinite; }
+</style>
+
+<script is:inline>
+  (function () {
+    function initPromo() {
+      var banner = document.getElementById('promo-banner');
+      if (!banner || banner.dataset.init === 'true') return;
+      banner.dataset.init = 'true';
+
+      var text = document.getElementById('promo-text');
+      var ctaText = document.getElementById('promo-cta-text');
+      var cta = document.getElementById('promo-cta');
+      var close = document.getElementById('promo-close');
+
+      var mensajes = [
+        { text: '¿Tienes dudas? Habla con nuestro asistente virtual.', cta: 'Abrir asistente', action: 'chat' },
+        { text: 'Presupuesto gratis y sin compromiso en 24 h.', cta: 'Pedir presupuesto', action: '/contacto' },
+        { text: 'Electricidad, fontanería, climatización y reformas.', cta: 'Ver servicios', action: '/servicios' },
+        { text: 'Nuestro asistente te guía por toda la web.', cta: 'Probar el chat', action: 'chat' }
+      ];
+      var idx = 0;
+      var cycleTimer = null;
+      var hideTimer = null;
+      var dismissed = false;
+
+      try { if (sessionStorage.getItem('isbot-promo') === '1') return; } catch (e) {}
+
+      function apply() {
+        var m = mensajes[idx];
+        text.textContent = m.text;
+        ctaText.textContent = m.cta;
+        cta.dataset.action = m.action;
+      }
+      function slideIn() {
+        if (dismissed) return;
+        apply();
+        banner.classList.add('promo-show');
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(slideOut, 9000);
+      }
+      function slideOut() {
+        banner.classList.remove('promo-show');
+      }
+      function dismiss() {
+        dismissed = true;
+        banner.classList.remove('promo-show');
+        if (cycleTimer) clearInterval(cycleTimer);
+        if (hideTimer) clearTimeout(hideTimer);
+        try { sessionStorage.setItem('isbot-promo', '1'); } catch (e) {}
+      }
+
+      apply();
+      // Primera aparición a los 5 s; luego ciclo cada 18 s (sale y se esconde)
+      setTimeout(slideIn, 5000);
+      cycleTimer = setInterval(function () {
+        idx = (idx + 1) % mensajes.length;
+        slideIn();
+      }, 18000);
+
+      cta.addEventListener('click', function () {
+        var action = cta.dataset.action;
+        if (action === 'chat') {
+          var toggle = document.getElementById('chat-toggle');
+          if (toggle) toggle.click();
+          dismiss();
+        } else if (action) {
+          window.location.href = action;
+        }
+      });
+      close.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dismiss();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPromo);
+    } else {
+      initPromo();
+    }
+    document.addEventListener('astro:page-load', initPromo);
+  })();
+</script>

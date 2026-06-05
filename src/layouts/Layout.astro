@@ -49,6 +49,7 @@ const imageUrl = new URL(image, siteUrl).toString();
 import Footer from '../components/ui/Footer.astro';
 import Header from '../components/ui/Header.astro';
 import ChatBubble from '../components/ui/ChatBubble.astro';
+import AnnouncementBanner from '../components/ui/AnnouncementBanner.astro';
 import CookieBanner from '../components/ui/CookieBanner.astro';
 import '../styles/global.css';
 ---
@@ -218,6 +219,7 @@ import '../styles/global.css';
     <slot />
     <Footer/>
     <ChatBubble />
+    <AnnouncementBanner />
     <CookieBanner />
     <script is:inline>
       function initScrollAnimations() {

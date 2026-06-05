@@ -79,6 +79,22 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 
+  <!-- Teaser: burbuja que invita a usar el bot -->
+  <div
+    id="chat-teaser"
+    class="absolute bottom-20 right-0 w-60 bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 p-3.5 pr-8 hidden"
+  >
+    <button id="chat-teaser-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" aria-label="Cerrar">
+      <Icon name="lucide:x" class="w-3.5 h-3.5" />
+    </button>
+    <div class="flex items-start gap-2.5">
+      <img src="/isbot.png" alt="IS Bot" class="w-9 h-9 object-contain shrink-0" width="36" height="36" />
+      <p id="chat-teaser-text" class="text-sm text-gray-700 leading-snug">
+        ¡Hola! ¿Te ayudo a encontrar lo que buscas?
+      </p>
+    </div>
+  </div>
+
   <!-- Floating Button -->
   <button
     id="chat-toggle"
@@ -268,18 +284,23 @@ import { Icon } from 'astro-icon/components';
         var samePage = path === window.location.pathname;
         var zona = anchor === 'zonas' ? detectZona() : null;
 
+        // Pausas para que el usuario alcance a leer la respuesta del agente
+        // antes de que la pagina se mueva o cambie.
+        var DELAY_SAME = 1800;
+        var DELAY_CROSS = 2800;
+
         if (samePage) {
           if (anchor) {
             var el = document.getElementById(anchor);
-            if (el) {
+            if (!el) return false; // la seccion pedida no existe en esta pagina
+            setTimeout(function () {
               el.scrollIntoView({ behavior: 'smooth' });
               focusSection(el);
               if (zona) setTimeout(function () { highlightZona(zona); }, 500);
-              return true;
-            }
-            return false; // la seccion pedida no existe en esta pagina
+            }, DELAY_SAME);
+            return true;
           }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }, DELAY_SAME);
           return true;
         }
 
@@ -290,9 +311,10 @@ import { Icon } from 'astro-icon/components';
         } catch (e) {}
         saveState();
         showChatNav(routeLabel(route));
-        showNavOverlay(routeLabel(route));
-        // Pequena pausa para que el usuario lea el mensaje antes de saltar.
-        setTimeout(function () { window.location.href = route; }, 1400);
+        // El overlay aparece un momento despues, no de golpe, para que se lea.
+        setTimeout(function () { showNavOverlay(routeLabel(route)); }, 900);
+        // Pausa para que el usuario lea el mensaje antes de saltar de pagina.
+        setTimeout(function () { window.location.href = route; }, DELAY_CROSS);
         return true;
       }
 
@@ -303,6 +325,8 @@ import { Icon } from 'astro-icon/components';
         iconClose.classList.toggle('hidden', !isOpen);
         if (isOpen) {
           notification.classList.add('hidden');
+          var teaserEl = document.getElementById('chat-teaser');
+          if (teaserEl) teaserEl.classList.add('hidden');
           document.body.classList.add('chat-open');
           chatWindow.style.flexDirection = 'column';
           input.focus();
@@ -516,6 +540,61 @@ import { Icon } from 'astro-icon/components';
           toggleChat();
           scrollToBottom();
         }
+      })();
+
+      // Teaser: burbuja que invita a usar el bot, con mensajes rotativos.
+      (function setupTeaser() {
+        var teaser = document.getElementById('chat-teaser');
+        var teaserClose = document.getElementById('chat-teaser-close');
+        var teaserText = document.getElementById('chat-teaser-text');
+        if (!teaser || !teaserText) return;
+        var dismissed = false;
+        try { dismissed = sessionStorage.getItem('isbot-teaser') === '1'; } catch (e) {}
+        if (dismissed) return;
+
+        var mensajes = [
+          '¡Hola! ¿Te ayudo a encontrar lo que buscas?',
+          'Te guío por nuestros servicios y reformas.',
+          '¿Necesitas presupuesto? Pregúntame.',
+          'Dime qué buscas y te llevo a la sección.'
+        ];
+        var idx = 0;
+        var rotTimer;
+        teaserText.style.transition = 'opacity .2s ease';
+
+        function hideTeaser() {
+          teaser.classList.add('hidden');
+          if (rotTimer) clearInterval(rotTimer);
+        }
+        function dismissTeaser() {
+          hideTeaser();
+          try { sessionStorage.setItem('isbot-teaser', '1'); } catch (e) {}
+        }
+        function showTeaser() {
+          if (isOpen) return;
+          teaser.classList.remove('hidden');
+          rotTimer = setInterval(function () {
+            if (isOpen) return;
+            idx = (idx + 1) % mensajes.length;
+            teaserText.style.opacity = '0';
+            setTimeout(function () {
+              teaserText.textContent = mensajes[idx];
+              teaserText.style.opacity = '1';
+            }, 250);
+          }, 8000);
+        }
+
+        setTimeout(function () { if (!isOpen) showTeaser(); }, 5000);
+
+        teaser.addEventListener('click', function (e) {
+          if (e.target.closest('#chat-teaser-close')) return;
+          dismissTeaser();
+          if (!isOpen) toggleChat();
+        });
+        teaserClose.addEventListener('click', function (e) {
+          e.stopPropagation();
+          dismissTeaser();
+        });
       })();
 
       // Tras aterrizar por navegacion asistida, resaltamos la seccion (y la
