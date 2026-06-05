@@ -33,7 +33,7 @@ import { Icon } from 'astro-icon/components';
     </div>
 
     {/* Messages area */}
-    <div id="chat-messages" class="flex-1 md:h-80 md:flex-none overflow-y-auto p-4 space-y-3 bg-gray-50">
+    <div id="chat-messages" class="flex-1 md:h-[460px] md:flex-none overflow-y-auto p-4 space-y-3 bg-gray-50">
       {/* Welcome message */}
       <div class="flex gap-2">
         <img src="/isbot.png" alt="IS Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />
@@ -115,6 +115,107 @@ import { Icon } from 'astro-icon/components';
       var isOpen = false;
       var isStreaming = false;
       var chatHistory = [];
+      var STORAGE_KEY = 'isbot-chat';
+
+      // Persistimos la conversacion para que sobreviva a la navegacion entre
+      // paginas (el sitio recarga, no es SPA). Asi el agente puede llevar al
+      // usuario a otra pagina sin perder el hilo del chat.
+      function saveState() {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ open: isOpen, history: chatHistory }));
+        } catch (e) {}
+      }
+
+      // Detecta el marcador [[GOTO:ruta]] que emite el agente, lo separa del
+      // texto visible y devuelve la ruta para navegar.
+      function extractNavigation(text) {
+        var m = text.match(/\[\[GOTO:\s*([^\]]+)\]\]/i);
+        if (!m) return { clean: text, route: null };
+        var clean = text.replace(/\[\[GOTO:[^\]]+\]\]/ig, '').trim();
+        return { clean: clean, route: m[1].trim() };
+      }
+
+      // Nombre amigable de cada ruta para el loader.
+      function routeLabel(route) {
+        var map = {
+          '/': 'el inicio',
+          '/#servicios': 'los servicios',
+          '/#contacto': 'contacto',
+          '/contacto': 'contacto',
+          '/nosotros': 'sobre nosotros',
+          '/servicios/instalaciones-electricas': 'Electricidad',
+          '/servicios/fontaneria-y-saneamiento': 'Fontanería',
+          '/servicios/climatizacion-y-calefaccion': 'Climatización',
+          '/servicios/reformas-integrales': 'Reformas integrales'
+        };
+        return map[route] || 'la página';
+      }
+
+      // Inyecta una sola vez los keyframes del spinner.
+      function ensureNavStyles() {
+        if (document.getElementById('isbot-anim')) return;
+        var st = document.createElement('style');
+        st.id = 'isbot-anim';
+        st.textContent = '@keyframes isbot-spin{to{transform:rotate(360deg)}}';
+        document.head.appendChild(st);
+      }
+
+      // Overlay bonito mientras saltamos a otra pagina.
+      function showNavOverlay(label) {
+        ensureNavStyles();
+        var accent = '#1d4ed8';
+        try {
+          var h = document.querySelector('header');
+          if (h) { var c = getComputedStyle(h).backgroundColor; if (c) accent = c; }
+        } catch (e) {}
+        var ov = document.createElement('div');
+        ov.id = 'isbot-nav-overlay';
+        ov.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .25s ease;';
+        ov.innerHTML = '<div style="background:#fff;padding:22px 26px;border-radius:16px;box-shadow:0 12px 45px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:14px;max-width:260px;text-align:center;transform:translateY(8px);transition:transform .25s ease;">'
+          + '<div style="width:38px;height:38px;border:3px solid #e5e7eb;border-top-color:' + accent + ';border-radius:50%;animation:isbot-spin .8s linear infinite;"></div>'
+          + '<p style="font-size:14px;color:#374151;margin:0;font-weight:500;">Te llevo a <b>' + label + '</b>…</p></div>';
+        document.body.appendChild(ov);
+        requestAnimationFrame(function () {
+          ov.style.opacity = '1';
+          ov.firstChild.style.transform = 'translateY(0)';
+        });
+      }
+
+      // Destello sutil en la seccion de destino (scroll en la misma pagina).
+      function flashSection(el) {
+        var prev = el.style.boxShadow;
+        el.style.transition = 'box-shadow .5s ease';
+        el.style.boxShadow = 'inset 0 0 0 3px rgba(29,78,216,.45)';
+        setTimeout(function () { el.style.boxShadow = prev; }, 1400);
+      }
+
+      // Ejecuta la navegacion asistida: scroll suave si es la misma pagina,
+      // o redireccion (conservando el chat) si es otra.
+      function runNavigation(route) {
+        if (!route) return;
+        var hashIndex = route.indexOf('#');
+        var path = hashIndex >= 0 ? route.slice(0, hashIndex) : route;
+        var anchor = hashIndex >= 0 ? route.slice(hashIndex + 1) : '';
+        if (path === '') path = window.location.pathname;
+        var samePage = path === window.location.pathname;
+
+        if (samePage) {
+          if (anchor) {
+            var el = document.getElementById(anchor);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+              flashSection(el);
+              return;
+            }
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          saveState();
+          showNavOverlay(routeLabel(route));
+          // Pequena pausa para que el usuario lea el mensaje antes de saltar.
+          setTimeout(function () { window.location.href = route; }, 1300);
+        }
+      }
 
       function toggleChat() {
         isOpen = !isOpen;
@@ -129,6 +230,7 @@ import { Icon } from 'astro-icon/components';
         } else {
           document.body.classList.remove('chat-open');
         }
+        saveState();
       }
 
       toggle.addEventListener('click', toggleChat);
@@ -151,16 +253,39 @@ import { Icon } from 'astro-icon/components';
         return div.querySelector('.bot-text');
       }
 
+      function mdInline(s) {
+        return s
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-medium underline">$1</a>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      }
+
       function renderMarkdown(text) {
-        var html = text
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/\*(.*?)\*/g, '<em>$1</em>')
-          .replace(/^- (.+)/gm, '<li>$1</li>')
-          .replace(/^\d+\. (.+)/gm, '<li>$1</li>')
-          .replace(/(<li>.*<\/li>)/s, '<ul class="list-disc pl-4 space-y-1 my-1">$1</ul>')
-          .replace(/\n\n/g, '</p><p class="mt-2">')
-          .replace(/\n/g, '<br>');
-        return '<p>' + html + '</p>';
+        // Normaliza vinetas pegadas que a veces genera el modelo
+        // ("...fugas* Climatizacion") metiendoles su salto de linea.
+        var norm = text
+          .replace(/([a-záéíóúñ0-9\)])\s*\*\s+(?=[A-ZÁÉÍÓÚ])/g, '$1\n- ')
+          .replace(/\s+[•·]\s+/g, '\n- ');
+
+        var lines = norm.split('\n');
+        var out = [];
+        var inList = false;
+        function closeList() { if (inList) { out.push('</ul>'); inList = false; } }
+
+        lines.forEach(function(raw) {
+          var line = raw.trim();
+          if (!line) { closeList(); return; }
+          var m = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+[.)]\s+(.*)$/);
+          if (m) {
+            if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">'); inList = true; }
+            out.push('<li>' + mdInline(m[1]) + '</li>');
+          } else {
+            closeList();
+            out.push('<p class="mb-1.5 last:mb-0">' + mdInline(line) + '</p>');
+          }
+        });
+        closeList();
+        return out.join('');
       }
 
       function showTyping() {
@@ -202,6 +327,7 @@ import { Icon } from 'astro-icon/components';
         addUserMessage(text);
         input.value = '';
         chatHistory.push({ role: 'user', content: text });
+        saveState();
 
         setLoading(true);
         showTyping();
@@ -230,19 +356,28 @@ import { Icon } from 'astro-icon/components';
 
             var chunk = decoder.decode(result.value, { stream: true });
             fullText += chunk;
-            botTextEl.textContent = fullText;
+            // Ocultamos el marcador [[GOTO:...]] mientras se transmite
+            // (siempre va al final, así que cortamos en el primer '[[').
+            botTextEl.textContent = fullText.split('[[')[0];
             messagesEl.scrollTop = messagesEl.scrollHeight;
           }
 
-          // Render markdown after stream completes
-          botTextEl.innerHTML = renderMarkdown(fullText);
+          // Separamos la accion de navegacion del texto visible
+          var nav = extractNavigation(fullText);
+          // Salvaguarda: si solo vino el marcador, ponemos un texto natural.
+          if (!nav.clean && nav.route) nav.clean = 'Te llevo allí 👇';
+          botTextEl.innerHTML = renderMarkdown(nav.clean);
 
-          chatHistory.push({ role: 'assistant', content: fullText });
+          chatHistory.push({ role: 'assistant', content: nav.clean });
 
           // Keep history manageable (last 10 messages)
           if (chatHistory.length > 10) {
             chatHistory = chatHistory.slice(-10);
           }
+          saveState();
+
+          // Navegacion asistida: el agente lleva al usuario donde pidio
+          if (nav.route) runNavigation(nav.route);
 
         } catch (err) {
           removeTyping();
@@ -263,6 +398,33 @@ import { Icon } from 'astro-icon/components';
           sendMessage(btn.textContent.trim());
         });
       });
+
+      // Restaurar conversacion previa tras navegar entre paginas
+      (function restore() {
+        var raw;
+        try { raw = sessionStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+        if (!raw) return;
+        var state;
+        try { state = JSON.parse(raw); } catch (e) { return; }
+
+        if (state.history && state.history.length) {
+          var qr = document.getElementById('chat-quick-replies');
+          if (qr) qr.remove();
+          state.history.forEach(function(msg) {
+            if (msg.role === 'user') {
+              addUserMessage(msg.content);
+            } else if (msg.role === 'assistant') {
+              var el = createBotMessage();
+              el.innerHTML = renderMarkdown(msg.content);
+            }
+          });
+          chatHistory = state.history;
+        }
+        if (state.open) {
+          isOpen = false;
+          toggleChat();
+        }
+      })();
     }
 
     if (document.readyState === 'loading') {
