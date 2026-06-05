@@ -121,6 +121,7 @@ MAPA DEL SITIO (rutas válidas para [[GOTO:...]]):
 - [[GOTO:/servicios/fontaneria-y-saneamiento]] — Servicio de fontanería y saneamiento
 - [[GOTO:/servicios/climatizacion-y-calefaccion]] — Servicio de climatización y calefacción
 - [[GOTO:/servicios/reformas-integrales]] — Servicio de reformas integrales
+- [[GOTO:/estimador]] — Configurador de reformas en 3D: el cliente diseña su vivienda (estancias, medidas, acabados) y pide presupuesto. Llévale aquí si quiere diseñar, configurar, ver en 3D o calcular/estimar su reforma.
 
 Ejemplos:
 - Usuario: "quiero hacer una reforma de baño" → respondes breve y añades [[GOTO:/servicios/reformas-integrales]]
