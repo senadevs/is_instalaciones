@@ -51,16 +51,49 @@ export default function Estimator() {
   const [view, setView] = useState('3d');
   const [insideItem, setInsideItem] = useState('');
   const [activeLevel, setActiveLevel] = useState(0);
-  const plantas = plantasFor(setup.vivienda);
+  const plantasMax = plantasFor(setup.vivienda);          // plantas que permite el inmueble
+  const niveles = Math.max(0, ...rooms.map((r) => r.level || 0)) + 1; // plantas existentes
 
-  // Cambiar el tipo de inmueble: carga su plantilla de zonas (el usuario refina
-  // a partir de ahí). En dúplex/casa la escalera queda alineada en ambas plantas.
+  // Cambiar el tipo de inmueble: carga su plantilla (solo planta baja). El
+  // usuario refina y, si procede, añade la planta alta con el botón.
   const changeVivienda = (v) => {
     setSetup({ ...setup, vivienda: v });
     setRooms(makeRooms(v));
     setActiveLevel(0);
     setSelectedId(null);
     setInterior(null);
+  };
+
+  // Añadir una planta: clona la última planta (alineada y cubierta sobre la de
+  // abajo) y garantiza una escalera de conexión. El usuario la reorganiza.
+  const addPlanta = () => {
+    if (niveles >= plantasMax) return;
+    setRooms((rs) => {
+      let work = rs;
+      const maxLevel = Math.max(0, ...work.map((r) => r.level || 0));
+      // garantiza una escalera (conexión entre plantas) si no hay ninguna
+      if (!work.some((r) => ['escalera', 'ascensor', 'rampa'].includes(r.type))) {
+        work = [...work, newRoom('escalera', 0)];
+      }
+      // fija las posiciones actuales para que la planta nueva quede alineada
+      const placed = placeRooms(work);
+      const baked = work.map((r) => { const p = placed.find((pp) => pp.id === r.id); return p ? { ...r, cx: p.cx, cz: p.cz } : r; });
+      const newLevel = maxLevel + 1;
+      const clones = baked.filter((r) => (r.level || 0) === maxLevel).map((r) => ({
+        ...r, id: uid++, level: newLevel,
+        openings: { ...r.openings },
+        services: JSON.parse(JSON.stringify(r.services)),
+        furniture: [],
+      }));
+      return [...baked, ...clones];
+    });
+    setActiveLevel(niveles);
+  };
+
+  const removePlanta = (lv) => {
+    if (lv === 0) return; // la planta baja no se quita
+    setRooms((rs) => rs.filter((r) => (r.level || 0) !== lv));
+    setActiveLevel((a) => (a >= lv ? lv - 1 : a));
   };
 
   const totalM2 = rooms.reduce((s, r) => s + r.width * r.length, 0);
@@ -183,7 +216,8 @@ export default function Estimator() {
     <div className="flex flex-col lg:flex-row h-[calc(100vh-5rem)] lg:h-[calc(100vh-7rem)] min-h-[560px] bg-zinc-900">
       <Panel
         setup={setup} setSetup={setSetup} onVivienda={changeVivienda} rooms={rooms} totalM2={totalM2}
-        plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
+        plantas={niveles} plantasMax={plantasMax} onAddPlanta={addPlanta} onRemovePlanta={removePlanta}
+        activeLevel={activeLevel} setActiveLevel={setActiveLevel}
         selectedId={selectedId} setSelectedId={setSelectedId}
         addType={addType} setAddType={setAddType}
         onAdd={addRoom} onRemove={removeRoom} onUpdate={updateRoom} onRotateRoom={rotateRoom}
@@ -207,7 +241,7 @@ export default function Estimator() {
             {interior && (
               <>
                 <button onClick={() => setInterior(null)} className="absolute top-3 right-3 bg-white text-primary text-sm font-semibold px-3 py-1.5 rounded-lg shadow hover:bg-gray-50">← Salir</button>
-                {plantas > 1 && (
+                {niveles > 1 && (
                   <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                     {rooms.some((r) => (r.level || 0) === (interiorRoom?.level || 0) + 1) && (
                       <button onClick={() => goFloor(1)} className="flex items-center gap-1 bg-white text-primary text-xs font-semibold px-2.5 py-1.5 rounded-md shadow hover:bg-gray-50"><Icon name="chevron-up" size={14} /> Subir planta</button>
@@ -231,7 +265,7 @@ export default function Estimator() {
         ) : (
           <PlanEditor
             rooms={rooms} selectedId={selectedId} onSelect={setSelectedId}
-            plantas={plantas} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
+            plantas={niveles} activeLevel={activeLevel} setActiveLevel={setActiveLevel}
             onRotateRoom={rotateRoom}
             onBakeAll={bakeAll} onAddFurniture={addFurniture} onMoveFurniture={moveFurniture}
             onRotateFurniture={rotateFurniture} onRemoveFurniture={removeFurniture}

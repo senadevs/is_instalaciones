@@ -54,14 +54,14 @@ export const VIVIENDA_ZONAS = {
 export const zonasFor = (v) => VIVIENDA_ZONAS[v] || Object.keys(ROOM_TYPES);
 
 // ---- PLANTILLA inicial por tipo de inmueble --------------------------------
-// Array de plantas; cada planta es una lista de tipos de zona. La 'escalera' va
-// la PRIMERA en cada planta del dúplex/casa para que quede alineada (mismo
-// origen de auto-distribución) arriba y abajo.
+// Array de plantas; cada planta es una lista de tipos de zona. Dúplex/casa
+// arrancan SOLO con la planta baja: el usuario añade la planta alta cuando
+// quiere (y entonces se clona alineada con una escalera de conexión).
 export const TEMPLATES = {
   piso:    [['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'dormitorio', 'dormitorio']],
   atico:   [['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'dormitorio', 'terraza']],
-  duplex:  [['escalera', 'recibidor', 'salon', 'cocina', 'bano'], ['escalera', 'pasillo', 'dormitorio', 'dormitorio', 'bano']],
-  casa:    [['escalera', 'recibidor', 'salon', 'comedor', 'cocina', 'bano', 'terraza'], ['escalera', 'pasillo', 'dormitorio', 'dormitorio', 'bano']],
+  duplex:  [['recibidor', 'pasillo', 'salon', 'cocina', 'bano', 'dormitorio']],
+  casa:    [['recibidor', 'pasillo', 'salon', 'comedor', 'cocina', 'bano', 'terraza']],
   local:   [['recibidor', 'salon', 'bano', 'oficina']],
   oficina: [['recibidor', 'oficina', 'salon', 'bano', 'cocina']],
 };

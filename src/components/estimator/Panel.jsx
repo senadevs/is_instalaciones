@@ -45,7 +45,7 @@ function Node({ icon, iconColor, title, badge, open, onToggle, children, right }
 
 export default function Panel({
   setup, setSetup, onVivienda, rooms, totalM2,
-  plantas = 1, activeLevel = 0, setActiveLevel,
+  plantas = 1, plantasMax = 1, onAddPlanta, onRemovePlanta, activeLevel = 0, setActiveLevel,
   selectedId, setSelectedId, addType, setAddType,
   onAdd, onRemove, onUpdate, onRotateRoom, onToggleService, onToggleOpt, onSetOpening,
   interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan, onDownloadPlan,
@@ -138,15 +138,25 @@ export default function Panel({
           </div>
         </Node>
 
-        {/* Selector de planta (dúplex / casa) */}
-        {plantas > 1 && (
-          <div className="flex gap-1.5">
+        {/* Selector de planta (dúplex / casa) + añadir/quitar planta */}
+        {(plantas > 1 || plantasMax > 1) && (
+          <div className="flex items-center gap-1.5">
             {Array.from({ length: plantas }).map((_, lv) => (
               <button key={lv} onClick={() => setActiveLevel(lv)}
                 className={`flex-1 flex items-center justify-center gap-1 text-xs font-semibold py-1.5 rounded-md border transition-colors ${activeLevel === lv ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary'}`}>
                 <Icon name="layers" size={13} /> {lv === 0 ? 'Planta baja' : `Planta ${lv}`}
               </button>
             ))}
+            {plantas < plantasMax && (
+              <button onClick={onAddPlanta} title="Añadir planta (se clona alineada sobre la de abajo)"
+                className="shrink-0 flex items-center gap-1 text-xs font-semibold py-1.5 px-2 rounded-md border border-dashed border-primary/60 text-primary hover:bg-primary/10 transition-colors">
+                <Icon name="plus" size={13} /> Planta
+              </button>
+            )}
+            {plantas > 1 && activeLevel > 0 && (
+              <button onClick={() => onRemovePlanta(activeLevel)} title="Quitar esta planta"
+                className="shrink-0 text-gray-300 hover:text-red-500 px-1"><Icon name="trash-2" size={14} /></button>
+            )}
           </div>
         )}
 
