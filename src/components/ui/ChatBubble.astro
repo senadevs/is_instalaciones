@@ -379,9 +379,15 @@ import { Icon } from 'astro-icon/components';
           var line = raw.trim();
           if (!line) { closeList(); return; }
           var m = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+[.)]\s+(.*)$/);
+          // Patron "Etiqueta corta: descripcion" -> item con etiqueta en negrita,
+          // aunque el modelo no haya usado markdown.
+          var label = !m ? line.match(/^([A-ZÁÉÍÓÚÑ][^:.]{1,45}):\s+(.+)$/) : null;
           if (m) {
             if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">'); inList = true; }
             out.push('<li>' + mdInline(m[1]) + '</li>');
+          } else if (label) {
+            if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">'); inList = true; }
+            out.push('<li><strong>' + label[1] + ':</strong> ' + mdInline(label[2]) + '</li>');
           } else {
             closeList();
             out.push('<p class="mb-1.5 last:mb-0">' + mdInline(line) + '</p>');
@@ -459,9 +465,10 @@ import { Icon } from 'astro-icon/components';
 
             var chunk = decoder.decode(result.value, { stream: true });
             fullText += chunk;
-            // Ocultamos el marcador [[GOTO:...]] mientras se transmite
-            // (siempre va al final, así que cortamos en el primer '[[').
-            botTextEl.textContent = fullText.split('[[')[0];
+            // Renderizamos markdown en vivo (ocultando el marcador [[GOTO:...]],
+            // que siempre va al final) para que el formato aparezca progresivo
+            // y no de golpe al terminar.
+            botTextEl.innerHTML = renderMarkdown(fullText.split('[[')[0]);
             messagesEl.scrollTop = messagesEl.scrollHeight;
           }
 
