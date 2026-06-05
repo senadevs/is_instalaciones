@@ -7,10 +7,10 @@ import { Icon } from 'astro-icon/components';
 
 const atentionChannels = [
   {
-    icon: "lucide:siren",
-    color: "text-red-500",
-    title: "Emergencias 24/7",
-    description: "Servicio técnico de urgencia disponible todos los días del año",
+    icon: "lucide:phone",
+    color: "text-primary",
+    title: "Llámanos",
+    description: "Te atendemos de lunes a sábado y resolvemos tus dudas al momento",
     action: "Llamar ahora",
     link: "tel:+34637591736"
   },
@@ -46,8 +46,8 @@ const serviceAreas = [
 
 const faqItems = [
   {
-    question: "¿Cuál es el tiempo de respuesta para emergencias?",
-    answer: "Nuestro servicio de emergencias 24/7 garantiza una respuesta en menos de 2 horas en Barcelona."
+    question: "¿En cuánto tiempo respondéis a una solicitud?",
+    answer: "Respondemos a tu consulta en menos de 24 horas. Para cualquier avería o duda puedes llamarnos o escribirnos por WhatsApp en nuestro horario de atención."
   },
   {
     question: "¿Ofrecen presupuestos sin compromiso?",
@@ -59,7 +59,7 @@ const faqItems = [
   },
   {
     question: "¿Trabajan los fines de semana?",
-    answer: "Sí, ofrecemos servicio de emergencias los 365 días del año. Para trabajos programados, abrimos los sábados de 9:00 a 14:00."
+    answer: "Sí, abrimos los sábados de 9:00 a 14:00 para trabajos programados. Escríbenos o llámanos y te damos cita."
   }
 ];
 
@@ -96,7 +96,7 @@ const faqSchema = {
         <div class="max-w-4xl mx-auto text-center text-white">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">¿Necesitas Ayuda?</h1>
           <p class="text-lg md:text-xl mb-8">
-            Estamos disponibles 24/7 para cualquier emergencia o consulta
+            Estamos aquí para ayudarte con cualquier consulta o proyecto
           </p>
           <div class="flex flex-wrap justify-center gap-4">
             <a 

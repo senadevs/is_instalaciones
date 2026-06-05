@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
+import ContactSection from '../../components/contact/ContactSection.astro';
+import { Icon } from 'astro-icon/components';
+
+const servicios = [
+  {
+    title: 'Instalaciones Eléctricas',
+    href: '/servicios/instalaciones-electricas',
+    image: '/trabajos/contadores-electricos.jpeg',
+    icon: 'lucide:zap',
+    accent: 'text-amber-500',
+    description: 'Electricistas autorizados para instalaciones, cuadros eléctricos, iluminación LED y boletines (CIE), cumpliendo siempre la normativa REBT.',
+    items: ['Instalación eléctrica completa', 'Cuadros y protecciones', 'Iluminación LED de bajo consumo', 'Boletines eléctricos (CIE)'],
+  },
+  {
+    title: 'Fontanería y Saneamiento',
+    href: '/servicios/fontaneria-y-saneamiento',
+    image: '/trabajos/fontaneria-tuberias.jpeg',
+    icon: 'lucide:droplets',
+    accent: 'text-blue-500',
+    description: 'Fontaneros profesionales para instalaciones de agua, detección de fugas, cambio de tuberías y montaje de calderas y termos.',
+    items: ['Agua fría y caliente', 'Detección de fugas sin obras', 'Calderas y aerotermia', 'Cambio de tuberías y desatascos'],
+  },
+  {
+    title: 'Climatización y Calefacción',
+    href: '/servicios/climatizacion-y-calefaccion',
+    image: '/trabajos/ac-exterior-mitsubishi.jpeg',
+    icon: 'lucide:snowflake',
+    accent: 'text-cyan-500',
+    description: 'Técnicos certificados en gases fluorados para aire acondicionado, calefacción, suelo radiante y mantenimiento de equipos.',
+    items: ['Aire acondicionado split y conductos', 'Calefacción y suelo radiante', 'Mantenimiento y reparación', 'Estudio personalizado'],
+  },
+  {
+    title: 'Reformas Integrales',
+    href: '/servicios/reformas-integrales',
+    image: '/trabajos/reforma-salon-led.jpeg',
+    icon: 'lucide:hammer',
+    accent: 'text-orange-500',
+    description: 'Reformas integrales y parciales llave en mano: baños, cocinas y viviendas completas con un único interlocutor y precio cerrado.',
+    items: ['Reforma integral llave en mano', 'Reforma de baños y cocinas', 'Pladur y aislamiento', 'Albañilería y acabados'],
+  },
+];
+---
+
+<Layout
+  title="Servicios de Instalaciones y Reformas en Barcelona - IS.INSTALACIONES"
+  description="Servicios de electricidad, fontanería, climatización y reformas integrales en Barcelona y área metropolitana. Técnicos autorizados, presupuesto gratuito y 2 años de garantía."
+>
+
+  <main class="pt-20">
+
+    <!-- Hero -->
+    <section class="relative py-20 md:py-24 bg-primary text-white overflow-hidden">
+      <div class="cta-stat-shine"></div>
+      <div class="container mx-auto px-4 relative z-[1]">
+        <div class="max-w-3xl mx-auto text-center">
+          <div data-animate="fade-up" class="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+            <Icon name="lucide:wrench" class="w-4 h-4" />
+            Servicios profesionales en Barcelona
+          </div>
+          <h1 data-animate="fade-up" class="text-3xl md:text-5xl font-bold mb-5">Nuestros Servicios de Instalaciones y Reformas</h1>
+          <p data-animate="fade-up" data-delay="200" class="text-white/90 text-lg leading-relaxed">
+            Somos tu empresa de instalaciones y reformas de confianza en Barcelona y toda el área metropolitana. Electricidad, fontanería, climatización y reformas integrales, con un único equipo y la garantía de profesionales autorizados.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intro SEO -->
+    <section class="py-12 md:py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto space-y-4 text-center">
+          <h2 data-animate="fade-up" class="text-2xl md:text-3xl font-bold mb-2">Soluciones integrales para tu hogar y tu negocio</h2>
+          <p data-animate="fade-up" class="text-gray-600 text-base md:text-lg leading-relaxed">
+            En <strong>IS Instalaciones</strong> reunimos en un solo equipo todos los oficios que necesitas para tu vivienda o local: <strong>electricistas</strong>, <strong>fontaneros</strong>, técnicos de <strong>climatización</strong> y especialistas en <strong>reformas</strong>. Esto significa que puedes resolver cualquier proyecto —desde una pequeña reparación hasta una reforma integral— con un único interlocutor, sin tener que coordinar a varias empresas.
+          </p>
+          <p data-animate="fade-up" data-delay="200" class="text-gray-600 text-base md:text-lg leading-relaxed">
+            Con más de 8 años de experiencia y más de 500 proyectos realizados en Barcelona, Hospitalet, Badalona, Santa Coloma, Cornellà y toda el área metropolitana, trabajamos siempre con materiales de primera calidad, presupuestos cerrados sin sorpresas y 2 años de garantía en todos nuestros trabajos. Elige el servicio que necesitas y descubre cómo podemos ayudarte.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tarjetas de servicios -->
+    <section class="py-12 md:py-16 bg-gray-50 border-y border-primary/10">
+      <div class="container mx-auto px-4">
+        <div data-stagger class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {servicios.map(servicio => (
+            <a href={servicio.href} data-animate="fade-up" class="cta-service-card group bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition-all">
+              <div class="aspect-[16/9] overflow-hidden">
+                <img src={servicio.image} alt={servicio.title} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div class="p-6 relative z-[1]">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Icon name={servicio.icon} class={`w-6 h-6 ${servicio.accent}`} />
+                  </div>
+                  <h3 class="text-xl font-bold text-slate-800 group-hover:text-primary transition-colors">{servicio.title}</h3>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">{servicio.description}</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-4">
+                  {servicio.items.map(item => (
+                    <li class="flex items-start text-sm text-gray-700">
+                      <Icon name="lucide:circle-check" class="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <span class="inline-flex items-center gap-1.5 text-primary font-semibold text-sm group-hover:gap-2.5 transition-all">
+                  Ver servicio
+                  <Icon name="lucide:arrow-right" class="w-4 h-4" />
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Proceso -->
+    <ServiceProcess servicio="tu proyecto" />
+
+    <!-- CTA -->
+    <ServiceCTABanner />
+
+    <ContactSection />
+  </main>
+
+</Layout>
