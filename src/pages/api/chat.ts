@@ -1,22 +1,15 @@
 import type { APIRoute } from 'astro';
-import { createOpenRouter } from '@openrouter/ai-sdk-provider';
-import { streamText } from 'ai';
+import OpenAI from 'openai';
 import knowledgeBase from '../../data/knowledge.md?raw';
 
-const OPENROUTER_API_KEY = import.meta.env.OPENROUTER_API_KEY;
+const NVIDIA_API_KEY = import.meta.env.NVIDIA_API_KEY;
 
-// Cadena de modelos gratuitos (todos instruct, sin "reasoning" para evitar
-// que la traza de pensamiento se cuele en la respuesta). OpenRouter usa el
-// primero como principal y salta al siguiente si está rate-limited (429).
-// Todos son fuertes en español.
-const MODEL = 'google/gemma-4-26b-a4b-it:free';
-const MODEL_FALLBACKS = [
-  'google/gemma-4-26b-a4b-it:free',
-  'google/gemma-4-31b-it:free',
-  'qwen/qwen3-next-80b-a3b-instruct:free',
-  'meta-llama/llama-3.3-70b-instruct:free',
-  'meta-llama/llama-3.2-3b-instruct:free',
-];
+// Usamos la API de NVIDIA (compatible con el SDK de OpenAI) apuntando a su
+// endpoint. Elegimos un modelo pequeño instruct (no de razonamiento) para
+// mínima latencia en el chatbot. Aun así filtramos cualquier
+// `reasoning_content` por seguridad, para que no se cuele en la respuesta.
+const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1';
+const MODEL = 'meta/llama-3.1-8b-instruct';
 
 const TZ = 'Europe/Madrid';
 
@@ -114,7 +107,7 @@ CONTEXTO TEMPORAL (úsalo solo si es relevante, no lo menciones sin motivo):
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!OPENROUTER_API_KEY) {
+  if (!NVIDIA_API_KEY) {
     return new Response(JSON.stringify({ error: 'API key not configured' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
@@ -124,19 +117,43 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const { messages } = await request.json();
 
-    const openrouter = createOpenRouter({
-      apiKey: OPENROUTER_API_KEY,
+    const openai = new OpenAI({
+      apiKey: NVIDIA_API_KEY,
+      baseURL: NVIDIA_BASE_URL,
     });
 
-    const result = streamText({
-      model: openrouter(MODEL, { models: MODEL_FALLBACKS }),
-      system: buildSystemPrompt(),
-      messages,
-      maxTokens: 400,
+    const completion = await openai.chat.completions.create({
+      model: MODEL,
+      messages: [
+        { role: 'system', content: buildSystemPrompt() },
+        ...messages,
+      ],
       temperature: 0.3,
+      top_p: 0.95,
+      max_tokens: 600,
+      stream: true,
+    } as any);
+
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of completion as any) {
+            // Solo el contenido final; ignoramos delta.reasoning_content.
+            const content = chunk.choices?.[0]?.delta?.content;
+            if (content) controller.enqueue(encoder.encode(content));
+          }
+        } catch (err: any) {
+          console.error('NVIDIA stream error:', err?.message || err);
+        } finally {
+          controller.close();
+        }
+      },
     });
 
-    return result.toTextStreamResponse();
+    return new Response(stream, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
   } catch (error: any) {
     console.error('Chat API error:', error?.message || error);
     return new Response(JSON.stringify({ error: error?.message || 'Error processing request' }), {
