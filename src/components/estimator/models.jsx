@@ -1,38 +1,53 @@
 import { useGLTF, Clone } from '@react-three/drei';
 
-// Modelos GLTF (Kenney Furniture Kit, CC0) servidos desde /public/models
+// Modelos GLTF (Kenney Furniture Kit, CC0) servidos desde /public/models.
+// Kit completo de ~140 piezas; las claves son alias usados por el catálogo.
+const m = (file) => `/models/${file}.glb`;
 export const MODELS = {
-  sofa: '/models/loungeSofa.glb',
-  sofaLong: '/models/loungeSofaLong.glb',
-  armchair: '/models/loungeChair.glb',
-  coffeeTable: '/models/tableCoffee.glb',
-  tv: '/models/televisionModern.glb',
-  tvCabinet: '/models/cabinetTelevision.glb',
-  bed: '/models/bedDouble.glb',
-  nightstand: '/models/sideTableDrawers.glb',
-  wardrobe: '/models/bookcaseClosedDoors.glb',
-  kitchenCabinet: '/models/kitchenCabinet.glb',
-  kitchenUpper: '/models/kitchenCabinetUpper.glb',
-  kitchenFridge: '/models/kitchenFridge.glb',
-  kitchenSink: '/models/kitchenSink.glb',
-  kitchenStove: '/models/kitchenStove.glb',
-  toilet: '/models/toilet.glb',
-  bathSink: '/models/bathroomSink.glb',
-  bathtub: '/models/bathtub.glb',
-  shower: '/models/shower.glb',
-  table: '/models/table.glb',
-  chair: '/models/chair.glb',
-  desk: '/models/desk.glb',
-  deskChair: '/models/chairDesk.glb',
-  ceilingLamp: '/models/lampSquareCeiling.glb',
-  plant: '/models/pottedPlant.glb',
-  plantSmall: '/models/plantSmall1.glb',
-  rug: '/models/rugRectangle.glb',
-  doorFront: '/models/doorwayFront.glb',
-  doorway: '/models/doorway.glb',
+  // Salón
+  sofa: m('loungeSofa'), sofaLong: m('loungeSofaLong'), sofaCorner: m('loungeSofaCorner'),
+  sofaOttoman: m('loungeSofaOttoman'), designSofa: m('loungeDesignSofa'), designSofaCorner: m('loungeDesignSofaCorner'),
+  armchair: m('loungeChair'), armchairRelax: m('loungeChairRelax'), designChair: m('loungeDesignChair'),
+  coffeeTable: m('tableCoffee'), coffeeTableGlass: m('tableCoffeeGlass'), coffeeTableSquare: m('tableCoffeeSquare'),
+  tv: m('televisionModern'), tvVintage: m('televisionVintage'), tvCabinet: m('cabinetTelevision'), tvCabinetDoors: m('cabinetTelevisionDoors'),
+  bookcase: m('bookcaseOpen'), bookcaseClosed: m('bookcaseClosedDoors'), bookcaseWide: m('bookcaseClosedWide'),
+  books: m('books'), radio: m('radio'), speaker: m('speaker'), pillow: m('pillow'),
+  // Comedor / mesas
+  table: m('table'), tableRound: m('tableRound'), tableGlass: m('tableGlass'), tableCloth: m('tableCloth'),
+  chair: m('chair'), chairCushion: m('chairCushion'), chairModern: m('chairModernCushion'), chairRounded: m('chairRounded'),
+  stoolBar: m('stoolBar'), stoolBarSquare: m('stoolBarSquare'), bench: m('bench'), benchCushion: m('benchCushion'),
+  // Dormitorio
+  bed: m('bedDouble'), bedSingle: m('bedSingle'), bedBunk: m('bedBunk'), cabinetBed: m('cabinetBed'), cabinetBedDrawer: m('cabinetBedDrawerTable'),
+  nightstand: m('sideTableDrawers'), sideTable: m('sideTable'), wardrobe: m('bookcaseClosedDoors'), coatRack: m('coatRackStanding'),
+  // Cocina
+  kitchenCabinet: m('kitchenCabinet'), kitchenCabinetDrawer: m('kitchenCabinetDrawer'), kitchenBar: m('kitchenBar'),
+  kitchenUpper: m('kitchenCabinetUpper'), kitchenUpperDouble: m('kitchenCabinetUpperDouble'),
+  kitchenFridge: m('kitchenFridge'), kitchenFridgeLarge: m('kitchenFridgeLarge'), kitchenFridgeBuiltIn: m('kitchenFridgeBuiltIn'),
+  kitchenSink: m('kitchenSink'), kitchenStove: m('kitchenStove'), kitchenStoveElectric: m('kitchenStoveElectric'),
+  microwave: m('kitchenMicrowave'), coffeeMachine: m('kitchenCoffeeMachine'), blender: m('kitchenBlender'),
+  toaster: m('toaster'), hood: m('hoodModern'), hoodLarge: m('hoodLarge'), washer: m('washer'), dryer: m('dryer'),
+  // Baño
+  toilet: m('toilet'), toiletSquare: m('toiletSquare'), bathSink: m('bathroomSink'), bathSinkSquare: m('bathroomSinkSquare'),
+  bathtub: m('bathtub'), shower: m('shower'), showerRound: m('showerRound'), bathCabinet: m('bathroomCabinet'), bathMirror: m('bathroomMirror'),
+  // Oficina
+  desk: m('desk'), deskCorner: m('deskCorner'), deskChair: m('chairDesk'),
+  computer: m('computerScreen'), keyboard: m('computerKeyboard'), laptop: m('laptop'),
+  // Iluminación
+  ceilingLamp: m('lampSquareCeiling'), ceilingFan: m('ceilingFan'),
+  floorLamp: m('lampRoundFloor'), floorLampSquare: m('lampSquareFloor'),
+  tableLamp: m('lampRoundTable'), wallLamp: m('lampWall'),
+  // Deco / plantas / alfombras
+  plant: m('pottedPlant'), plantSmall: m('plantSmall1'), plantSmall2: m('plantSmall2'), plantSmall3: m('plantSmall3'),
+  rug: m('rugRectangle'), rugRound: m('rugRound'), rugSquare: m('rugSquare'), doormat: m('rugDoormat'),
+  trashcan: m('trashcan'), boxOpen: m('cardboardBoxOpen'), bear: m('bear'),
+  // Puertas / arquitectura
+  doorFront: m('doorwayFront'), doorway: m('doorway'), doorwayOpen: m('doorwayOpen'),
+  stairs: m('stairs'), stairsOpen: m('stairsOpen'),
 };
 
-Object.values(MODELS).forEach((u) => useGLTF.preload(u));
+// Sin preload masivo: cada modelo se carga bajo demanda (useGLTF cachea) y
+// aparece de forma progresiva dentro de <Suspense>. Evita un pico de descargas
+// al abrir el estimador.
 
 // Escala global: los modelos Kenney están en metros aprox.
 const S = 1;
