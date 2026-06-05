@@ -6,6 +6,8 @@ interface Props {
   keywords?: string[];
   noindex?: boolean;
   additionalSchema?: object;
+  hideFooter?: boolean;
+  hideBanner?: boolean;
 }
 
 const defaultKeywords = [
@@ -39,7 +41,9 @@ const {
   image = "/imag/logo.webp",
   keywords = defaultKeywords,
   noindex = false,
-  additionalSchema
+  additionalSchema,
+  hideFooter = false,
+  hideBanner = false
 } = Astro.props;
 
 // Configuración de URLs base
@@ -217,9 +221,9 @@ import '../styles/global.css';
     <!-- End Google Tag Manager (noscript) -->
     <Header/>
     <slot />
-    <Footer/>
+    {!hideFooter && <Footer/>}
     <ChatBubble />
-    <AnnouncementBanner />
+    {!hideBanner && <AnnouncementBanner />}
     <CookieBanner />
     <script is:inline>
       function initScrollAnimations() {
