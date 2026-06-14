@@ -55,6 +55,7 @@ import Header from '../components/ui/Header.astro';
 import ChatBubble from '../components/ui/ChatBubble.astro';
 import AnnouncementBanner from '../components/ui/AnnouncementBanner.astro';
 import CookieBanner from '../components/ui/CookieBanner.astro';
+import AnalyticsEvents from '../components/ui/AnalyticsEvents.astro';
 import '../styles/global.css';
 ---
 
@@ -220,6 +221,7 @@ import '../styles/global.css';
     <ChatBubble />
     {!hideBanner && <AnnouncementBanner />}
     <CookieBanner />
+    <AnalyticsEvents />
     <script is:inline>
       function initScrollAnimations() {
         const elements = document.querySelectorAll('[data-animate]');

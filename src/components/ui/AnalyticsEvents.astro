@@ -1,0 +1,50 @@
+---
+// Captura de eventos de conversión hacia el dataLayer (GTM/GA4).
+// Un único listener delegado: no hace falta tocar cada botón.
+// Los eventos se empujan al dataLayer; GTM solo los procesa si el usuario
+// dio consentimiento (Consent Mode v2, ver CookieBanner.astro).
+---
+<script is:inline>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+    function push(name, extra) {
+      try { window.dataLayer.push(Object.assign({ event: name }, extra || {})); } catch (e) {}
+    }
+
+    // Clics en WhatsApp / teléfono / email (delegación global en enlaces)
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var a = t && t.closest ? t.closest('a[href]') : null;
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp|whatsapp\.com/i.test(href)) push('click_whatsapp', { link_url: href });
+      else if (/^tel:/i.test(href)) push('click_telefono', { link_url: href });
+      else if (/^mailto:/i.test(href)) push('click_email', { link_url: href });
+    }, true);
+
+    // Envío del formulario de contacto / presupuesto (lead). Excluye el chat.
+    document.addEventListener('submit', function (e) {
+      var f = e.target;
+      if (!f || f.tagName !== 'FORM') return;
+      var action = f.getAttribute('action') || '';
+      if (/staticforms/i.test(action)) {
+        push('generate_lead', { form_id: f.id || 'contacto' });
+      }
+    }, true);
+
+    // Clic en CTAs de presupuesto/contacto (por texto o data-attr)
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var btn = t && t.closest ? t.closest('[data-cta], a, button') : null;
+      if (!btn) return;
+      if (btn.hasAttribute && btn.hasAttribute('data-cta')) {
+        push('cta_click', { cta: btn.getAttribute('data-cta') });
+        return;
+      }
+      var txt = (btn.textContent || '').toLowerCase();
+      if (/presupuesto|solicita|pide tu presupuesto|consulta gratuita/.test(txt)) {
+        push('cta_presupuesto', { cta_text: (btn.textContent || '').trim().slice(0, 60) });
+      }
+    }, true);
+  })();
+</script>

@@ -82,14 +82,35 @@ import { Icon } from 'astro-icon/components';
   (function() {
     var COOKIE_KEY = 'is_cookie_consent';
 
+    // ---- Google Consent Mode v2: denegado por defecto (antes de cargar GTM) ----
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+
     function getConsent() {
       try { return JSON.parse(localStorage.getItem(COOKIE_KEY)); } catch(e) { return null; }
     }
-
     function saveConsent(consent) {
       localStorage.setItem(COOKIE_KEY, JSON.stringify(consent));
     }
-
+    // Aplica la elección del usuario a las señales de consentimiento.
+    function applyConsent(c) {
+      gtag('consent', 'update', {
+        analytics_storage: c.analytics ? 'granted' : 'denied',
+        ad_storage: c.marketing ? 'granted' : 'denied',
+        ad_user_data: c.marketing ? 'granted' : 'denied',
+        ad_personalization: c.marketing ? 'granted' : 'denied'
+      });
+    }
     function loadGTM() {
       if (window._gtmLoaded) return;
       window._gtmLoaded = true;
@@ -114,22 +135,24 @@ import { Icon } from 'astro-icon/components';
 
       var consent = getConsent();
 
+      // Ya eligió antes: aplica su consentimiento y carga GTM si autorizó algo.
       if (consent) {
-        if (consent.analytics) loadGTM();
+        applyConsent(consent);
+        if (consent.analytics || consent.marketing) loadGTM();
         return;
       }
 
-      // Show banner
       banner.classList.remove('hidden');
 
       acceptBtn.addEventListener('click', function() {
-        saveConsent({ necessary: true, analytics: true, marketing: true });
+        var c = { necessary: true, analytics: true, marketing: true };
+        saveConsent(c); applyConsent(c); loadGTM();
         banner.classList.add('hidden');
-        loadGTM();
       });
 
       rejectBtn.addEventListener('click', function() {
-        saveConsent({ necessary: true, analytics: false, marketing: false });
+        var c = { necessary: true, analytics: false, marketing: false };
+        saveConsent(c); applyConsent(c); // queda todo denegado, GTM no se carga
         banner.classList.add('hidden');
       });
 
@@ -138,14 +161,10 @@ import { Icon } from 'astro-icon/components';
       });
 
       saveBtn.addEventListener('click', function() {
-        var c = {
-          necessary: true,
-          analytics: analyticsCheck.checked,
-          marketing: marketingCheck.checked
-        };
-        saveConsent(c);
+        var c = { necessary: true, analytics: analyticsCheck.checked, marketing: marketingCheck.checked };
+        saveConsent(c); applyConsent(c);
+        if (c.analytics || c.marketing) loadGTM();
         banner.classList.add('hidden');
-        if (c.analytics) loadGTM();
       });
     }
 
