@@ -610,6 +610,88 @@ html {
     }
   }
 
+  body.immersive-mode {
+    overflow: hidden !important;
+    background: var(--color-background);
+  }
+
+  body.immersive-mode > :not(#chat-widget) {
+    display: none !important;
+  }
+
+  body.immersive-mode #chat-widget {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: auto;
+  }
+
+  body.immersive-mode #isbot-immersive-stage {
+    pointer-events: auto;
+  }
+
+  body.immersive-mode #chat-window {
+    display: none !important;
+  }
+
+  body.immersive-mode #immersive-chat-form {
+    display: flex !important;
+  }
+
+  body.immersive-mode #chat-window > .bg-primary {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.98), rgba(5, 150, 105, 0.96)) !important;
+    border-radius: 1rem !important;
+    margin: 0.5rem 0.5rem 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 10px 24px rgba(16, 185, 129, 0.16);
+  }
+
+  body.immersive-mode #chat-messages {
+    background: transparent !important;
+  }
+
+  body.immersive-mode #chat-window .p-3.border-t,
+  body.immersive-mode #chat-window .p-3.border-t.border-gray-200,
+  body.immersive-mode #chat-window .p-3 {
+    background: rgba(255, 255, 255, 0.72) !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 1rem !important;
+  }
+
+  body.immersive-mode #chat-window .bg-gray-50,
+  body.immersive-mode #chat-window .bg-white {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    color: var(--color-foreground, #0f172a) !important;
+  }
+
+  body.immersive-mode #chat-window .bg-primary {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.98), rgba(5, 150, 105, 0.96)) !important;
+  }
+
+  body.immersive-mode #chat-window input {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(16, 185, 129, 0.18) !important;
+    color: var(--color-foreground, #0f172a) !important;
+  }
+
+  body.immersive-mode #immersive-content .scene-card-body,
+  body.immersive-mode #immersive-content .scene-card-copy {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  body.immersive-mode #immersive-content .scene-card,
+  body.immersive-mode #immersive-content .editorial-block {
+    gap: 0.75rem;
+    line-height: 1.45;
+  }
+
   /* ========== Chat Markdown ========== */
   .chat-markdown { font-size: 0.875rem; line-height: 1.5; }
   .chat-markdown p { margin: 0 0 0.5rem; }
@@ -637,4 +719,47 @@ html {
       animation: none;
     }
   }
+
+  /* ========== Modo inmersivo — tema oscuro (fondo negro, texto blanco) ========== */
+  [data-theme="dark"] #isbot-immersive-stage { background: #09090b; }
+  /* atenúa los gradientes de fondo para que domine el negro */
+  [data-theme="dark"] #isbot-immersive-stage > div:nth-child(1) { opacity: 0.4; }
+  [data-theme="dark"] #isbot-immersive-stage > div:nth-child(2) { opacity: 0.05; }
+
+  /* Paneles y tarjetas: de blanco translúcido a negro */
+  [data-theme="dark"] #isbot-immersive-stage section,
+  [data-theme="dark"] #isbot-immersive-stage aside,
+  [data-theme="dark"] #isbot-immersive-stage .scene-card,
+  [data-theme="dark"] #isbot-immersive-stage [class*="bg-white"] {
+    background: rgba(24, 24, 27, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  /* Texto: claro sobre el negro */
+  [data-theme="dark"] #isbot-immersive-stage .text-slate-900,
+  [data-theme="dark"] #isbot-immersive-stage h1,
+  [data-theme="dark"] #isbot-immersive-stage h2,
+  [data-theme="dark"] #isbot-immersive-stage h3,
+  [data-theme="dark"] #isbot-immersive-stage .scene-card-title {
+    color: #ffffff !important;
+  }
+  [data-theme="dark"] #isbot-immersive-stage .text-slate-600,
+  [data-theme="dark"] #isbot-immersive-stage .text-slate-500,
+  [data-theme="dark"] #isbot-immersive-stage .scene-card-body,
+  [data-theme="dark"] #isbot-immersive-stage .scene-card-copy,
+  [data-theme="dark"] #isbot-immersive-stage p {
+    color: #d4d4d8 !important;
+  }
+  /* Chips legibles en oscuro */
+  [data-theme="dark"] #isbot-immersive-stage [class*="bg-white"].rounded-full {
+    background: rgba(39, 39, 42, 0.95) !important;
+    color: #f4f4f5 !important;
+  }
+  /* Respuesta del agente (panel derecho) */
+  [data-theme="dark"] #isbot-immersive-stage #immersive-story,
+  [data-theme="dark"] #isbot-immersive-stage #immersive-story * {
+    color: #e4e4e7 !important;
+  }
+  /* Cabecera "Modo inmersivo activo" y barra de herramientas */
+  [data-theme="dark"] #isbot-immersive-stage .text-emerald-700\/80 { color: #6ee7b7 !important; }
 

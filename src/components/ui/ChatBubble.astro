@@ -1,64 +1,62 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { immersiveContent } from '../../data/immersiveContent';
 ---
 
-<!-- Chat Bubble -->
-<div id="chat-widget" class="fixed bottom-6 right-6 z-50">
-
-  <!-- Chat Window -->
+<div id="chat-widget" class="fixed bottom-6 right-6 z-[70]">
   <div
     id="chat-window"
-    class="fixed md:absolute inset-0 md:inset-auto md:bottom-20 md:right-0 w-full md:w-[360px] md:max-w-[calc(100vw-2rem)] bg-white md:rounded-2xl shadow-2xl md:border md:border-gray-200 overflow-hidden z-[60]"
-    style="display: none;"
+    class="fixed md:absolute inset-0 md:inset-auto md:bottom-20 md:right-0 w-full md:w-[380px] md:max-w-[calc(100vw-2rem)] bg-white md:rounded-3xl shadow-2xl md:border md:border-gray-200 overflow-hidden z-[60]"
+    style="display:none;"
   >
-    {/* Header */}
-    <div class="bg-primary p-4 flex items-center justify-between shrink-0">
-      <div class="flex items-center gap-3">
-        <img src="/isbot.png" alt="IS Bot" class="w-12 h-12 object-contain" width="48" height="48" />
-        <div>
-          <p class="text-white font-semibold text-sm">IS Instalaciones</p>
+    <div class="bg-primary p-4 flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3 min-w-0">
+        <img src="/isbot.png" alt="IS Bot" class="w-11 h-11 object-contain shrink-0" width="44" height="44" />
+        <div class="min-w-0">
+          <p class="text-white font-semibold text-sm leading-tight truncate">IS Instalaciones</p>
           <div class="flex items-center gap-1.5">
             <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
             <span class="text-white/70 text-xs">En línea</span>
           </div>
         </div>
       </div>
+
       <button
-        id="chat-close"
-        class="text-white/70 hover:text-white transition-colors p-1"
-        aria-label="Cerrar chat"
+        id="imm-toggle"
+        class="hidden md:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-white/90 hover:text-white hover:bg-white/15 transition-colors"
+        type="button"
+        aria-pressed="false"
+        aria-label="Activar modo inmersivo"
       >
+        <span class="relative flex h-3.5 w-3.5 items-center justify-center">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-white/40 opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-white"></span>
+        </span>
+        <span class="text-xs font-semibold tracking-wide">Inmersivo</span>
+      </button>
+
+      <button id="chat-close" class="text-white/70 hover:text-white transition-colors p-1" aria-label="Cerrar chat" type="button">
         <Icon name="lucide:x" class="w-5 h-5" />
       </button>
     </div>
 
-    {/* Messages area */}
     <div id="chat-messages" class="flex-1 md:h-[460px] md:flex-none overflow-y-auto p-4 space-y-3 bg-gray-50">
-      {/* Welcome message */}
       <div class="flex gap-2">
         <img src="/isbot.png" alt="IS Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />
-        <div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]">
+        <div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[84%]">
           <p class="text-sm text-gray-700">
             Hola, soy el asistente de <strong>IS Instalaciones</strong>. ¿En qué puedo ayudarte?
           </p>
         </div>
       </div>
 
-      {/* Quick replies */}
       <div id="chat-quick-replies" class="flex flex-wrap gap-2 pl-10">
-        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">
-          Qué servicios ofrecéis
-        </button>
-        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">
-          Zonas de cobertura
-        </button>
-        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">
-          Horario de atención
-        </button>
+        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">Qué servicios ofrecéis</button>
+        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">Zonas de cobertura</button>
+        <button class="chat-quick-reply text-xs bg-primary text-white px-3 py-1.5 rounded-full hover:bg-secondary transition-colors">Horario de atención</button>
       </div>
     </div>
 
-    {/* Input area */}
     <div class="p-3 border-t border-gray-200 bg-white shrink-0">
       <form id="chat-form" class="flex items-center gap-2">
         <input
@@ -68,49 +66,116 @@ import { Icon } from 'astro-icon/components';
           class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           autocomplete="off"
         />
-        <button
-          type="submit"
-          class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-secondary transition-colors shrink-0"
-          aria-label="Enviar mensaje"
-        >
+        <button type="submit" class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-secondary transition-colors shrink-0" aria-label="Enviar mensaje">
           <Icon name="lucide:send" class="w-4 h-4" />
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Teaser: burbuja que invita a usar el bot -->
   <div
     id="chat-teaser"
-    class="absolute bottom-20 right-0 w-60 bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 p-3.5 pr-8 hidden"
+    class="absolute bottom-20 right-0 w-64 bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 p-3.5 pr-8 hidden"
   >
-    <button id="chat-teaser-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" aria-label="Cerrar">
+    <button id="chat-teaser-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" aria-label="Cerrar" type="button">
       <Icon name="lucide:x" class="w-3.5 h-3.5" />
     </button>
     <div class="flex items-start gap-2.5">
       <img src="/isbot.png" alt="IS Bot" class="w-9 h-9 object-contain shrink-0" width="36" height="36" />
-      <p id="chat-teaser-text" class="text-sm text-gray-700 leading-snug">
-        ¡Hola! ¿Te ayudo a encontrar lo que buscas?
-      </p>
+      <p id="chat-teaser-text" class="text-sm text-gray-700 leading-snug">¡Hola! ¿Te ayudo a encontrar lo que buscas?</p>
     </div>
   </div>
 
-  <!-- Floating Button -->
+  <form
+    id="immersive-chat-form"
+    class="fixed bottom-4 left-1/2 z-[75] hidden w-[min(720px,calc(100vw-0.5rem))] -translate-x-1/2"
+    aria-label="Chat inmersivo"
+  >
+    <div class="flex items-center gap-2 rounded-full border border-white/70 bg-white/88 p-2 shadow-[0_18px_45px_rgba(15,23,42,.18)] backdrop-blur-xl">
+      <div class="flex items-center gap-2 pl-2 pr-1 text-slate-700">
+        <img src="/isbot.png" alt="IS Bot" class="w-8 h-8 object-contain" width="32" height="32" />
+        <span class="text-xs font-semibold tracking-[0.18em] uppercase text-emerald-700">IA</span>
+      </div>
+      <input
+        id="immersive-chat-input"
+        type="text"
+        placeholder="Pregunta al agente..."
+        class="flex-1 rounded-full border border-transparent bg-transparent px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-emerald-200 focus:bg-white"
+        autocomplete="off"
+      />
+      <button
+        type="submit"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:shadow-lg transition-all"
+        aria-label="Enviar mensaje inmersivo"
+      >
+        <Icon name="lucide:send" class="w-4 h-4" />
+      </button>
+    </div>
+  </form>
+
   <button
     id="chat-toggle"
     class="chat-bubble-btn w-16 h-16 bg-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300 relative border-2 border-primary/20"
     aria-label="Abrir chat"
+    type="button"
   >
     <img src="/isbot.png" alt="Chat" id="chat-icon-open" class="w-14 h-14 object-contain" width="56" height="56" />
     <Icon name="lucide:x" id="chat-icon-close" class="w-7 h-7 text-primary hidden" />
-
-    {/* Notification dot */}
     <span id="chat-notification" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
   </button>
+
+  <div id="isbot-immersive-stage" class="fixed inset-0 z-[55] hidden overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(4,106,83,.22),transparent_35%),radial-gradient(circle_at_top_right,rgba(21,96,81,.16),transparent_25%),linear-gradient(135deg,var(--color-background),rgba(4,106,83,.08))]"></div>
+    <div class="absolute inset-0 bg-grid opacity-[0.16]"></div>
+    <div class="absolute -left-24 top-16 h-64 w-64 rounded-full bg-primary/15 blur-3xl"></div>
+    <div class="absolute -right-24 bottom-24 h-80 w-80 rounded-full bg-cyan-400/15 blur-3xl"></div>
+
+    <div class="relative z-[1] flex h-full min-h-0 flex-col">
+      <div class="flex items-center justify-between gap-3 px-4 py-4 md:px-6 md:py-5">
+        <div class="flex items-center gap-3 rounded-full border border-white/50 bg-white/70 backdrop-blur-xl px-4 py-2 shadow-lg">
+          <img src="/isbot.png" alt="IS Bot" class="w-8 h-8 object-contain" width="32" height="32" />
+          <div>
+            <p class="text-sm font-semibold text-slate-900 leading-tight">Modo inmersivo activo</p>
+            <p class="text-xs text-slate-500">Canvas creativo a la izquierda · agente a la derecha</p>
+          </div>
+        </div>
+
+        <button
+          id="immersive-exit"
+          type="button"
+          class="inline-flex items-center gap-2 rounded-full bg-slate-900/90 px-4 py-2 text-white shadow-xl hover:bg-slate-800 transition-colors"
+          aria-label="Salir del modo inmersivo"
+        >
+          <Icon name="lucide:chevrons-left" class="w-4 h-4" />
+          <span class="text-sm font-semibold">Salir</span>
+        </button>
+      </div>
+
+      <div class="flex-1 min-h-0 px-4 pb-4 md:px-6 md:pb-6">
+        <div class="grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <section class="min-h-0 overflow-y-auto rounded-[2.25rem] border border-white/70 bg-white/82 p-4 shadow-[0_24px_80px_rgba(15,23,42,.14)] backdrop-blur-2xl md:p-6 lg:p-8">
+            <div id="immersive-content" class="min-h-full"></div>
+          </section>
+          <aside class="min-h-0 overflow-y-auto rounded-[2.25rem] border border-white/70 bg-white/72 p-4 text-slate-900 shadow-[0_24px_80px_rgba(15,23,42,.14)] backdrop-blur-2xl md:p-6">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700/80">Respuesta del agente</p>
+                <h3 class="mt-3 text-2xl font-black tracking-tight text-slate-900">Narrativa visual</h3>
+              </div>
+              <div class="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-700">
+                <Icon name="lucide:sparkles" class="h-5 w-5" />
+              </div>
+            </div>
+            <div id="immersive-story" class="mt-5 space-y-4"></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script is:inline>
-  (function() {
+<script is:inline define:vars={{ immersiveContent }}>
+  (function () {
     function initChat() {
       var toggle = document.getElementById('chat-toggle');
       var chatWindow = document.getElementById('chat-window');
@@ -122,37 +187,86 @@ import { Icon } from 'astro-icon/components';
       var iconClose = document.getElementById('chat-icon-close');
       var notification = document.getElementById('chat-notification');
       var quickReplies = document.querySelectorAll('.chat-quick-reply');
+      var immersiveToggle = document.getElementById('imm-toggle');
+      var immersiveStage = document.getElementById('isbot-immersive-stage');
+      var immersiveClose = document.getElementById('immersive-exit');
+      var immersiveTools = document.getElementById('immersive-tools');
+      var immersiveForm = document.getElementById('immersive-chat-form');
+      var immersiveInput = document.getElementById('immersive-chat-input');
       var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
       if (!toggle || !chatWindow || !form || !input || !messagesEl) return;
       if (toggle.dataset.chatInit === 'true') return;
       toggle.dataset.chatInit = 'true';
 
+      var STORAGE_KEY = 'isbot-chat';
+      var TOOLBAR_ACTIONS = immersiveContent.tools || [
+        { action: 'services', label: 'Servicios', icon: 'layout-grid' },
+        { action: 'service:electricidad', label: 'Electricidad', icon: 'zap' },
+        { action: 'service:climatizacion', label: 'Climatización', icon: 'snowflake' },
+        { action: 'gallery:reformas', label: 'Trabajos', icon: 'image' },
+        { action: 'contact', label: 'Contacto', icon: 'phone' },
+        { action: 'coverage', label: 'Cobertura', icon: 'map-pinned' },
+        { action: 'emergency', label: 'Urgente', icon: 'alert-triangle' }
+      ];
+
       var isOpen = false;
       var isStreaming = false;
+      var isImmersive = false;
       var chatHistory = [];
-      var STORAGE_KEY = 'isbot-chat';
+      var lastImmersiveNarration = '';
 
-      // Persistimos la conversacion para que sobreviva a la navegacion entre
-      // paginas (el sitio recarga, no es SPA). Asi el agente puede llevar al
-      // usuario a otra pagina sin perder el hilo del chat.
       function saveState() {
         try {
-          sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ open: isOpen, history: chatHistory }));
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ open: isOpen, history: chatHistory, immersive: isImmersive }));
         } catch (e) {}
       }
 
-      // Detecta el marcador [[GOTO:ruta]] que emite el agente, lo separa del
-      // texto visible y devuelve la ruta para navegar.
-      function extractNavigation(text) {
-        var m = text.match(/\[\[GOTO:\s*([^\]]+)\]\]/i);
-        if (!m) return { clean: text, route: null };
-        var clean = text.replace(/\[\[GOTO:[^\]]+\]\]/ig, '').trim();
-        return { clean: clean, route: m[1].trim() };
+      function readState() {
+        try {
+          var raw = sessionStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          return null;
+        }
       }
 
-      // Baja el chat al ultimo mensaje (tras render, con doble RAF para que
-      // el navegador haya recalculado la altura del contenido markdown).
+      function extractNavigation(text) {
+        var match = text.match(/\[\[GOTO:\s*([^\]]+)\]\]/i);
+        if (!match) return { clean: text, route: null };
+        return {
+          clean: text.replace(/\[\[GOTO:[^\]]+\]\]/ig, '').trim(),
+          route: match[1].trim()
+        };
+      }
+
+      function extractShow(text) {
+        var match = text.match(/\[\[SHOW:\s*([^\]]+)\]\]/i);
+        if (!match) return { kind: null, target: null, params: {}, raw: null };
+
+        var raw = match[1].trim();
+        var parts = raw.split('|').map(function (part) { return part.trim(); }).filter(Boolean);
+        var head = parts.shift() || 'scene';
+        var headParts = head.split(':');
+        var kind = (headParts[0] || 'scene').trim();
+        var target = (headParts[1] || '').trim();
+        var params = {};
+
+        parts.forEach(function (part) {
+          var idx = part.indexOf('=');
+          if (idx === -1) {
+            params[part] = true;
+            return;
+          }
+          var key = part.slice(0, idx).trim();
+          var value = part.slice(idx + 1).trim();
+          params[key] = value;
+        });
+
+        return { raw: raw, kind: kind, target: target, params: params };
+      }
+
       function scrollToBottom() {
         requestAnimationFrame(function () {
           requestAnimationFrame(function () {
@@ -161,26 +275,159 @@ import { Icon } from 'astro-icon/components';
         });
       }
 
-      // Rutas validas del sitio. Si el agente pide navegar a una ruta que no
-      // existe, NO navegamos (evita 404 / "tool fallida").
-      var VALID_PATHS = {
-        '/': 1,
-        '/nosotros': 1,
-        '/contacto': 1,
-        '/estimador': 1,
-        '/servicios': 1,
-        '/servicios/instalaciones-electricas': 1,
-        '/servicios/fontaneria-y-saneamiento': 1,
-        '/servicios/climatizacion-y-calefaccion': 1,
-        '/servicios/reformas-integrales': 1
-      };
+      function isDesktopImmersiveAllowed() {
+        return window.matchMedia('(min-width: 768px)').matches;
+      }
 
-      // Nombre amigable de cada ruta para el loader.
+      function getService(id) {
+        return immersiveContent.servicePacks && immersiveContent.servicePacks[id] ? immersiveContent.servicePacks[id] : null;
+      }
+
+      function actionFromRoute(route) {
+        var path = route;
+        var hash = '';
+        if (route.indexOf('#') >= 0) {
+          var parts = route.split('#');
+          path = parts[0];
+          hash = parts[1] || '';
+        }
+        if (path === '/contacto' && hash === 'zonas') return 'coverage';
+        if (path === '/contacto' || route === '/#contacto') return 'contact';
+        if (path === '/servicios') return 'services';
+        if (path === '/servicios/instalaciones-electricas') return 'service:electricidad';
+        if (path === '/servicios/fontaneria-y-saneamiento') return 'service:fontaneria';
+        if (path === '/servicios/climatizacion-y-calefaccion') return 'service:climatizacion';
+        if (path === '/servicios/reformas-integrales') return 'service:reformas';
+        return 'welcome';
+      }
+
+      function ensureNavStyles() {
+        if (document.getElementById('isbot-anim')) return;
+        var st = document.createElement('style');
+        st.id = 'isbot-anim';
+        st.textContent =
+          '@keyframes isbot-spin{to{transform:rotate(360deg)}}' +
+          '.isbot-focus{box-shadow:0 0 0 3px rgba(29,78,216,.55),0 0 26px rgba(29,78,216,.35)!important;border-radius:14px;transition:box-shadow .4s ease;scroll-margin-top:7rem;}' +
+          '.isbot-zona{box-shadow:0 0 0 3px rgba(29,78,216,.7)!important;transform:scale(1.03);z-index:2;}';
+        document.head.appendChild(st);
+      }
+
+      function showNavOverlay(label) {
+        ensureNavStyles();
+        var accent = '#1d4ed8';
+        try {
+          var header = document.querySelector('header');
+          if (header) {
+            var color = getComputedStyle(header).backgroundColor;
+            if (color && color !== 'rgba(0, 0, 0, 0)') accent = color;
+          }
+        } catch (e) {}
+        var overlay = document.createElement('div');
+        overlay.id = 'isbot-nav-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:54;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.42);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .25s ease;';
+        overlay.innerHTML = '<div style="background:#fff;padding:20px 24px;border-radius:20px;box-shadow:0 16px 50px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:260px;text-align:center;">'
+          + '<div style="width:38px;height:38px;border:3px solid #e5e7eb;border-top-color:' + accent + ';border-radius:999px;animation:isbot-spin .8s linear infinite;"></div>'
+          + '<p style="font-size:13px;color:#374151;margin:0;font-weight:500;">Te llevo a <b>' + label + '</b>...</p></div>';
+        (document.getElementById('chat-widget') || document.body).appendChild(overlay);
+        requestAnimationFrame(function () { overlay.style.opacity = '1'; });
+      }
+
+      function showChatNav(label) {
+        ensureNavStyles();
+        removeChatNav();
+        var div = document.createElement('div');
+        div.id = 'chat-nav-indicator';
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />'
+          + '<div class="bg-primary/10 text-primary p-3 rounded-2xl rounded-tl-sm border border-primary/20 max-w-[85%] flex items-center gap-2">'
+          + '<span style="width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:isbot-spin .8s linear infinite;"></span>'
+          + '<span class="text-sm font-medium">Te llevo a ' + label + '...</span></div>';
+        messagesEl.appendChild(div);
+        scrollToBottom();
+      }
+
+      function removeChatNav() {
+        var el = document.getElementById('chat-nav-indicator');
+        if (el) el.remove();
+      }
+
+      function focusSection(el) {
+        ensureNavStyles();
+        el.classList.add('isbot-focus');
+        setTimeout(function () { el.classList.remove('isbot-focus'); }, 2400);
+      }
+
+      function detectZona() {
+        var recent = chatHistory.slice(-3).map(function (m) { return (m.content || '').toLowerCase(); }).join(' ');
+        var zonas = ['barcelona', 'hospitalet', 'badalona', 'santa coloma', 'sant adria', 'cornella', 'esplugues', 'sant just', 'sant joan'];
+        for (var i = 0; i < zonas.length; i++) {
+          if (recent.indexOf(zonas[i]) >= 0) return zonas[i];
+        }
+        return null;
+      }
+
+      function highlightZona(zona) {
+        if (!zona) return;
+        var cards = document.querySelectorAll('[data-zona]');
+        cards.forEach(function (card) {
+          if ((card.getAttribute('data-zona') || '').indexOf(zona) >= 0) {
+            card.classList.add('isbot-zona');
+            setTimeout(function () { card.classList.remove('isbot-zona'); }, 3000);
+          }
+        });
+      }
+
+      function runNavigation(route) {
+        if (!route) return false;
+        var hashIndex = route.indexOf('#');
+        var path = hashIndex >= 0 ? route.slice(0, hashIndex) : route;
+        var anchor = hashIndex >= 0 ? route.slice(hashIndex + 1) : '';
+        if (path === '') path = window.location.pathname;
+        var samePage = path === window.location.pathname;
+        var zona = anchor === 'zonas' ? detectZona() : null;
+        var DELAY_SAME = 1800;
+        var DELAY_CROSS = 2800;
+
+        if (samePage) {
+          if (anchor) {
+            var el = document.getElementById(anchor);
+            if (!el) return false;
+            setTimeout(function () {
+              el.scrollIntoView({ behavior: 'smooth' });
+              focusSection(el);
+              if (zona) setTimeout(function () { highlightZona(zona); }, 500);
+            }, DELAY_SAME);
+            return true;
+          }
+          setTimeout(function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }, DELAY_SAME);
+          return true;
+        }
+
+        if (!{
+          '/': 1,
+          '/nosotros': 1,
+          '/contacto': 1,
+          '/servicios': 1,
+          '/servicios/instalaciones-electricas': 1,
+          '/servicios/fontaneria-y-saneamiento': 1,
+          '/servicios/climatizacion-y-calefaccion': 1,
+          '/servicios/reformas-integrales': 1
+        }[path]) return false;
+
+        try {
+          if (zona) sessionStorage.setItem('isbot-zona', zona);
+        } catch (e) {}
+        saveState();
+        showChatNav(route.indexOf('#') >= 0 ? route : routeLabel(route));
+        setTimeout(function () { showNavOverlay(routeLabel(route)); }, 900);
+        setTimeout(function () { window.location.href = route; }, DELAY_CROSS);
+        return true;
+      }
+
       function routeLabel(route) {
         var map = {
           '/': 'el inicio',
           '/servicios': 'los servicios',
-          '/#servicios': 'los servicios',
           '/#contacto': 'contacto',
           '/contacto': 'contacto',
           '/nosotros': 'sobre nosotros',
@@ -193,131 +440,518 @@ import { Icon } from 'astro-icon/components';
         return map[route] || 'la página';
       }
 
-      // Inyecta una sola vez los estilos de animacion y resaltado.
-      function ensureNavStyles() {
-        if (document.getElementById('isbot-anim')) return;
-        var st = document.createElement('style');
-        st.id = 'isbot-anim';
-        st.textContent =
-          '@keyframes isbot-spin{to{transform:rotate(360deg)}}' +
-          '.isbot-focus{box-shadow:0 0 0 3px rgba(29,78,216,.55),0 0 26px rgba(29,78,216,.35)!important;border-radius:14px;transition:box-shadow .4s ease;scroll-margin-top:7rem;}' +
-          '.isbot-zona{box-shadow:0 0 0 3px rgba(29,78,216,.7)!important;transform:scale(1.05);z-index:2;}';
-        document.head.appendChild(st);
+      function escapeHtml(text) {
+        var d = document.createElement('div');
+        d.textContent = text == null ? '' : String(text);
+        return d.innerHTML;
       }
 
-      // Overlay de carga. Va POR DEBAJO del chat (z-55 < chat z-60) para que
-      // el usuario siga viendo lo que dice el agente mientras navega.
-      function showNavOverlay(label) {
-        ensureNavStyles();
-        var accent = '#1d4ed8';
-        try {
-          var h = document.querySelector('header');
-          if (h) { var c = getComputedStyle(h).backgroundColor; if (c && c !== 'rgba(0, 0, 0, 0)') accent = c; }
-        } catch (e) {}
-        var ov = document.createElement('div');
-        ov.id = 'isbot-nav-overlay';
-        ov.style.cssText = 'position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .25s ease;';
-        ov.innerHTML = '<div style="background:#fff;padding:20px 24px;border-radius:16px;box-shadow:0 12px 45px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:240px;text-align:center;">'
-          + '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:' + accent + ';border-radius:50%;animation:isbot-spin .8s linear infinite;"></div>'
-          + '<p style="font-size:13px;color:#374151;margin:0;font-weight:500;">Te llevo a <b>' + label + '</b>…</p></div>';
-        // Lo anexamos dentro del widget (que es z-50) para que el chat-window
-        // (z-60) quede por encima del overlay (z-55) y siga visible.
-        var widget = document.getElementById('chat-widget') || document.body;
-        widget.appendChild(ov);
-        requestAnimationFrame(function () { ov.style.opacity = '1'; });
+      function mdInline(s) {
+        return s
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-medium underline">$1</a>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/__([^_]+)__/g, '<strong>$1</strong>');
       }
 
-      // Indicador de navegacion DENTRO del chat (load en el propio chat).
-      function showChatNav(label) {
-        ensureNavStyles();
-        removeChatNav();
-        var div = document.createElement('div');
-        div.id = 'chat-nav-indicator';
-        div.className = 'flex gap-2';
-        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" />'
-          + '<div class="bg-primary/10 text-primary p-3 rounded-2xl rounded-tl-sm border border-primary/20 max-w-[85%] flex items-center gap-2">'
-          + '<span style="width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:isbot-spin .8s linear infinite;"></span>'
-          + '<span class="text-sm font-medium">Te llevo a ' + label + '…</span></div>';
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-      }
-      function removeChatNav() {
-        var e = document.getElementById('chat-nav-indicator');
-        if (e) e.remove();
-      }
-
-      // Resaltado (glow) de la seccion de destino, como "seleccion" de contexto.
-      function focusSection(el) {
-        ensureNavStyles();
-        el.classList.add('isbot-focus');
-        setTimeout(function () { el.classList.remove('isbot-focus'); }, 2400);
-      }
-
-      // Busca en la conversacion reciente una zona de cobertura mencionada.
-      var ZONAS = ['barcelona', 'hospitalet', 'badalona', 'santa coloma', 'sant adria', 'cornella', 'esplugues', 'sant just', 'sant joan'];
-      function detectZona() {
-        var recent = chatHistory.slice(-3).map(function (m) { return (m.content || '').toLowerCase(); }).join(' ');
-        for (var i = 0; i < ZONAS.length; i++) {
-          if (recent.indexOf(ZONAS[i]) >= 0) return ZONAS[i];
+      function renderMarkdown(text) {
+        var norm = text
+          .replace(/([a-záéíóúñ0-9\)])\s*\*\s+(?=[A-ZÁÉÍÓÚ])/g, '$1\n- ')
+          .replace(/\s+[•·]\s+/g, '\n- ');
+        var lines = norm.split('\n');
+        var out = [];
+        var inList = false;
+        function closeList() {
+          if (inList) {
+            out.push('</ul>');
+            inList = false;
+          }
         }
+        lines.forEach(function (raw) {
+          var line = raw.trim();
+          if (!line) {
+            closeList();
+            return;
+          }
+          var m = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+[.)]\s+(.*)$/);
+          var label = !m ? line.match(/^([A-ZÁÉÍÓÚÑ][^:.]{1,45}):\s+(.+)$/) : null;
+          if (m) {
+            if (!inList) {
+              out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">');
+              inList = true;
+            }
+            out.push('<li>' + mdInline(m[1]) + '</li>');
+          } else if (label) {
+            if (!inList) {
+              out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">');
+              inList = true;
+            }
+            out.push('<li><strong>' + label[1] + ':</strong> ' + mdInline(label[2]) + '</li>');
+          } else {
+            closeList();
+            out.push('<p class="mb-1.5 last:mb-0">' + mdInline(line) + '</p>');
+          }
+        });
+        closeList();
+        return out.join('');
+      }
+
+      function createBotMessage() {
+        var div = document.createElement('div');
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[84%]"><div class="text-sm text-gray-700 bot-text chat-markdown"></div></div>';
+        messagesEl.appendChild(div);
+        scrollToBottom();
+        return div.querySelector('.bot-text');
+      }
+
+      function addUserMessage(text) {
+        var div = document.createElement('div');
+        div.className = 'flex gap-2 justify-end';
+        div.innerHTML = '<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-sm shadow-sm max-w-[84%]"><p class="text-sm">' + escapeHtml(text) + '</p></div>';
+        messagesEl.appendChild(div);
+        scrollToBottom();
+      }
+
+      function showTyping() {
+        var div = document.createElement('div');
+        div.id = 'typing-indicator';
+        div.className = 'flex gap-2';
+        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100"><div class="flex gap-1"><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.15s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.3s"></span></div></div>';
+        messagesEl.appendChild(div);
+        scrollToBottom();
+      }
+
+      function removeTyping() {
+        var el = document.getElementById('typing-indicator');
+        if (el) el.remove();
+      }
+
+      function setLoading(loading) {
+        isStreaming = loading;
+        if (submitBtn) {
+          submitBtn.disabled = loading;
+          submitBtn.style.opacity = loading ? '0.5' : '1';
+        }
+        input.disabled = loading;
+      }
+
+      function splitList(value, separator) {
+        return String(value || '')
+          .split(separator || ',')
+          .map(function (item) { return item.trim(); })
+          .filter(Boolean);
+      }
+
+      function getScenePreset(name) {
+        return immersiveContent.scenePresets && immersiveContent.scenePresets[name] ? immersiveContent.scenePresets[name] : immersiveContent.scenePresets.scene;
+      }
+
+      function getImagePack(key) {
+        var packs = immersiveContent.servicePacks || {};
+        var normalized = String(key || '').toLowerCase();
+        if (packs[normalized]) return packs[normalized];
+        if (normalized === 'mix' || normalized === 'mixup' || normalized === 'all') return null;
         return null;
       }
-      // Resalta la tarjeta de una zona concreta dentro de la seccion de zonas.
-      function highlightZona(zona) {
-        if (!zona) return;
-        var cards = document.querySelectorAll('[data-zona]');
-        cards.forEach(function (card) {
-          if ((card.getAttribute('data-zona') || '').indexOf(zona) >= 0) {
-            card.classList.add('isbot-zona');
-            setTimeout(function () { card.classList.remove('isbot-zona'); }, 3000);
+
+      function pickSceneImages(key, fallbackServiceId) {
+        var pack = getImagePack(key);
+        if (pack && pack.images) {
+          var imgs = pack.images.slice(0, 5);
+          if (imgs.length === 0) return imgs;
+          // repeat images to ensure we have up to 5 slots
+          var res = [];
+          for (var i = 0; i < 5; i++) res.push(imgs[i % imgs.length]);
+          return res;
+        }
+
+        if (String(key || '').toLowerCase() === 'mix') {
+          var all = Object.keys(immersiveContent.servicePacks || {}).map(function (serviceKey) {
+            return immersiveContent.servicePacks[serviceKey].images || [];
+          }).reduce(function (accumulator, images) {
+            return accumulator.concat(images);
+          }, []);
+          if (all.length) {
+            var uniq = all.slice(0, 5);
+            var res2 = [];
+            for (var j = 0; j < 5; j++) res2.push(uniq[j % uniq.length]);
+            return res2;
           }
+        }
+
+        if (fallbackServiceId) {
+          var fallback = getService(fallbackServiceId);
+          if (fallback && fallback.images) {
+            var fb = fallback.images.slice(0,5);
+            var res3 = [];
+            for (var k = 0; k < 5; k++) res3.push(fb[k % fb.length]);
+            return res3;
+          }
+        }
+
+        var defaultPack = immersiveContent.servicePacks && immersiveContent.servicePacks.reformas;
+        if (defaultPack && defaultPack.images) {
+          var def = defaultPack.images.slice(0,5);
+          var res4 = [];
+          for (var m = 0; m < 5; m++) res4.push(def[m % def.length]);
+          return res4;
+        }
+
+        return [];
+      }
+
+      function parseCards(value) {
+        return splitList(value, ';').slice(0, 4).map(function (entry) {
+          var parts = entry.split('::').map(function (part) { return part.trim(); });
+          return {
+            title: parts[0] || 'Detalle',
+            body: parts[1] || '',
+            action: parts[2] || 'contact',
+          };
         });
       }
 
-      // Ejecuta la navegacion asistida. Devuelve true si pudo, false si la
-      // "tool" fallo (ruta invalida o seccion inexistente) para que el chat
-      // lo sepa y no deje al usuario colgado.
-      function runNavigation(route) {
-        if (!route) return false;
-        var hashIndex = route.indexOf('#');
-        var path = hashIndex >= 0 ? route.slice(0, hashIndex) : route;
-        var anchor = hashIndex >= 0 ? route.slice(hashIndex + 1) : '';
-        if (path === '') path = window.location.pathname;
-        var samePage = path === window.location.pathname;
-        var zona = anchor === 'zonas' ? detectZona() : null;
+      function renderSceneCards(cards) {
+        if (!cards.length) return '';
+        return '<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">'
+          + cards.map(function (card, index) {
+            var chip = card.action === 'contact' ? 'Contactar' : card.action === 'coverage' ? 'Cobertura' : 'Ver más';
+            return '<button type="button" data-immersive-action="' + escapeHtml(card.action) + '" class="scene-card group rounded-[1.6rem] border border-white/70 bg-white/85 p-5 text-left shadow-lg hover:-translate-y-1 transition-transform">'
+              + '<div class="mb-4 h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">' + String(index + 1) + '</div>'
+              + '<h4 class="text-lg font-bold text-slate-900">' + escapeHtml(card.title) + '</h4>'
+              + '<p class="scene-card-body mt-2 text-sm leading-relaxed text-slate-600">' + escapeHtml(card.body) + '</p>'
+              + '<div class="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">' + escapeHtml(chip) + '</div>'
+              + '</button>';
+          }).join('')
+          + '</div>';
+      }
 
-        // Pausas para que el usuario alcance a leer la respuesta del agente
-        // antes de que la pagina se mueva o cambie.
-        var DELAY_SAME = 1800;
-        var DELAY_CROSS = 2800;
+      function renderScene(spec) {
+        var preset = getScenePreset(spec.target || spec.params.layout || 'scene');
+        var params = spec.params || {};
+        var theme = String(params.theme || spec.target || 'reformas').toLowerCase();
+        var title = params.title || preset.title || 'Modo inmersivo';
+        var lead = params.lead || preset.lead || 'Una escena visual hecha desde cero.';
+        // limit body verbosity for visual scenes
+        var rawBody = params.body || preset.body || '';
+        var body = rawBody && String(rawBody).trim().length < 260 ? rawBody : '';
+        var imageKey = params.images || preset.images || theme;
+        var images = pickSceneImages(imageKey, theme);
+        if (!images.length) images = pickSceneImages('reformas');
+        var chips = splitList(params.chips || '', ',').slice(0, 5);
+        if (!chips.length) {
+          chips = theme === 'electricidad'
+            ? ['Averias', 'Cuadros', 'Iluminacion']
+            : theme === 'climatizacion'
+              ? ['Aire acondicionado', 'Conductos', 'Calefaccion']
+              : theme === 'fontaneria'
+                ? ['Fugas', 'Tuberias', 'Saneamiento']
+                : ['Reformas', 'Pladur', 'Acabados'];
+        }
+        var cards = parseCards(params.cards || '');
+        var ctaAction = params.cta || 'contact';
+        var accent = theme === 'electricidad' ? 'from-amber-400 to-orange-500' : theme === 'fontaneria' ? 'from-blue-400 to-cyan-500' : theme === 'climatizacion' ? 'from-cyan-400 to-sky-600' : 'from-emerald-500 to-teal-700';
 
-        if (samePage) {
-          if (anchor) {
-            var el = document.getElementById(anchor);
-            if (!el) return false; // la seccion pedida no existe en esta pagina
-            setTimeout(function () {
-              el.scrollIntoView({ behavior: 'smooth' });
-              focusSection(el);
-              if (zona) setTimeout(function () { highlightZona(zona); }, 500);
-            }, DELAY_SAME);
-            return true;
-          }
-          setTimeout(function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }, DELAY_SAME);
-          return true;
+        var heroImage = images[0] || '';
+        var mosaic = images.slice(1, 5);
+        var heroLayout = '<div class="rounded-[2.25rem] border border-white/70 bg-white/82 p-6 shadow-[0_24px_80px_rgba(15,23,42,.14)] backdrop-blur-2xl md:p-8">'
+          + '<div class="grid gap-6 lg:grid-cols-[1.1fr_.9fr] lg:items-stretch">'
+          + '<div class="flex flex-col justify-between">'
+          + '<div>'
+          + '<div class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">Escena generada</div>'
+          + '<h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">' + escapeHtml(title) + '</h2>'
+          + '<p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">' + escapeHtml(lead) + '</p>'
+          + (body ? '<p class="mt-4 max-w-2xl text-sm leading-relaxed text-slate-500 md:text-base">' + escapeHtml(body) + '</p>' : '')
+          + '</div>'
+          + '<div class="mt-6 flex flex-wrap gap-2">'
+          + chips.map(function (chip) {
+            return '<span class="rounded-full bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700">' + escapeHtml(chip) + '</span>';
+          }).join('')
+          + '</div>'
+          + '<div class="mt-6 flex flex-wrap gap-3">'
+          + buildToolButton({ action: ctaAction, label: ctaAction === 'contact' ? 'Abrir contacto' : ctaAction === 'coverage' ? 'Ver cobertura' : 'Continuar', icon: 'phone', hint: 'Accion principal de la escena' })
+          + buildToolButton({ action: 'services', label: 'Ver servicios', icon: 'layout-grid', hint: 'Abrir la lista de servicios' })
+          + '</div>'
+          + '</div>'
+          + '<div class="grid gap-4 sm:grid-cols-2">'
+          + (heroImage ? '<div class="sm:col-span-2 overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-xl"><img src="' + escapeHtml(heroImage) + '" alt="' + escapeHtml(title) + '" class="h-[280px] w-full object-cover md:h-[340px]" loading="lazy" /></div>' : '')
+          + mosaic.map(function (image, index) {
+            return '<div class="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-xl">'
+              + '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + ' ' + (index + 2) + '" class="h-40 w-full object-cover md:h-44" loading="lazy" />'
+              + '</div>';
+          }).join('')
+          + '</div>'
+          + '</div>';
+
+        return heroLayout
+          + (cards.length ? '<div class="mt-8">' + renderSceneCards(cards) + '</div>' : '');
+      }
+
+      function renderEditorialBlocks(theme) {
+        var blocks = theme === 'electricidad'
+          ? [
+              { title: 'Instalación y averías', body: 'Cuadros eléctricos, líneas, enchufes e iluminación LED con normativa REBT.' },
+              { title: 'Boletines (CIE)', body: 'Electricistas autorizados para certificados y altas de suministro.' },
+              { title: 'Presupuesto claro', body: 'Visita técnica gratuita y precio cerrado, sin sorpresas.' },
+            ]
+          : theme === 'climatizacion'
+            ? [
+                { title: 'Aire y calefacción', body: 'Splits, multisplits y conductos; suelo radiante y calefacción.' },
+                { title: 'Técnicos certificados', body: 'Profesionales con carné de gases fluorados y carga certificada.' },
+                { title: 'Mantenimiento', body: 'Revisiones y reparación para alargar la vida de tus equipos.' },
+              ]
+            : theme === 'fontaneria'
+              ? [
+                  { title: 'Agua y saneamiento', body: 'Tuberías, contadores, sanitarios y grifería para vivienda y local.' },
+                  { title: 'Fugas sin obras', body: 'Detección y reparación de fugas con equipos de localización.' },
+                  { title: 'Calderas y aerotermia', body: 'Instalación y cambio de calderas, termos y aerotermia.' },
+                ]
+              : [
+                  { title: 'Reformas llave en mano', body: 'Cocinas, baños y viviendas completas con un único interlocutor.' },
+                  { title: 'Todos los gremios', body: 'Coordinamos albañilería, electricidad, fontanería, clima y acabados.' },
+                  { title: 'Calidad y plazos', body: 'Acabados de primera, precio cerrado y entrega en plazo.' },
+                ];
+
+        return '<div class="grid gap-4 md:grid-cols-3">'
+          + blocks.map(function (block, index) {
+            return '<div class="editorial-block rounded-[1.75rem] border border-slate-200/70 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,.08)]">'
+              + '<div class="mb-4 h-10 w-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black">' + String(index + 1) + '</div>'
+              + '<p class="text-base font-black tracking-tight text-slate-900">' + escapeHtml(block.title) + '</p>'
+              + '<p class="scene-card-copy mt-2 text-sm leading-relaxed text-slate-600">' + escapeHtml(block.body) + '</p>'
+              + '</div>';
+          }).join('')
+          + '</div>';
+      }
+
+      function buildToolButton(tool) {
+        var iconName = tool.icon && tool.icon.indexOf('lucide:') === 0 ? tool.icon : 'lucide:' + tool.icon;
+        return '<button type="button" data-immersive-action="' + escapeHtml(tool.action) + '" title="' + escapeHtml(tool.hint || tool.label) + '" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:border-primary/30 hover:text-primary hover:shadow transition-all whitespace-nowrap">'
+          + '<span class="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="' + iconPath(iconName) + '"/></svg></span>'
+          + '<span>' + escapeHtml(tool.label) + '</span>'
+          + '</button>';
+      }
+
+      function iconPath(name) {
+        var key = name.indexOf('lucide:') === 0 ? name.slice(7) : name;
+        var map = {
+          'lucide:sparkles': 'M9 3l1.8 5.4L16 10l-5.2 1.6L9 17l-1.8-5.4L2 10l5.2-1.6z',
+          'lucide:layout-grid': 'M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z',
+          'lucide:zap': 'M13 2L4 14h6l-1 8 9-12h-6z',
+          'lucide:snowflake': 'M12 2v20M4.2 6.2l15.6 11.6M19.8 6.2L4.2 17.8M4 12h16M6.2 4.2l11.6 15.6M17.8 4.2L6.2 19.8',
+          'lucide:image': 'M4 5h16v14H4zM8 11l2.5 2.5L14 10l6 8H4z',
+          'lucide:phone': 'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.1 19.1 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.4 2.1L8 9.6a16 16 0 0 0 6.4 6.4l1.2-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z',
+          'lucide:map-pinned': 'M14 11a2 2 0 1 0-4 0c0 1.5 2 4 2 4s2-2.5 2-4zM12 21s6-5 6-10a6 6 0 0 0-12 0c0 5 6 10 6 10z',
+          'lucide:alert-triangle': 'M10.3 3.5 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.5a2 2 0 0 0-3.4 0zM12 9v4m0 4h.01'
+        };
+        return map['lucide:' + key] || map['lucide:layout-grid'];
+      }
+
+      function serviceCard(service, compact) {
+        var accent = service.accent || 'from-emerald-500 to-teal-700';
+        var image = service.images && service.images[0] ? service.images[0] : '';
+        var second = service.images && service.images[1] ? service.images[1] : image;
+        return '<button type="button" data-immersive-action="service:' + escapeHtml(service.id) + '" class="group text-left overflow-hidden rounded-[1.75rem] border border-white/60 bg-white/80 shadow-[0_20px_50px_rgba(15,23,42,.12)] hover:-translate-y-1 transition-transform">'
+          + '<div class="relative h-44 overflow-hidden">'
+          + '<div class="absolute inset-0 bg-gradient-to-br ' + accent + ' opacity-90"></div>'
+          + (image ? '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(service.title) + '" class="absolute inset-0 h-full w-full object-cover mix-blend-soft-light opacity-95 transition-transform duration-700 group-hover:scale-105" loading="lazy" />' : '')
+          + '<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.28),transparent_35%),linear-gradient(180deg,transparent,rgba(15,23,42,.62))]"></div>'
+          + '<div class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">'
+          + escapeHtml(service.icon) + '<span>' + escapeHtml(service.title) + '</span></div>'
+          + '<div class="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3 text-white">'
+          + '<div><p class="text-xs uppercase tracking-[0.2em] text-white/70">Servicio</p><p class="text-lg font-bold leading-tight">' + escapeHtml(service.title) + '</p></div>'
+          + '<span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-md">Ver</span>'
+          + '</div></div>'
+          + '<div class="p-5">'
+          + '<p class="text-sm leading-relaxed text-slate-600">' + escapeHtml(service.description) + '</p>'
+          + '<div class="mt-4 flex items-center gap-2">'
+          + '<div class="h-16 w-20 overflow-hidden rounded-2xl bg-slate-100"><img src="' + escapeHtml(image) + '" alt="" class="h-full w-full object-cover" loading="lazy" /></div>'
+          + '<div class="h-16 w-20 overflow-hidden rounded-2xl bg-slate-100"><img src="' + escapeHtml(second) + '" alt="" class="h-full w-full object-cover" loading="lazy" /></div>'
+          + '<div class="flex-1 text-right"><p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Contenido visual</p><p class="text-sm text-slate-500">' + (compact ? 'Abre la galería' : 'Galería y contacto') + '</p></div>'
+          + '</div></div></button>';
+      }
+
+      function galleryGrid(service) {
+        var images = service.images || [];
+        if (!images.length) {
+          return '<div class="rounded-[2rem] border border-dashed border-white/60 bg-white/70 p-8 text-center shadow-lg"><div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-3xl">' + escapeHtml(service.icon) + '</div><p class="text-slate-700">Aquí iría una composición visual específica para ' + escapeHtml(service.title.toLowerCase()) + '.</p></div>';
+        }
+        var hero = images[0];
+        var rest = images.slice(1, 4);
+        return '<div class="grid gap-4 lg:grid-cols-12">'
+          + '<div class="lg:col-span-7 overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-xl">'
+          + '<img src="' + escapeHtml(hero) + '" alt="' + escapeHtml(service.title) + '" class="h-[320px] w-full object-cover md:h-[420px]" loading="lazy" />'
+          + '</div>'
+          + '<div class="lg:col-span-5 grid gap-4 md:grid-cols-2 lg:grid-cols-1">'
+          + rest.map(function (image, index) {
+            return '<div class="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-xl">'
+              + '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(service.title) + ' ' + (index + 2) + '" class="h-40 w-full object-cover md:h-48 lg:h-[128px]" loading="lazy" />'
+              + '</div>';
+          }).join('')
+          + '</div></div>';
+      }
+
+      function contactCards() {
+        var contact = immersiveContent.contact || {};
+        return '<div class="grid gap-4 md:grid-cols-3">'
+          + '<a href="' + escapeHtml(contact.telHref || 'tel:+34637591736') + '" class="rounded-[1.75rem] border border-white/70 bg-white/85 p-5 shadow-xl hover:-translate-y-1 transition-transform">'
+          + '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-2">Teléfono</p>'
+          + '<p class="text-2xl font-extrabold text-slate-900">' + escapeHtml(contact.phone || '637 59 17 36') + '</p>'
+          + '<p class="mt-2 text-sm text-slate-600">Llamada directa para cerrar la consulta.</p></a>'
+          + '<a href="' + escapeHtml(contact.whatsappHref || 'https://wa.me/34637591736') + '" target="_blank" rel="noopener noreferrer" class="rounded-[1.75rem] border border-emerald-200 bg-emerald-600 p-5 text-white shadow-xl hover:-translate-y-1 transition-transform">'
+          + '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-2">WhatsApp</p>'
+          + '<p class="text-2xl font-extrabold">Respuesta rápida</p>'
+          + '<p class="mt-2 text-sm text-white/85">Ideal para enviar fotos, medidas o dudas rápidas.</p></a>'
+          + '<div class="rounded-[1.75rem] border border-white/70 bg-white/85 p-5 shadow-xl">'
+          + '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-2">Email</p>'
+          + '<p class="text-lg font-bold text-slate-900 break-words">' + escapeHtml(contact.email || 'isinstalacionesbcn@gmail.com') + '</p>'
+          + '<p class="mt-2 text-sm text-slate-600">Útil para documentación o seguimiento.</p></div>'
+          + '</div>';
+      }
+
+      function coverageGrid() {
+        return '<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">'
+          + (immersiveContent.coverage || []).map(function (zona) {
+            return '<div class="rounded-[1.5rem] border border-white/70 bg-white/85 p-4 shadow-lg">'
+              + '<div class="flex items-center gap-3">'
+              + '<div class="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">📍</div>'
+              + '<div><p class="text-sm font-semibold text-slate-900">' + escapeHtml(zona) + '</p><p class="text-xs text-slate-500">Área metropolitana</p></div>'
+              + '</div></div>';
+          }).join('')
+          + '</div>';
+      }
+
+      function renderImmersive(signal) {
+        var currentSignal = typeof signal === 'string'
+          ? { kind: 'action', target: signal, params: {} }
+          : (signal || { kind: 'action', target: 'welcome', params: {} });
+        var params = currentSignal.params || {};
+        var toolsHtml = TOOLBAR_ACTIONS.map(buildToolButton).join('');
+        if (immersiveTools) immersiveTools.innerHTML = toolsHtml;
+
+        // If the backend provided an explicit scene, render it as before
+        if (currentSignal.kind === 'scene') {
+          return renderScene(currentSignal);
         }
 
-        // Otra pagina: validamos que la ruta exista antes de saltar.
-        if (!VALID_PATHS[path]) return false;
-        try {
-          if (zona) sessionStorage.setItem('isbot-zona', zona);
-        } catch (e) {}
+        // When in immersive mode and no explicit scene is provided, build a canvas
+        // from the agent's narration (lastImmersiveNarration) using the image packs.
+        function detectThemeFromText(text) {
+          var t = String(text || '').toLowerCase();
+          if (t.indexOf('aire') >= 0 || t.indexOf('climat') >= 0) return 'climatizacion';
+          if (t.indexOf('portero') >= 0 || t.indexOf('video') >= 0) return 'electricidad';
+          if (t.indexOf('fuga') >= 0 || t.indexOf('fontan') >= 0) return 'fontaneria';
+          if (t.indexOf('reforma') >= 0 || t.indexOf('acabo') >= 0) return 'reformas';
+          return 'mix';
+        }
+
+        function firstSentence(text) {
+          if (!text) return '';
+          var s = String(text).trim();
+          var idx = s.indexOf('.');
+          return idx >= 0 ? s.slice(0, idx + 1) : s.split('\n')[0] || s;
+        }
+
+        // If the agent has already narrated something, create an editorial canvas
+        if (lastImmersiveNarration) {
+          var themeGuess = detectThemeFromText(lastImmersiveNarration);
+          var images = pickSceneImages(params.images || themeGuess);
+          var hero = images[0] || '';
+          var rest = images.slice(1, 4);
+          var title = params.title || firstSentence(lastImmersiveNarration) || (params.lead || 'Composición visual');
+          // Avoid dumping long assistant text into the visual canvas. Show body only if short or explicitly provided.
+          var body = '';
+          if (params.body && String(params.body).trim().length > 0 && String(params.body).trim().length < 280) {
+            body = params.body;
+          } else if (lastImmersiveNarration && String(lastImmersiveNarration).trim().length < 240) {
+            body = lastImmersiveNarration;
+          }
+
+          var canvas = '<div class="rounded-[2rem] border border-white/70 bg-white/82 p-6 shadow-[0_24px_80px_rgba(15,23,42,.14)] backdrop-blur-2xl md:p-8">'
+            + '<div class="grid gap-6 lg:grid-cols-[1.1fr_.9fr] lg:items-stretch">'
+            + '<div>'
+            + '<div class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">Composición del agente</div>'
+            + '<h2 class="mt-4 max-w-3xl text-3xl font-black tracking-tight text-slate-900 md:text-4xl">' + escapeHtml(title) + '</h2>'
+            + '<p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 md:text-base">' + escapeHtml(body) + '</p>'
+            + '<div class="mt-6 flex flex-wrap gap-3">' + buildToolButton({ action: 'contact', label: 'Contactar', icon: 'phone' }) + buildToolButton({ action: 'services', label: 'Ver servicios', icon: 'layout-grid' }) + '</div>'
+            + '</div>'
+            + '<div class="grid gap-4 sm:grid-cols-1">'
+            + (hero ? '<div class="overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-xl"><img src="' + escapeHtml(hero) + '" alt="' + escapeHtml(title) + '" class="h-[260px] w-full object-cover" loading="lazy" /></div>' : '')
+            + rest.map(function (image, index) {
+              return '<div class="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-xl">'
+                + '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + ' ' + (index + 2) + '" class="h-40 w-full object-cover" loading="lazy" />'
+                + '</div>';
+            }).join('')
+            + '</div></div>'
+            + (body ? '<p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 md:text-base">' + escapeHtml(body) + '</p>' : '')
+            + '</div>'
+            + '</div>';
+
+          return canvas;
+        }
+
+        // Fallback: simple welcome/introduction when nothing else
+        return '<div class="rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-2xl backdrop-blur-2xl md:p-8">' +
+          '<div class="grid gap-6 lg:grid-cols-[1.15fr_.85fr] lg:items-center">' +
+          '<div>' +
+          '<div class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"><span class="h-2 w-2 rounded-full bg-primary"></span> Experiencia guiada</div>' +
+          '<h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight text-slate-900 md:text-6xl">Modo inmersivo activo</h2>' +
+          '<p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">Pide al agente que componga texto e imágenes; aquí aparecerá la composición visual resultante.</p>' +
+          '</div></div></div>';
+      }
+
+      function showImmersiveContent(signal) {
+        if (!immersiveStage) return;
+        var content = document.getElementById('immersive-content');
+        var story = document.getElementById('immersive-story');
+        if (!content || !story) return;
+
+        // Render the visual canvas (images + composed text)
+        content.innerHTML = renderImmersive(signal);
+
+        // The story panel is reserved strictly for the agent narrative (no cards)
+        story.innerHTML = '<div class="space-y-4">'
+          + '<div class="rounded-[1.75rem] border border-emerald-100 bg-white/90 p-4 shadow-sm">'
+          + '<p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700/80">Respuesta del agente</p>'
+          + '<p class="mt-3 text-sm leading-relaxed text-slate-700">' + escapeHtml(lastImmersiveNarration || 'La respuesta del agente se mostrará aquí.') + '</p>'
+          + '</div>'
+          + '</div>';
+      }
+
+      function enterImmersiveMode() {
+        if (!isDesktopImmersiveAllowed()) return;
+        isImmersive = true;
+        document.body.classList.add('immersive-mode');
+        document.body.classList.add('chat-open');
+        if (immersiveStage) immersiveStage.classList.remove('hidden');
+        if (immersiveForm) immersiveForm.classList.remove('hidden');
+        if (immersiveToggle) {
+          immersiveToggle.setAttribute('aria-pressed', 'true');
+          immersiveToggle.classList.add('bg-white/18');
+        }
+        // Initialize an empty canvas — the agent will compose visuals from the conversation
+        lastImmersiveNarration = 'Modo inmersivo listo. Pide algo (por ejemplo: "Instalar aire y videoportero") y crearé la composición visual.';
+        showImmersiveContent({ kind: 'scene', params: { title: '', lead: '', body: '' } });
         saveState();
-        showChatNav(routeLabel(route));
-        // El overlay aparece un momento despues, no de golpe, para que se lea.
-        setTimeout(function () { showNavOverlay(routeLabel(route)); }, 900);
-        // Pausa para que el usuario lea el mensaje antes de saltar de pagina.
-        setTimeout(function () { window.location.href = route; }, DELAY_CROSS);
-        return true;
+      }
+
+      function exitImmersiveMode() {
+        isImmersive = false;
+        document.body.classList.remove('immersive-mode');
+        if (!isOpen) document.body.classList.remove('chat-open');
+        if (immersiveStage) immersiveStage.classList.add('hidden');
+        if (immersiveForm) immersiveForm.classList.add('hidden');
+        if (immersiveToggle) {
+          immersiveToggle.setAttribute('aria-pressed', 'false');
+          immersiveToggle.classList.remove('bg-white/18');
+        }
+        var content = document.getElementById('immersive-content');
+        if (content) content.innerHTML = '';
+        saveState();
+      }
+
+      function setImmersiveAction(action) {
+        if (!action) return;
+        showImmersiveContent(action);
       }
 
       function toggleChat() {
@@ -332,122 +966,52 @@ import { Icon } from 'astro-icon/components';
           document.body.classList.add('chat-open');
           chatWindow.style.flexDirection = 'column';
           input.focus();
-        } else {
+        } else if (!isImmersive) {
           document.body.classList.remove('chat-open');
         }
         saveState();
       }
 
-      toggle.addEventListener('click', toggleChat);
-      closeBtn.addEventListener('click', toggleChat);
-
-      function addUserMessage(text) {
-        var div = document.createElement('div');
-        div.className = 'flex gap-2 justify-end';
-        div.innerHTML = '<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-sm shadow-sm max-w-[80%]"><p class="text-sm">' + escapeHtml(text) + '</p></div>';
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-      }
-
-      function createBotMessage() {
-        var div = document.createElement('div');
-        div.className = 'flex gap-2';
-        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 max-w-[80%]"><div class="text-sm text-gray-700 bot-text chat-markdown"></div></div>';
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-        return div.querySelector('.bot-text');
-      }
-
-      function mdInline(s) {
-        return s
-          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-medium underline">$1</a>')
-          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-          .replace(/__([^_]+)__/g, '<strong>$1</strong>');
-      }
-
-      function renderMarkdown(text) {
-        // Normaliza vinetas pegadas que a veces genera el modelo
-        // ("...fugas* Climatizacion") metiendoles su salto de linea.
-        var norm = text
-          .replace(/([a-záéíóúñ0-9\)])\s*\*\s+(?=[A-ZÁÉÍÓÚ])/g, '$1\n- ')
-          .replace(/\s+[•·]\s+/g, '\n- ');
-
-        var lines = norm.split('\n');
-        var out = [];
-        var inList = false;
-        function closeList() { if (inList) { out.push('</ul>'); inList = false; } }
-
-        lines.forEach(function(raw) {
-          var line = raw.trim();
-          if (!line) { closeList(); return; }
-          var m = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+[.)]\s+(.*)$/);
-          // Patron "Etiqueta corta: descripcion" -> item con etiqueta en negrita,
-          // aunque el modelo no haya usado markdown.
-          var label = !m ? line.match(/^([A-ZÁÉÍÓÚÑ][^:.]{1,45}):\s+(.+)$/) : null;
-          if (m) {
-            if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">'); inList = true; }
-            out.push('<li>' + mdInline(m[1]) + '</li>');
-          } else if (label) {
-            if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 my-1.5">'); inList = true; }
-            out.push('<li><strong>' + label[1] + ':</strong> ' + mdInline(label[2]) + '</li>');
-          } else {
-            closeList();
-            out.push('<p class="mb-1.5 last:mb-0">' + mdInline(line) + '</p>');
-          }
-        });
-        closeList();
-        return out.join('');
-      }
-
-      function showTyping() {
-        var div = document.createElement('div');
-        div.id = 'typing-indicator';
-        div.className = 'flex gap-2';
-        div.innerHTML = '<img src="/isbot.png" alt="Bot" class="w-10 h-10 object-contain shrink-0" width="40" height="40" /><div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100"><div class="flex gap-1"><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.15s"></span><span class="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay:0.3s"></span></div></div>';
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-      }
-
-      function removeTyping() {
-        var el = document.getElementById('typing-indicator');
-        if (el) el.remove();
-      }
-
-      function escapeHtml(text) {
-        var d = document.createElement('div');
-        d.textContent = text;
-        return d.innerHTML;
-      }
-
-      function setLoading(loading) {
-        isStreaming = loading;
-        if (submitBtn) {
-          submitBtn.disabled = loading;
-          submitBtn.style.opacity = loading ? '0.5' : '1';
-        }
-        input.disabled = loading;
+      function createToolChips() {
+        return;
       }
 
       async function sendMessage(text) {
         if (!text.trim() || isStreaming) return;
 
-        // Hide quick replies
+        var activeInput = (immersiveInput && String(text).trim() === String(immersiveInput.value || '').trim()) ? immersiveInput : input;
         var qr = document.getElementById('chat-quick-replies');
         if (qr) qr.remove();
 
         addUserMessage(text);
-        input.value = '';
+        if (activeInput) activeInput.value = '';
         chatHistory.push({ role: 'user', content: text });
         saveState();
 
         setLoading(true);
         showTyping();
+        // If immersive, show a loader in the canvas area so the user sees the agent 'thinking'
+        if (isImmersive) {
+          try {
+            var _content = document.getElementById('immersive-content');
+            if (_content) {
+              _content.innerHTML = ''
+                + '<div class="rounded-[1.5rem] p-8 text-center">'
+                + '<div class="inline-flex items-center justify-center gap-3">'
+                + '<svg class="animate-spin h-6 w-6 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">'
+                + '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>'
+                + '<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>'
+                + '<div class="text-sm text-slate-600">El agente está componiendo la escena...</div>'
+                + '</div></div>';
+            }
+          } catch (e) {}
+        }
 
         try {
           var response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages: chatHistory }),
+            body: JSON.stringify({ messages: chatHistory, mode: isImmersive ? 'immersive' : 'normal' }),
           });
 
           removeTyping();
@@ -456,52 +1020,66 @@ import { Icon } from 'astro-icon/components';
 
           var botTextEl = createBotMessage();
           var fullText = '';
-
-          // Read text stream
           var reader = response.body.getReader();
           var decoder = new TextDecoder();
 
           while (true) {
             var result = await reader.read();
             if (result.done) break;
-
             var chunk = decoder.decode(result.value, { stream: true });
             fullText += chunk;
-            // Renderizamos markdown en vivo (ocultando el marcador [[GOTO:...]],
-            // que siempre va al final) para que el formato aparezca progresivo
-            // y no de golpe al terminar.
             botTextEl.innerHTML = renderMarkdown(fullText.split('[[')[0]);
             messagesEl.scrollTop = messagesEl.scrollHeight;
           }
 
-          // Separamos la accion de navegacion del texto visible
-          var nav = extractNavigation(fullText);
-          // Salvaguarda: si solo vino el marcador, ponemos un texto natural.
-          if (!nav.clean && nav.route) nav.clean = 'Te llevo allí 👇';
-          botTextEl.innerHTML = renderMarkdown(nav.clean);
-          scrollToBottom();
+          // Limpia los marcadores del texto del asistente, incluido un marcador
+          // truncado al final por el corte del stream (p. ej. "[[GOTO:/contac").
+          var cleaned = fullText
+            .replace(/\[\[GOTO:[^\]]+\]\]/ig, '')
+            .replace(/\[\[SHOW:[^\]]+\]\]/ig, '')
+            .replace(/\[\[(GOTO|SHOW):[^\]]*$/i, '')
+            .trim();
 
-          chatHistory.push({ role: 'assistant', content: nav.clean });
-
-          // Keep history manageable (last 10 messages)
-          if (chatHistory.length > 10) {
-            chatHistory = chatHistory.slice(-10);
-          }
-          saveState();
-
-          // Navegacion asistida: el agente lleva al usuario donde pidio.
-          if (nav.route) {
-            var ok = runNavigation(nav.route);
-            if (!ok) {
-              // La navegacion fallo (ruta/seccion no valida): no dejamos al
-              // usuario colgado, ofrecemos seguir por aqui.
-              var fb = createBotMessage();
-              fb.innerHTML = renderMarkdown('No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente? 🙂');
-              chatHistory.push({ role: 'assistant', content: 'No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente?' });
-              scrollToBottom();
+          if (!isImmersive) {
+            // ---- CHAT NORMAL: respuesta COMPLETA + navegación opcional ----
+            // (no se parte en párrafos ni se toca el estado del modo inmersivo)
+            var nav = extractNavigation(fullText);
+            var text = cleaned || (nav.route ? 'Te llevo allí 👇' : '');
+            botTextEl.innerHTML = renderMarkdown(text);
+            scrollToBottom();
+            chatHistory.push({ role: 'assistant', content: text });
+            if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+            saveState();
+            if (nav.route) {
+              var ok = runNavigation(nav.route);
+              if (!ok) {
+                var fb = createBotMessage();
+                fb.innerHTML = renderMarkdown('No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente? 🙂');
+                chatHistory.push({ role: 'assistant', content: 'No he podido abrir esa sección, pero te ayudo por aquí. ¿Qué necesitas exactamente?' });
+                scrollToBottom();
+              }
+            }
+          } else {
+            // ---- MODO INMERSIVO: narrativa breve + escena visual ----
+            var showInfo = extractShow(fullText);
+            var parts = cleaned.split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+            var narrative = parts.length ? parts[0] : (cleaned || '');
+            var visualInstr = parts.length > 1 ? parts.slice(1).join('\n\n') : '';
+            if (!narrative) narrative = 'Te lo muestro aquí 👇';
+            botTextEl.innerHTML = renderMarkdown(narrative);
+            scrollToBottom();
+            lastImmersiveNarration = narrative;
+            chatHistory.push({ role: 'assistant', content: narrative });
+            if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+            saveState();
+            if (showInfo.kind) {
+              setImmersiveAction(showInfo);
+            } else {
+              var seed = visualInstr || '';
+              var seedTitle = seed ? seed.split('\n')[0].slice(0, 180) : (narrative || '').split('.').slice(0, 1).join('.').slice(0, 160);
+              setImmersiveAction({ kind: 'scene', params: { title: seedTitle, body: seed || '', images: undefined } });
             }
           }
-
         } catch (err) {
           removeTyping();
           var errorEl = createBotMessage();
@@ -511,29 +1089,55 @@ import { Icon } from 'astro-icon/components';
         setLoading(false);
       }
 
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
+      toggle.addEventListener('click', toggleChat);
+      closeBtn.addEventListener('click', toggleChat);
+      if (immersiveToggle) {
+        immersiveToggle.addEventListener('click', function () {
+          if (isImmersive) {
+            exitImmersiveMode();
+          } else {
+            enterImmersiveMode();
+          }
+        });
+      }
+      if (immersiveClose) immersiveClose.addEventListener('click', exitImmersiveMode);
+
+      if (immersiveStage) {
+        immersiveStage.addEventListener('click', function (event) {
+          var target = event.target.closest('[data-immersive-action]');
+          if (!target) return;
+          setImmersiveAction(target.getAttribute('data-immersive-action'));
+        });
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
         sendMessage(input.value);
       });
 
-      quickReplies.forEach(function(btn) {
-        btn.addEventListener('click', function() {
+      if (immersiveForm) {
+        immersiveForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          if (immersiveInput) sendMessage(immersiveInput.value);
+        });
+      }
+
+      quickReplies.forEach(function (btn) {
+        btn.addEventListener('click', function () {
           sendMessage(btn.textContent.trim());
         });
       });
 
-      // Restaurar conversacion previa tras navegar entre paginas
+      createToolChips();
+
       (function restore() {
-        var raw;
-        try { raw = sessionStorage.getItem(STORAGE_KEY); } catch (e) { return; }
-        if (!raw) return;
-        var state;
-        try { state = JSON.parse(raw); } catch (e) { return; }
+        var state = readState();
+        if (!state) return;
 
         if (state.history && state.history.length) {
           var qr = document.getElementById('chat-quick-replies');
           if (qr) qr.remove();
-          state.history.forEach(function(msg) {
+          state.history.forEach(function (msg) {
             if (msg.role === 'user') {
               addUserMessage(msg.content);
             } else if (msg.role === 'assistant') {
@@ -544,28 +1148,35 @@ import { Icon } from 'astro-icon/components';
           chatHistory = state.history;
           scrollToBottom();
         }
+
         if (state.open) {
           isOpen = false;
           toggleChat();
           scrollToBottom();
         }
+
+        if (state.immersive && isDesktopImmersiveAllowed()) {
+          enterImmersiveMode();
+        } else if (state.immersive) {
+          exitImmersiveMode();
+        }
       })();
 
-      // Teaser: burbuja que invita a usar el bot, con mensajes rotativos.
       (function setupTeaser() {
         var teaser = document.getElementById('chat-teaser');
         var teaserClose = document.getElementById('chat-teaser-close');
         var teaserText = document.getElementById('chat-teaser-text');
         if (!teaser || !teaserText) return;
+
         var dismissed = false;
         try { dismissed = sessionStorage.getItem('isbot-teaser') === '1'; } catch (e) {}
         if (dismissed) return;
 
         var mensajes = [
-          '¡Hola! ¿Te ayudo a encontrar lo que buscas?',
-          'Te guío por nuestros servicios y reformas.',
-          '¿Necesitas presupuesto? Pregúntame.',
-          'Dime qué buscas y te llevo a la sección.'
+          '¿Buscas un servicio concreto?',
+          'Te llevo a reformas, electricidad o climatización.',
+          '¿Quieres ver trabajos reales?',
+          'Pide contacto y lo abrimos sin rodeos.'
         ];
         var idx = 0;
         var rotTimer;
@@ -575,10 +1186,12 @@ import { Icon } from 'astro-icon/components';
           teaser.classList.add('hidden');
           if (rotTimer) clearInterval(rotTimer);
         }
+
         function dismissTeaser() {
           hideTeaser();
           try { sessionStorage.setItem('isbot-teaser', '1'); } catch (e) {}
         }
+
         function showTeaser() {
           if (isOpen) return;
           teaser.classList.remove('hidden');
@@ -595,22 +1208,25 @@ import { Icon } from 'astro-icon/components';
 
         setTimeout(function () { if (!isOpen) showTeaser(); }, 5000);
 
-        teaser.addEventListener('click', function (e) {
-          if (e.target.closest('#chat-teaser-close')) return;
+        teaser.addEventListener('click', function (event) {
+          if (event.target.closest('#chat-teaser-close')) return;
           dismissTeaser();
           if (!isOpen) toggleChat();
         });
-        teaserClose.addEventListener('click', function (e) {
-          e.stopPropagation();
+
+        teaserClose.addEventListener('click', function (event) {
+          event.stopPropagation();
           dismissTeaser();
         });
       })();
 
-      // Tras aterrizar por navegacion asistida, resaltamos la seccion (y la
-      // zona concreta, si la habia) para dar contexto visual al usuario.
       (function pendingFocus() {
         var zona;
-        try { zona = sessionStorage.getItem('isbot-zona'); sessionStorage.removeItem('isbot-zona'); } catch (e) {}
+        try {
+          zona = sessionStorage.getItem('isbot-zona');
+          sessionStorage.removeItem('isbot-zona');
+        } catch (e) {}
+
         var hash = window.location.hash ? window.location.hash.substring(1) : '';
         if (hash) {
           var sec = document.getElementById(hash);

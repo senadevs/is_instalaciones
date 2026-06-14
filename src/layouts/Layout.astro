@@ -64,13 +64,9 @@ import '../styles/global.css';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Google Tag Manager -->
-    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5L2DX9HF');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager (GTM-5L2DX9HF): NO se carga aquí.
+         Lo carga CookieBanner.astro SOLO tras aceptar cookies analíticas (RGPD). -->
+    <script is:inline>window.dataLayer = window.dataLayer || [];</script>
 
     <!-- Script para evitar el parpadeo del tema -->
     <script is:inline>
@@ -215,10 +211,9 @@ import '../styles/global.css';
 
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5L2DX9HF"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <!-- GTM noscript eliminado a propósito: sin JS no hay consentimiento posible,
+         así que no se carga GTM (RGPD). -->
+
     <Header/>
     <slot />
     {!hideFooter && <Footer/>}
