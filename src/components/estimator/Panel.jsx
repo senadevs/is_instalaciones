@@ -44,6 +44,7 @@ function Node({ icon, iconColor, title, badge, open, onToggle, children, right }
 }
 
 export default function Panel({
+  isDesktopLayout = false,
   setup, setSetup, onVivienda, rooms, totalM2,
   plantas = 1, plantasMax = 1, onAddPlanta, onRemovePlanta, activeLevel = 0, setActiveLevel,
   selectedId, setSelectedId, addType, setAddType,
@@ -75,7 +76,10 @@ export default function Panel({
   };
 
   return (
-    <aside className="w-full shrink-0 border-b border-gray-200 bg-white md:w-[390px] md:border-b-0 md:border-r md:overflow-y-auto">
+    <aside
+      className={`shrink-0 bg-white ${isDesktopLayout ? 'border-r border-gray-200 overflow-y-auto' : 'w-full border-b border-gray-200'}`}
+      style={isDesktopLayout ? { width: '390px' } : undefined}
+    >
       {/* Marca + buscador */}
       <div className="px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10 space-y-2.5">
         <div className="flex items-center gap-2">

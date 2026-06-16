@@ -58,6 +58,7 @@ export default function Estimator() {
   const [exportState, setExportState] = useState({ status: 'idle', kind: '', error: '' });
   const [draftOffer, setDraftOffer] = useState(null);
   const [draftResolved, setDraftResolved] = useState(false);
+  const [isDesktopLayout, setIsDesktopLayout] = useState(false);
 
   const plantasMax = plantasFor(setup.vivienda);
   const niveles = Math.max(0, ...rooms.map((room) => room.level || 0)) + 1;
@@ -95,6 +96,16 @@ export default function Estimator() {
     if (!draftResolved) return;
     saveEstimatorDraft(currentState);
   }, [currentState, draftResolved]);
+
+  useEffect(() => {
+    const updateViewportLayout = () => {
+      setIsDesktopLayout(window.innerWidth >= 980);
+    };
+
+    updateViewportLayout();
+    window.addEventListener('resize', updateViewportLayout);
+    return () => window.removeEventListener('resize', updateViewportLayout);
+  }, []);
 
   const applyEstimatorState = (snapshot) => {
     const normalized = normalizeEstimatorDraft(snapshot);
@@ -336,8 +347,12 @@ export default function Estimator() {
   }
 
   return (
-    <div className="flex min-h-[560px] flex-col bg-zinc-900 md:flex-row md:h-[calc(100vh-5rem)] lg:h-[calc(100vh-7rem)]">
+    <div
+      className={`flex min-h-[560px] bg-zinc-900 ${isDesktopLayout ? 'flex-row' : 'flex-col'}`}
+      style={isDesktopLayout ? { height: 'calc(100vh - 5rem)' } : undefined}
+    >
       <Panel
+        isDesktopLayout={isDesktopLayout}
         setup={setup}
         setSetup={setSetup}
         onVivienda={changeVivienda}
@@ -374,7 +389,10 @@ export default function Estimator() {
         onResetDraft={resetDraft}
       />
 
-      <div className="relative min-h-[420px] flex-1 md:min-h-0 md:min-w-0">
+      <div
+        className="relative flex-1 min-w-0"
+        style={isDesktopLayout ? { minHeight: 0 } : { minHeight: '420px' }}
+      >
         {draftOffer && (
           <div className="absolute top-3 left-3 right-3 z-20 rounded-xl border border-emerald-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
