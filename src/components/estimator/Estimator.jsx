@@ -336,7 +336,7 @@ export default function Estimator() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-5rem)] lg:h-[calc(100vh-7rem)] min-h-[560px] bg-zinc-900">
+    <div className="flex min-h-[560px] flex-col bg-zinc-900 md:flex-row md:h-[calc(100vh-5rem)] lg:h-[calc(100vh-7rem)]">
       <Panel
         setup={setup}
         setSetup={setSetup}
@@ -374,7 +374,7 @@ export default function Estimator() {
         onResetDraft={resetDraft}
       />
 
-      <div className="relative flex-1 min-h-[400px]">
+      <div className="relative min-h-[420px] flex-1 md:min-h-0 md:min-w-0">
         {draftOffer && (
           <div className="absolute top-3 left-3 right-3 z-20 rounded-xl border border-emerald-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">

@@ -75,7 +75,7 @@ export default function Panel({
   };
 
   return (
-    <aside className="w-full lg:w-[390px] shrink-0 bg-white border-r border-gray-200 overflow-y-auto">
+    <aside className="w-full shrink-0 border-b border-gray-200 bg-white md:w-[390px] md:border-b-0 md:border-r md:overflow-y-auto">
       {/* Marca + buscador */}
       <div className="px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10 space-y-2.5">
         <div className="flex items-center gap-2">
