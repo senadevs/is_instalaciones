@@ -1,8 +1,8 @@
 ---
 import HeroForm from "./HeroForm.astro";
 import Image from "astro/components/Image.astro";
-import electricista from "/public/electricista.webp";
 import reformas from "../../assets/reformas-integrales.jpg";
+import planificador from "../../../image.png";
 import { Icon } from 'astro-icon/components';
 ---
 
@@ -40,6 +40,24 @@ import { Icon } from 'astro-icon/components';
                   Expertos en Electricidad <Icon name="lucide:zap" class="w-5 h-5 inline text-amber-400" />, Fontanería <Icon name="lucide:droplets" class="w-5 h-5 inline text-blue-400" /> y Climatización <Icon name="lucide:snowflake" class="w-5 h-5 inline text-cyan-400" />.
                   Soluciones integrales en Barcelona con atención cercana y presupuesto gratuito.
                 </p>
+                <div class="flex flex-col gap-3 pt-2 sm:flex-row">
+                  <a
+                    href="/estimador"
+                    data-cta="estimador_home_hero"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-primary shadow-lg transition-colors hover:bg-slate-100"
+                  >
+                    <Icon name="lucide:cuboid" class="w-5 h-5" />
+                    Probar estimador 3D
+                  </a>
+                  <a
+                    href="/contacto"
+                    data-cta="presupuesto_home_hero"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/15"
+                  >
+                    <Icon name="lucide:file-text" class="w-5 h-5" />
+                    Pedir presupuesto
+                  </a>
+                </div>
                 <div class="flex flex-wrap gap-4 pt-2">
                   <div class="flex items-center space-x-2">
                     <Icon name="lucide:circle-check" class="w-6 h-6 text-green-400" />
@@ -56,7 +74,67 @@ import { Icon } from 'astro-icon/components';
         </div>
       </div>
 
-      <!-- Slide 2: Video -->
+      <!-- Slide 2: Planificador -->
+      <div class="swiper-slide" style="height:100%;">
+        <div class="relative w-full h-full">
+          <Image
+            src={planificador}
+            alt="Planificador 3D de reformas con editor de planta y exportación de planos"
+            class="absolute inset-0 w-full h-full object-cover object-center"
+            width={1912}
+            height={844}
+            quality={90}
+            format="webp"
+          />
+          <div class="absolute inset-0 bg-black/50 z-[1]"></div>
+          <div
+            class="absolute inset-0 z-[1]"
+            style="background: linear-gradient(90deg, rgba(4, 17, 23, 0.82) 0%, rgba(4, 17, 23, 0.55) 34%, rgba(4, 17, 23, 0.18) 70%, rgba(4, 17, 23, 0.08) 100%);"
+          ></div>
+
+          <div class="hero-slide-content absolute inset-0 flex items-center pt-20 z-[2]">
+            <div class="container mx-auto px-4">
+              <div class="max-w-2xl text-white space-y-5">
+                <div class="inline-flex items-center space-x-2 bg-primary/20 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <Icon name="lucide:layout-panel-top" class="w-5 h-5 inline" />
+                  <span>Planificador de reforma</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                  Diseña tu reforma con <span class="text-primary-foreground drop-shadow-sm">plano y vista 3D</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
+                  Prepara la distribución, añade estancias, revisa medidas y exporta un plano inicial antes de hablar con nosotros. Una forma más seria de arrancar el proyecto.
+                </p>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href="/estimador"
+                    data-cta="estimador_home_slider"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-primary shadow-lg transition-colors hover:bg-slate-100"
+                  >
+                    <Icon name="lucide:cuboid" class="w-5 h-5" />
+                    Abrir planificador
+                  </a>
+                  <a
+                    href="/contacto"
+                    data-cta="presupuesto_home_slider"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/15"
+                  >
+                    <Icon name="lucide:file-text" class="w-5 h-5" />
+                    Pedir presupuesto
+                  </a>
+                </div>
+                <div class="flex flex-wrap gap-4 pt-1 text-sm text-gray-200">
+                  <span class="inline-flex items-center gap-2"><Icon name="lucide:ruler" class="w-4 h-4 text-emerald-300" /> Medidas y cotas</span>
+                  <span class="inline-flex items-center gap-2"><Icon name="lucide:file-output" class="w-4 h-4 text-cyan-300" /> PDF, DXF y SVG</span>
+                  <span class="inline-flex items-center gap-2"><Icon name="lucide:save" class="w-4 h-4 text-amber-300" /> Borrador recuperable</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Video -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
           <video
@@ -97,7 +175,7 @@ import { Icon } from 'astro-icon/components';
         </div>
       </div>
 
-      <!-- Slide 3: Reformas -->
+      <!-- Slide 4: Reformas -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
           <Image

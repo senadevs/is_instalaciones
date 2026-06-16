@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "n8n-mcp": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://n8n.thejornalia.es/mcp-server/http",
+        "--header",
+        "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTgwNTRkYS0yMTYwLTRiMGYtOGEyYi0zM2VjM2I2ZjZhYTYiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6ImFmZTQyYTAxLTRlMzktNDVlNi1iODhlLTIzN2RmMWQ2MzRmMSIsImlhdCI6MTc4MDY4MDc4OX0.dObFXerlg96YQt-eX6-gmXLlyBuWtEMuh1d8eK64SdY"
+      ],
+      "enabled": true,
+      "env": {}
+    }
+  }
+}

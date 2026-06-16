@@ -177,16 +177,49 @@ export function scaleRoomsToArea(rooms, targetM2) {
   return rooms.map(({ cx, cz, ...r }) => ({ ...r, width: round(r.width), length: round(r.length) }));
 }
 
+export const FURNITURE_GRID_STEP = 0.05;
+
+function wallClearance(item) {
+  return Math.max(0, item?.wallClearance ?? 0.04);
+}
+
+function placementLimits(room, item, rot) {
+  const fp = footprint(item, rot);
+  const clearance = wallClearance(item);
+  return {
+    fp,
+    maxX: Math.max(0, room.width / 2 - fp.w / 2 - clearance),
+    maxZ: Math.max(0, room.length / 2 - fp.d / 2 - clearance),
+  };
+}
+
+function quantizeInward(value, grid, maxAbs) {
+  const clamped = Math.max(-maxAbs, Math.min(maxAbs, value));
+  if (!grid || grid <= 0) return clamped;
+  const snapped = Math.round(clamped / grid) * grid;
+  if (Math.abs(snapped) <= maxAbs + 1e-9) return snapped;
+  const inward = Math.floor(maxAbs / grid + 1e-9) * grid;
+  return inward > 0 ? Math.sign(clamped || 1) * inward : clamped;
+}
+
 // Imanta el mueble a las paredes cercanas (queda al ras) y lo mantiene dentro.
 export function snapToWalls(room, item, x, z, rot, thr = 0.35) {
-  const fp = footprint(item, rot);
-  const margin = 0.04;
-  const maxX = room.width / 2 - fp.w / 2 - margin;
-  const maxZ = room.length / 2 - fp.d / 2 - margin;
+  const { maxX, maxZ } = placementLimits(room, item, rot);
   let nx = x, nz = z;
   if (Math.abs(x + maxX) < thr) nx = -maxX; else if (Math.abs(x - maxX) < thr) nx = maxX;
   if (Math.abs(z + maxZ) < thr) nz = -maxZ; else if (Math.abs(z - maxZ) < thr) nz = maxZ;
   return { x: Math.max(-maxX, Math.min(maxX, nx)), z: Math.max(-maxZ, Math.min(maxZ, nz)) };
+}
+
+export function resolveFurniturePlacement(room, item, x, z, rot, options = {}) {
+  const threshold = options.threshold ?? 0.35;
+  const grid = options.grid ?? item?.placementStep ?? FURNITURE_GRID_STEP;
+  const snapped = snapToWalls(room, item, x, z, rot, threshold);
+  const { maxX, maxZ } = placementLimits(room, item, rot);
+  return {
+    x: quantizeInward(snapped.x, grid, maxX),
+    z: quantizeInward(snapped.z, grid, maxZ),
+  };
 }
 
 // Auto-amueblado AJUSTADO: descarta lo que no cabe y mete dentro de los muros
@@ -200,9 +233,7 @@ export function fittedAuto(type, w, l) {
     })
     .map((f) => {
       const c = FURNITURE_BY_KEY[f.key];
-      const fp = footprint(c, f.rot || 0);
-      const mx = Math.max(0, w / 2 - fp.w / 2 - 0.05);
-      const mz = Math.max(0, l / 2 - fp.d / 2 - 0.05);
+      const { maxX: mx, maxZ: mz } = placementLimits({ width: w, length: l }, c, f.rot || 0);
       return { ...f, px: Math.max(-mx, Math.min(mx, f.px)), pz: Math.max(-mz, Math.min(mz, f.pz)) };
     });
 }
@@ -212,21 +243,11 @@ export function fittedAuto(type, w, l) {
 export function clearDoorway(room, side, opening) {
   const items = room.furniture || [];
   if (!opening || opening.role === 'window') return items;
-  const horiz = side === 'n' || side === 's';
-  const span = horiz ? room.width : room.length;
-  const openW = Math.min(opening.width || 0.9, span - 0.2);
-  const off = opening.offset || 0;
-  const borderPerp = horiz
-    ? (side === 'n' ? -room.length / 2 : room.length / 2)
-    : (side === 'w' ? -room.width / 2 : room.width / 2);
-  const depth = 0.6; // banda de paso frente a la puerta
+  const band = openingBand(room, side, opening);
   const kept = [], relocate = [];
   items.forEach((f) => {
     const c = FURNITURE_BY_KEY[f.key]; if (!c) { kept.push(f); return; }
-    const fp = footprint(c, f.rot || 0);
-    const axisPos = horiz ? f.px : f.pz, perpPos = horiz ? f.pz : f.px;
-    const axisExt = horiz ? fp.w / 2 : fp.d / 2, perpExt = horiz ? fp.d / 2 : fp.w / 2;
-    const blocks = Math.abs(axisPos - off) < openW / 2 + axisExt && Math.abs(perpPos - borderPerp) < perpExt + depth;
+    const blocks = furnitureBlocksOpening(room, side, opening, f.px, f.pz, f.rot || 0, c);
     (blocks ? relocate : kept).push(f);
   });
   relocate.forEach((f) => {
@@ -236,6 +257,50 @@ export function clearDoorway(room, side, opening) {
     if (spot) kept.push({ ...f, px: spot.x, pz: spot.z }); // si no hay hueco, se quita
   });
   return kept;
+}
+
+function openingBand(room, side, opening) {
+  const horiz = side === 'n' || side === 's';
+  const span = horiz ? room.width : room.length;
+  return {
+    horiz,
+    openW: Math.min(opening.width || 0.9, span - 0.2),
+    off: opening.offset || 0,
+    borderPerp: horiz
+      ? (side === 'n' ? -room.length / 2 : room.length / 2)
+      : (side === 'w' ? -room.width / 2 : room.width / 2),
+    depth: 0.6,
+  };
+}
+
+function furnitureBlocksOpening(room, side, opening, x, z, rot, item) {
+  if (!opening || opening.role === 'window') return false;
+  const band = openingBand(room, side, opening);
+  const fp = footprint(item, rot);
+  const axisPos = band.horiz ? x : z;
+  const perpPos = band.horiz ? z : x;
+  const axisExt = band.horiz ? fp.w / 2 : fp.d / 2;
+  const perpExt = band.horiz ? fp.d / 2 : fp.w / 2;
+  return Math.abs(axisPos - band.off) < band.openW / 2 + axisExt
+    && Math.abs(perpPos - band.borderPerp) < perpExt + band.depth;
+}
+
+function roomPassages(room) {
+  const sides = ['n', 's', 'e', 'w'];
+  return sides.flatMap((side) => {
+    const wall = room._walls?.[side];
+    const override = room.openings?.[side];
+    if (!wall && !override) return [];
+    const opening = getOpening(room, side, wall || { type: 'ext' }, {});
+    if (!opening || opening.role === 'window') return [];
+    return [{ side, opening }];
+  });
+}
+
+export function clearDoorways(room, furniture = room.furniture || []) {
+  const passages = roomPassages(room);
+  if (!passages.length) return furniture;
+  return passages.reduce((items, passage) => clearDoorway({ ...room, furniture: items }, passage.side, passage.opening), furniture);
 }
 
 // Holguras (m) del mueble a cada pared, para mostrar el espacio que queda.
@@ -279,11 +344,11 @@ function overlap(a, b) {
 // ¿Cabe el mueble en (x,z) dentro de la estancia y sin pisar a otros?
 // x,z en coordenadas LOCALES de la estancia (centro en 0,0).
 export function furnitureFits(room, item, x, z, rot, others = [], ignoreId = null) {
-  const margin = 0.05;
-  const fp = footprint(item, rot);
+  const { fp, maxX, maxZ } = placementLimits(room, item, rot);
   // Dentro de los muros.
-  if (Math.abs(x) + fp.w / 2 > room.width / 2 - margin) return false;
-  if (Math.abs(z) + fp.d / 2 > room.length / 2 - margin) return false;
+  if (Math.abs(x) > maxX + 1e-9) return false;
+  if (Math.abs(z) > maxZ + 1e-9) return false;
+  if (roomPassages(room).some((passage) => furnitureBlocksOpening(room, passage.side, passage.opening, x, z, rot, item))) return false;
   // Sin solapar otros muebles.
   const me = { x, z, w: fp.w, d: fp.d };
   for (const o of others) {
@@ -297,9 +362,7 @@ export function furnitureFits(room, item, x, z, rot, others = [], ignoreId = nul
 // Busca un hueco libre para colocar un mueble nuevo (rejilla simple).
 export function findFreeSpot(room, item, others = []) {
   const step = 0.4;
-  const fp = footprint(item, 0);
-  const xMax = room.width / 2 - fp.w / 2 - 0.05;
-  const zMax = room.length / 2 - fp.d / 2 - 0.05;
+  const { maxX: xMax, maxZ: zMax } = placementLimits(room, item, 0);
   if (xMax < 0 || zMax < 0) return null; // no cabe ni vacío
   for (let z = -zMax; z <= zMax; z += step) {
     for (let x = -xMax; x <= xMax; x += step) {

@@ -48,7 +48,8 @@ export default function Panel({
   plantas = 1, plantasMax = 1, onAddPlanta, onRemovePlanta, activeLevel = 0, setActiveLevel,
   selectedId, setSelectedId, addType, setAddType,
   onAdd, onRemove, onUpdate, onRotateRoom, onToggleService, onToggleOpt, onSetOpening,
-  interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan, onDownloadPlan,
+  interior, onEnterInterior, onSolicitar, onScaleArea, onShowPlan,
+  onExport, exportState, planModel, planErrors = [], onResetDraft,
 }) {
   const [openInmueble, setOpenInmueble] = useState(true);
   const [query, setQuery] = useState('');
@@ -80,8 +81,8 @@ export default function Panel({
         <div className="flex items-center gap-2">
           <span className="grid place-items-center w-7 h-7 rounded-lg bg-primary/10 text-primary"><Icon name="box" size={16} /></span>
           <div className="leading-tight">
-            <p className="text-sm font-bold text-slate-800">Configurador 3D</p>
-            <p className="text-[10px] text-gray-500">{rooms.length} zonas · {totalM2.toFixed(1)} m²</p>
+            <p className="text-sm font-bold text-slate-800">Editor de plano y 3D</p>
+            <p className="text-[10px] text-gray-500">{rooms.length} zonas · {totalM2.toFixed(1)} m² · {planModel?.sheets?.length || 1} planta(s)</p>
           </div>
         </div>
         <div className="relative">
@@ -272,14 +273,62 @@ export default function Panel({
           })}
         </div>
 
-        {/* CTA */}
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-emerald-900">Exportación del plano</p>
+              <p className="text-[11px] text-emerald-700">
+                {planErrors.length
+                  ? `${planErrors.length} incidencia(s) bloquean PDF, DXF y SVG`
+                  : 'Plano listo para PDF vectorial, DXF y SVG'}
+              </p>
+            </div>
+            <span className={`rounded-full px-2 py-1 text-[10px] font-semibold ${planErrors.length ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-700'}`}>
+              {planErrors.length ? 'Revisar' : 'Válido'}
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {[
+              ['pdf', 'file-text', 'PDF'],
+              ['dxf', 'ruler', 'DXF'],
+              ['svg', 'scan', 'SVG'],
+              ['png', 'image', 'PNG'],
+              ['json', 'folder-down', 'Proyecto JSON'],
+            ].map(([kind, icon, label]) => (
+              <button
+                key={kind}
+                onClick={() => onExport?.(kind)}
+                className={`flex items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-xs font-semibold transition-colors ${exportState?.kind === kind && exportState?.status === 'running'
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-emerald-200 bg-white text-emerald-800 hover:border-primary hover:text-primary'
+                }`}
+              >
+                <Icon name={icon} size={14} />
+                {label}
+              </button>
+            ))}
+          </div>
+          {exportState?.status !== 'idle' && (
+            <div className={`mt-3 rounded-md px-3 py-2 text-[11px] ${exportState.status === 'error' ? 'bg-red-50 text-red-700' : exportState.status === 'running' ? 'bg-white text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
+              {exportState.status === 'running' && `Generando ${String(exportState.kind).toUpperCase()}...`}
+              {exportState.status === 'success' && `${String(exportState.kind).toUpperCase()} listo.`}
+              {exportState.status === 'error' && exportState.error}
+            </div>
+          )}
+          <div className="mt-3 flex gap-2">
+            <button onClick={onShowPlan} className="flex-1 rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-800 hover:border-primary hover:text-primary">
+              Ir a planta
+            </button>
+            <button onClick={onResetDraft} className="flex-1 rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+              Restablecer borrador
+            </button>
+          </div>
+        </div>
+
         <div className="rounded-xl bg-primary p-4 text-center">
           <p className="text-[13px] text-white/90 mb-3">Presupuesto <strong>gratuito</strong> tras visita técnica. Sin compromiso.</p>
           <button onClick={onSolicitar} disabled={!rooms.length} className="w-full flex items-center justify-center gap-2 bg-white text-primary font-bold py-2.5 rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50">
             <Icon name="message-circle" size={16} /> Solicitar presupuesto
-          </button>
-          <button onClick={onDownloadPlan} disabled={!rooms.length} className="w-full flex items-center justify-center gap-2 mt-2 bg-primary/20 text-white font-semibold py-2 rounded-md hover:bg-white/20 transition-colors disabled:opacity-50">
-            <Icon name="download" size={15} /> Plano en PDF
           </button>
         </div>
       </div>

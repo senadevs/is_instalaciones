@@ -21,6 +21,10 @@ export default defineConfig({
       'process.env.GOOGLE_API_KEY': JSON.stringify(process.env.GOOGLE_API_KEY),
       'process.env.GOOGLE_PLACE_ID': JSON.stringify(process.env.GOOGLE_PLACE_ID),
     },
+    test: {
+      environment: 'node',
+      include: ['src/**/*.test.js'],
+    },
     // Permite exponer el dev server por túneles (ngrok) para enseñar el proyecto.
     // El punto inicial autoriza cualquier subdominio, aunque cambie al reiniciar.
     server: {

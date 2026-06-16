@@ -1,0 +1,292 @@
+{
+  "name": "Telegram Email Verification & Invoice PDF",
+  "nodes": [
+    {
+      "parameters": {
+        "updateMode": "skip"
+      },
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        100
+      ],
+      "id": "1",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram API",
+          "id": "placeholder-telegram-cred"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "userId",
+              "value": "={{ $json[\"message\"][\"from\"][\"id\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json[\"message\"][\"text\"] }}"  
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract Email",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        450,
+        100
+      ],
+      "id": "2"
+    },
+    {
+      "parameters": {
+        "url": "https://{{ $json[\"supabaseProject\"] }}.supabase.co/auth/v1/signup",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersJson": {
+          "email": "={{ $json[\"email\"] }}",
+          "password": "TempPass123!"  
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY || \"placeholder-supabase-key\" }}"
+            }
+          ]
+        }
+      },
+      "name": "Supabase Sign‑Up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        650,
+        100
+      ],
+      "id": "3",
+      "credentials": {
+        "httpBasicAuth": {
+          "name": "Supabase API",
+          "id": "placeholder-supabase-cred"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json[\"email_verified\"] }}",
+              "operation": "isTrue"
+            }
+          ]
+        }
+      },
+      "name": "Email Verified?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        850,
+        100
+      ],
+      "id": "4"
+    },
+    {
+      "parameters": {
+        "functionCode": "const moment = require('moment');\nreturn [{\n  invoice_id: `INV-${Date.now()}` ,\n  client: $json[\"email\"] ,\n  amount: 199.99 ,\n  currency: \"EUR\" ,\n  date: moment().format('YYYY-MM-DD') ,\n  items: [\n    { description: \"Servicio de instalación\", qty: 1, price: 199.99 }\n  ]\n}];"
+      },
+      "name": "Create Invoice Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        1050,
+        50
+      ],
+      "id": "5"
+    },
+    {
+      "parameters": {
+        "url": "https://api.html2pdf.app/v1/generate",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersJson": {
+          "html": "={{ $json[\"html\"] }}",
+          "apiKey": "={{ $env.HTML2PDF_API_KEY || \"placeholder-html2pdf-key\" }}"
+        }
+      },
+      "name": "Generate PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1250,
+        50
+      ],
+      "id": "6"
+    },
+    {
+      "parameters": {
+        "binaryData": true,
+        "propertyName": "data"
+      },
+      "name": "Prepare Binary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        50
+      ],
+      "id": "7"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "fileName": "={{ $json[\"invoice_id\"] }}.pdf",
+        "binaryPropertyName": "data",
+        "folderId": "{{ $env.GDRIVE_FOLDER_ID || \"placeholder-folder-id\" }}"
+      },
+      "name": "Upload to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [
+        1650,
+        50
+      ],
+      "id": "8",
+      "credentials": {
+        "googleApi": {
+          "name": "Google Drive API",
+          "id": "placeholder-google-drive-cred"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json[\"userId\"] }}",
+        "document": "={{ $json[\"binary\"][\"data\"] }}",
+        "options": {}
+      },
+      "name": "Send Invoice",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1850,
+        50
+      ],
+      "id": "9",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram API",
+          "id": "placeholder-telegram-cred"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Email": {
+      "main": [
+        [
+          {
+            "node": "Supabase Sign‑Up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Sign‑Up": {
+      "main": [
+        [
+          {
+            "node": "Email Verified?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Verified?": {
+      "main": [
+        [
+          {
+            "node": "Create Invoice Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "else": []
+    },
+    "Create Invoice Data": {
+      "main": [
+        [
+          {
+            "node": "Generate PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PDF": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary": {
+      "main": [
+        [
+          {
+            "node": "Upload to Drive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Invoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed"
+  },
+  "id": "placeholder-workflow-id",
+  "active": true,
+  "createdAt": "2026-06-05T18:00:00.000Z",
+  "updatedAt": "2026-06-05T18:00:00.000Z",
+  "versionId": "placeholder-version-id",
+  "tags": []
+}

@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { Model, MODELS, getFurniture } from './models.jsx';
 import { ROOM_TYPES, VIVIENDAS, WALL_DEFAULT, FURNITURE_BY_KEY, FLOOR_H } from './catalog.js';
 import { placeRooms, computeWalls, getOpening, pickEntrance, fittedAuto } from './geometry.js';
+import { resolveFurnitureRenderPose } from './renderPlacement.js';
 
 // Helpers para leer el nuevo modelo de servicios.
 const svcOn = (r, s) => !!r.services?.[s]?.on;
@@ -242,7 +243,8 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
                 const cat = FURNITURE_BY_KEY[f.key];
                 const url = cat ? MODELS[cat.model] : (f.url || MODELS[f.model]);
                 if (!url) return null;
-                return <Model key={f.id || i} url={url} position={[f.px || 0, 0, f.pz || 0]} rotation={[0, f.rot || 0, 0]} scale={f.scale || 1} />;
+                const pose = resolveFurnitureRenderPose(f, furniture);
+                return <Model key={f.id || i} url={url} position={[pose.x, pose.y, pose.z]} rotation={[0, f.rot || 0, 0]} scale={f.scale || 1} />;
               })}
             </Suspense>
           )}

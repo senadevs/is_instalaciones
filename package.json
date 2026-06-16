@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.5.0",
@@ -24,12 +25,17 @@
     "astro": "^5.2.5",
     "astro-icon": "^1.1.5",
     "dotenv": "^16.5.0",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.17.0",
     "openai": "^6.42.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "svg2pdf.js": "^2.7.0",
     "swiper": "^11.2.2",
     "tailwindcss": "^4.0.5",
     "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
   }
 }

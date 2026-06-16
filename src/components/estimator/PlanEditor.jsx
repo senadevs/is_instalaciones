@@ -1,16 +1,16 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 import {
   ROOM_TYPES, FURNITURE_CATALOG, FURNITURE_CATS, FURNITURE_BY_KEY,
-  catsFor, furnitureAllowed,
+  catsFor, furnitureAllowed, showsInPlan,
 } from './catalog.js';
-import { placeRooms, furnitureFits, snapToWalls, clearances, fittedAuto } from './geometry.js';
+import { placeRooms, computeWalls, furnitureFits, resolveFurniturePlacement, clearances, fittedAuto } from './geometry.js';
 import { Icon } from './ui.jsx';
 
 const CAT_COLOR = {
   salon: '#10b981', comedor: '#14b8a6', dormitorio: '#8b5cf6',
   cocina: '#f97316', bano: '#3b82f6', oficina: '#0ea5e9', deco: '#a3a3a3',
 };
-const snap = (v) => Math.round(v / 0.25) * 0.25;
+const snapRoom = (v) => Math.round(v / 0.25) * 0.25;
 
 // Convierte un evento de puntero a coordenadas SVG (en metros).
 function toSvg(svg, e) {
@@ -29,7 +29,7 @@ function roomItems(room) {
 }
 
 export default function PlanEditor({
-  rooms, selectedId, onSelect,
+  rooms, planModel, planErrors = [], selectedId, onSelect,
   plantas = 1, activeLevel = 0, setActiveLevel, onRotateRoom,
   onBakeAll, onAddFurniture, onMoveFurniture, onRotateFurniture, onRemoveFurniture,
   onAutoFurnish, onClearFurniture,
@@ -39,6 +39,7 @@ export default function PlanEditor({
     () => placeRooms(rooms).filter((r) => plantas <= 1 || (r.level || 0) === activeLevel),
     [rooms, plantas, activeLevel]
   );
+  const walls = useMemo(() => computeWalls(placed), [placed]);
   const [drag, setDrag] = useState(null);     // {mode, ...} arrastre activo
   const [ghost, setGhost] = useState(null);   // mueble nuevo siguiendo el cursor
   const [selFurn, setSelFurn] = useState(null); // {roomId, fid}
@@ -55,7 +56,10 @@ export default function PlanEditor({
   }, [placed]);
   const pad = 1.5;
 
-  const roomAt = (p) => placed.find((r) => Math.abs(p.x - r.cx) <= r.width / 2 && Math.abs(p.z - r.cz) <= r.length / 2);
+  const roomAt = (p) => {
+    const index = placed.findIndex((r) => Math.abs(p.x - r.cx) <= r.width / 2 && Math.abs(p.z - r.cz) <= r.length / 2);
+    return index >= 0 ? { ...placed[index], _walls: walls[index] } : null;
+  };
 
   // ---- Arrastre de zonas y de muebles existentes (pointer global) ----------
   useEffect(() => {
@@ -66,13 +70,15 @@ export default function PlanEditor({
       if (drag.mode === 'room') {
         const positions = {};
         placed.forEach((r) => { positions[r.id] = { cx: r.cx, cz: r.cz }; });
-        positions[drag.id] = { cx: snap(p.x - drag.dx), cz: snap(p.z - drag.dz) };
+        positions[drag.id] = { cx: snapRoom(p.x - drag.dx), cz: snapRoom(p.z - drag.dz) };
         setDrag({ ...drag, preview: positions });
       } else if (drag.mode === 'move') {
-        const room = placed.find((r) => r.id === drag.roomId); if (!room) return;
+        const index = placed.findIndex((r) => r.id === drag.roomId);
+        const room = index >= 0 ? { ...placed[index], _walls: walls[index] } : null;
+        if (!room) return;
         const item = FURNITURE_BY_KEY[drag.key];
-        const sn = snapToWalls(room, item, p.x - room.cx, p.z - room.cz, drag.rot);
-        const lx = snap(sn.x), lz = snap(sn.z);
+        const placement = resolveFurniturePlacement(room, item, p.x - room.cx, p.z - room.cz, drag.rot);
+        const lx = placement.x, lz = placement.z;
         const others = roomItems(room).filter((o) => o.id !== drag.fid);
         const ok = furnitureFits(room, item, lx, lz, drag.rot, others);
         const cl = clearances(room, item, lx, lz, drag.rot);
@@ -87,7 +93,7 @@ export default function PlanEditor({
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
     return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
-  }, [drag, placed, onBakeAll, onMoveFurniture]);
+  }, [drag, placed, walls, onBakeAll, onMoveFurniture]);
 
   // ---- Arrastre de un mueble NUEVO desde la paleta -------------------------
   useEffect(() => {
@@ -100,8 +106,8 @@ export default function PlanEditor({
         room = roomAt(p);
         if (room) {
           const item = FURNITURE_BY_KEY[ghost.key];
-          const sn = snapToWalls(room, item, p.x - room.cx, p.z - room.cz, 0);
-          lx = snap(sn.x); lz = snap(sn.z);
+          const placement = resolveFurniturePlacement(room, item, p.x - room.cx, p.z - room.cz, 0);
+          lx = placement.x; lz = placement.z;
           allowed = furnitureAllowed(room.type, ghost.key);
           valid = allowed && furnitureFits(room, item, lx, lz, 0, roomItems(room));
           const cl = clearances(room, item, lx, lz, 0);
@@ -117,9 +123,10 @@ export default function PlanEditor({
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
     return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
-  }, [ghost, placed, onAddFurniture]);
+  }, [ghost, placed, walls, onAddFurniture]);
 
   const positions = drag?.mode === 'room' && drag.preview ? drag.preview : null;
+  const activeSheet = planModel?.sheets?.find((sheet) => sheet.level === activeLevel) || planModel?.sheets?.[0] || null;
   // Paleta filtrada por las reglas de la zona seleccionada.
   const selRoom = placed.find((r) => r.id === selectedId);
   const allowedCats = selRoom ? catsFor(selRoom.type) : Object.keys(FURNITURE_CATS);
@@ -144,6 +151,34 @@ export default function PlanEditor({
             </pattern>
           </defs>
           <rect x={bounds.minX - pad} y={bounds.minZ - pad} width={bounds.spanX + 2 * pad} height={bounds.spanZ + 2 * pad} fill="url(#grid)" />
+
+          {activeSheet && (
+            <g opacity="0.9">
+              {activeSheet.dimensions.map((dimension, index) => (
+                <g key={`dim-${index}`}>
+                  <line
+                    x1={dimension.start.x}
+                    y1={dimension.start.y}
+                    x2={dimension.end.x}
+                    y2={dimension.end.y}
+                    stroke="#94a3b8"
+                    strokeWidth="0.03"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <text
+                    x={(dimension.start.x + dimension.end.x) / 2}
+                    y={(dimension.start.y + dimension.end.y) / 2 - 0.08}
+                    textAnchor="middle"
+                    fontSize={0.18}
+                    fill="#475569"
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    {dimension.text}
+                  </text>
+                </g>
+              ))}
+            </g>
+          )}
 
           {placed.map((r) => {
             const pos = positions?.[r.id] || { cx: r.cx, cz: r.cz };
@@ -170,10 +205,11 @@ export default function PlanEditor({
                 {/* muebles auto (tenues, no editables) */}
                 {autoItems.map((f, i) => {
                   const deg = (f.rot || 0) * 180 / Math.PI;
+                  const exportable = showsInPlan(f.key);
                   return <rect key={'au' + i} x={-f.w / 2} y={-f.d / 2} width={f.w} height={f.d} rx={0.03}
                     transform={`translate(${pos.cx + f.px} ${pos.cz + f.pz}) rotate(${deg})`}
-                    fill={CAT_COLOR[FURNITURE_BY_KEY[f.key]?.cat] || '#94a3b8'} fillOpacity={0.25}
-                    stroke="#94a3b8" strokeWidth={0.02} strokeDasharray="0.1 0.08" vectorEffect="non-scaling-stroke" style={{ pointerEvents: 'none' }} />;
+                    fill={CAT_COLOR[FURNITURE_BY_KEY[f.key]?.cat] || '#94a3b8'} fillOpacity={exportable ? 0.25 : 0.12}
+                    stroke={exportable ? '#94a3b8' : '#cbd5e1'} strokeWidth={0.02} strokeDasharray={exportable ? '0.1 0.08' : '0.04 0.06'} vectorEffect="non-scaling-stroke" style={{ pointerEvents: 'none' }} />;
                 })}
 
                 {/* muebles colocados (editables) */}
@@ -184,11 +220,13 @@ export default function PlanEditor({
                   const deg = (f.rot || 0) * 180 / Math.PI;
                   const isSel = selFurn?.fid === f.id;
                   const col = CAT_COLOR[FURNITURE_BY_KEY[f.key]?.cat] || '#64748b';
+                  const exportable = showsInPlan(f.key);
                   return (
                     <g key={f.id} transform={`translate(${pos.cx + lx} ${pos.cz + lz}) rotate(${deg})`}>
                       <rect x={-f.w / 2} y={-f.d / 2} width={f.w} height={f.d} rx={0.03}
-                        fill={isDragged && !drag.ok ? '#ef4444' : col} fillOpacity={isDragged ? 0.55 : 0.85}
+                        fill={isDragged && !drag.ok ? '#ef4444' : col} fillOpacity={isDragged ? 0.55 : exportable ? 0.85 : 0.35}
                         stroke={isSel ? '#fff' : '#1e293b'} strokeWidth={isSel ? 0.06 : 0.03} vectorEffect="non-scaling-stroke"
+                        strokeDasharray={exportable ? undefined : '0.08 0.06'}
                         style={{ cursor: 'grab' }}
                         onPointerDown={(e) => { e.stopPropagation(); onSelect(r.id); setSelFurn({ roomId: r.id, fid: f.id }); setDrag({ mode: 'move', roomId: r.id, fid: f.id, key: f.key, rot: f.rot || 0, lx: f.px, lz: f.pz, ok: true }); }}
                         onDoubleClick={(e) => { e.stopPropagation(); onRotateFurniture(r.id, f.id); }}
@@ -227,6 +265,16 @@ export default function PlanEditor({
             <button onClick={() => onClearFurniture(selectedId)} className="flex items-center gap-1 bg-white text-zinc-700 text-xs font-medium px-2.5 py-1.5 rounded-md shadow hover:bg-zinc-50 border border-zinc-200"><Icon name="eraser" size={13} /> Vaciar</button>
           </div>
         )}
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
+          <div className="rounded-md border border-zinc-200 bg-white/95 px-3 py-2 text-[11px] text-zinc-600 shadow">
+            La planta muestra cotas y atenúa los elementos que no salen en la exportación.
+          </div>
+          {planErrors.length > 0 && (
+            <div className="max-w-[280px] rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-amber-800 shadow">
+              {planErrors[0].message}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Paleta de mobiliario (filtrada por la zona seleccionada) */}

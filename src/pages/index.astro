@@ -6,9 +6,43 @@ import CTARenovations from '../components/cta/CTARenovations.astro';
 import CTAServices from '../components/cta/CTAServices.astro';
 import GlitchSlider from '../components/sections/GlitchSlider.astro';
 import HowWeWork from '../components/sections/HowWeWork.astro';
+
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Instalaciones y reformas en Barcelona',
+  serviceType: [
+    'Instalaciones electricas',
+    'Fontaneria y saneamiento',
+    'Climatizacion y calefaccion',
+    'Reformas integrales'
+  ],
+  provider: {
+    '@type': 'LocalBusiness',
+    '@id': 'https://is-instalaciones.es#localbusiness'
+  },
+  areaServed: {
+    '@type': 'AdministrativeArea',
+    name: 'Barcelona y area metropolitana'
+  },
+  availableChannel: [
+    {
+      '@type': 'ServiceChannel',
+      serviceUrl: 'https://is-instalaciones.es/contacto'
+    },
+    {
+      '@type': 'ServiceChannel',
+      serviceUrl: 'https://is-instalaciones.es/estimador'
+    }
+  ]
+};
 ---
 
-<Layout title="Servicios de Instalaciones y Reformas [637591736] - Barcelona">
+<Layout
+  title="Instalaciones y Reformas en Barcelona | Electricidad, Fontaneria y Climatizacion"
+  description="Empresa de instalaciones y reformas en Barcelona. Electricidad, fontaneria, climatizacion y reformas integrales con tecnicos autorizados, presupuesto gratuito y 2 anos de garantia."
+  additionalSchema={homeSchema}
+>
 	<Hero />
 	<CTAServices />
 	<GlitchSlider />

@@ -304,6 +304,36 @@ export const FURNITURE_CATS = {
 };
 
 // Acceso rápido por clave.
+const FURNITURE_PLACEMENT = {
+  free: { placement: 'free', wallClearance: 0.04, placementStep: 0.05 },
+  wall: { placement: 'wall', wallClearance: 0.02, placementStep: 0.05 },
+  mounted: { placement: 'mounted', wallClearance: 0.01, placementStep: 0.05 },
+};
+
+const WALL_HUGGING_ITEMS = new Set([
+  'sofa', 'sofaLong', 'sofaCorner', 'sofaOttoman', 'designSofa',
+  'tvCabinet', 'tvCabinetDoors', 'bookcase', 'bookcaseWide', 'wardrobe',
+  'bed', 'bedSingle', 'bedBunk', 'nightstand', 'desk', 'deskCorner',
+  'kitchenCabinet', 'kitchenCabinetDrawer', 'kitchenBar', 'kitchenFridge',
+  'kitchenFridgeLarge', 'kitchenSink', 'kitchenStove', 'kitchenStoveElectric',
+  'washer', 'dryer', 'toilet', 'toiletSquare', 'bathSink', 'bathSinkSquare',
+  'bathtub', 'shower', 'showerRound', 'bathCabinet',
+]);
+
+const WALL_MOUNTED_ITEMS = new Set([
+  'tv', 'bathMirror', 'hood', 'kitchenUpper',
+]);
+
+function placementProfileFor(key) {
+  if (WALL_MOUNTED_ITEMS.has(key)) return FURNITURE_PLACEMENT.mounted;
+  if (WALL_HUGGING_ITEMS.has(key)) return FURNITURE_PLACEMENT.wall;
+  return FURNITURE_PLACEMENT.free;
+}
+
+FURNITURE_CATALOG.forEach((item) => {
+  Object.assign(item, placementProfileFor(item.key));
+});
+
 export const FURNITURE_BY_KEY = Object.fromEntries(FURNITURE_CATALOG.map((f) => [f.key, f]));
 
 // ---- Auto-amueblado en términos de catálogo --------------------------------

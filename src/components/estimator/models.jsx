@@ -1,4 +1,7 @@
+import { useMemo } from 'react';
+import * as THREE from 'three';
 import { useGLTF, Clone } from '@react-three/drei';
+import { getModelAnchorOffset } from './renderPlacement.js';
 
 // Modelos GLTF (Kenney Furniture Kit, CC0) servidos desde /public/models.
 // Kit completo de ~140 piezas; las claves son alias usados por el catálogo.
@@ -54,7 +57,16 @@ const S = 1;
 
 export function Model({ url, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 }) {
   const { scene } = useGLTF(url);
-  return <Clone object={scene} position={position} rotation={rotation} scale={scale * S} castShadow receiveShadow />;
+  const anchor = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene);
+    return getModelAnchorOffset({ min: box.min.toArray(), max: box.max.toArray() });
+  }, [scene]);
+
+  return (
+    <group position={position} rotation={rotation} scale={scale * S}>
+      <Clone object={scene} position={[anchor.x, anchor.y, anchor.z]} castShadow receiveShadow />
+    </group>
+  );
 }
 
 // Devuelve el mobiliario (lista de piezas en coords locales de la estancia,

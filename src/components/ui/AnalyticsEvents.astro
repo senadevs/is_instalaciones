@@ -20,6 +20,7 @@
       if (/wa\.me|api\.whatsapp|whatsapp\.com/i.test(href)) push('click_whatsapp', { link_url: href });
       else if (/^tel:/i.test(href)) push('click_telefono', { link_url: href });
       else if (/^mailto:/i.test(href)) push('click_email', { link_url: href });
+      else if (/\/estimador(?:[/?#]|$)/i.test(href)) push('open_estimator_entry', { link_url: href });
     }, true);
 
     // Envío del formulario de contacto / presupuesto (lead). Excluye el chat.

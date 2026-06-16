@@ -1,15 +1,100 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Estimator from '../components/estimator/Estimator.jsx';
+
+const estimatorFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Para que sirve el planificador de reforma',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sirve para definir la planta de una vivienda o local, ajustar estancias, colocar elementos fijos y exportar un plano comercial reutilizable en PDF, DXF, SVG, PNG o JSON.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: 'Necesito abrir la vista 3D para exportar el plano',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. La exportacion se puede generar directamente desde la vista de planta, sin depender del visor 3D.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: 'El planificador sustituye a un proyecto tecnico visado',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. En esta fase genera un plano comercial serio y reutilizable para estudio previo, presupuesto y conversacion inicial del proyecto.'
+      }
+    }
+  ]
+};
 ---
 
 <Layout
-  title="Configurador de Reformas 3D - IS.INSTALACIONES"
-  description="Diseña tu reforma en 3D: configura tu vivienda, sus estancias, medidas, acabados y trabajos. Visualízalo en 3D, entra dentro y solicita tu presupuesto gratuito."
-  hideFooter
+  title="Planificador 3D de Reformas en Barcelona | Plano, PDF, DXF y SVG"
+  description="Planificador 3D y editor de planta para reformas. Define estancias, coloca equipamiento, valida la geometria y exporta planos en PDF, DXF, SVG, PNG o JSON desde la web."
+  additionalSchema={estimatorFaqSchema}
   hideBanner
 >
   <main class="pt-20 lg:pt-28">
     <Estimator client:only="react" />
+
+    <section class="border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-14 md:px-6">
+        <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-primary">Planificador pro</p>
+            <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+              Planificador 3D para preparar una reforma con una planta usable de verdad
+            </h1>
+            <p class="mt-5 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
+              Esta herramienta permite dibujar la distribucion de una vivienda o local, separar plantas, ajustar medidas,
+              colocar elementos arquitectonicos y revisar la validez del plano antes de exportarlo. La vista de planta es el
+              centro del flujo y la vista 3D queda como apoyo visual.
+            </p>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600">
+              El resultado no es una demo orientativa: es un plano comercial consistente para preparar presupuesto, compartir
+              la idea inicial del proyecto y seguir editando fuera si hace falta. Las exportaciones salen en PDF vectorial,
+              DXF 2D ASCII, SVG estructurado, PNG y JSON de proyecto.
+            </p>
+          </div>
+          <aside class="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">Que resuelve</h2>
+            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+              <li>Plantas simples o duplex con una hoja independiente por nivel.</li>
+              <li>Cotas, nombres de estancia, superficie y simbologia de huecos coherentes.</li>
+              <li>Validacion previa para evitar exportar solapes o geometria imposible.</li>
+              <li>Guardado automatico local para retomar el borrador sin perder trabajo.</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <article class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">Vista de planta primero</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              La edicion arranca en 2D para trabajar rapido en escritorio o movil. El 3D se carga bajo demanda y no penaliza
+              la edicion ni la exportacion.
+            </p>
+          </article>
+          <article class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">Exportacion reutilizable</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              El mismo modelo alimenta la planta, el PDF, el DXF y el SVG para mantener medidas, huecos y etiquetas consistentes.
+            </p>
+          </article>
+          <article class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">Mejor conversacion comercial</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Llegas a la llamada o al WhatsApp con una base mas clara, menos ambiguedad y una distribucion lista para revisar.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 </Layout>
