@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Fuerza a Tailwind 4 a escanear TODO src/ (incluidos los componentes React
+   client:only como el estimador 3D). Sin esto, sus clases únicas (w-44,
+   bg-zinc-900, rounded-[2rem]…) se purgaban en producción y se veía sin estilos. */
+@source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx,vue,svelte}";
+
 
 /* Base */
 
