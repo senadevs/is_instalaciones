@@ -15,3 +15,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 009 | 2026-10-01 | Quitar «más de 500 proyectos» de la web | fix | 006 | — |
 | 010 | 2026-10-01 | Planificador: auditoría y pulido sin cambiar la estructura | fix | — | F5-T1 |
 | 011 | 2026-10-01 | /escombros como página puente a Escombrocero | feature | 002 | X-T3 |
+| 012 | 2026-10-01 | Verificación de UI de la sesión y memoria del proyecto | docs | — | — |

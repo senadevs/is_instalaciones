@@ -23,3 +23,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# caché de Python (buscador de ui-ux-pro-max)
+__pycache__/
