@@ -1,0 +1,21 @@
+{
+  "stack": "astro",
+  "tools": [
+    "claude"
+  ],
+  "extraSkills": [],
+  "bundles": [
+    "core-3d-animation"
+  ],
+  "standardsRoot": "C:\\Users\\Black\\.dev-standards",
+  "frontProfile": {
+    "label": "Astro + React islands + Tailwind",
+    "stacks": [
+      "astro",
+      "react",
+      "shadcn",
+      "html-tailwind"
+    ]
+  },
+  "frontProfileSource": "default"
+}
