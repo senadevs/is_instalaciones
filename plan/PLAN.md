@@ -80,16 +80,17 @@
 
 ## Ad hoc
 
-### X-T1 · Erratas SEO urgentes  [S] [todo]
+### X-T1 · Erratas SEO urgentes  [S] [done]
 - Skill: marketing-seo → references/seo-onpage.md §on-page
 - Archivos: `src/layouts/Layout.astro`, `src/pages/index.astro`, `src/pages/estimador.astro`, `src/pages/nosotros.astro`, `src/components/ui/Footer.astro`
 - Hecho cuando: tildes correctas en titles, descriptions y schema ("años", "fontanería", "climatización", "técnicos"); marca unificada como "IS Instalaciones" en titles, OG y footer; `nosotros` sin "Sobre Mí".
 - Verificar: `grep` en el build (`dist/`) sin "anos de garantia" ni "IS.INSTALACIONES"; build en verde.
 - Depende de: —
+- Devlog: [006](../devlog/2026-10-01/006-erratas-seo-urgentes.md)
 
 ### X-T2 · `astro check` en verde (13 errores preexistentes)  [S] [todo]
 - Skill: code-quality → references/astro.md
-- Archivos: `src/components/cta/CTA.astro` (HTML roto y sin usar en ningún sitio), `src/components/sections/Hero.astro` y `GlitchSlider.astro` (tipos de Swiper en los callbacks `on`), `src/data/immersiveContent.ts` (falta `id` en 4 servicios)
+- Archivos: `src/components/cta/CTA.astro` (HTML roto y sin usar en ningún sitio), `src/components/services/Services.astro` (sin usar y con enlaces a URLs inexistentes: valorar borrarlos), `src/components/sections/Hero.astro` y `GlitchSlider.astro` (tipos de Swiper en los callbacks `on`), `src/data/immersiveContent.ts` (falta `id` en 4 servicios)
 - Hecho cuando: `npx astro check` → 0 errors. Hasta 2026-10-01 nunca se había ejecutado de verdad: faltaba `@astrojs/check` y el comando se quedaba en el prompt de instalación.
 - Verificar: `npx astro check`, `npm test`, `npm run build`.
 - Depende de: —

@@ -13,9 +13,9 @@ const menuItems = [
     text: "SERVICIOS",
     submenu: [
       { href: "/servicios/instalaciones-electricas", text: "ELECTRICIDAD" },
-      { href: "/servicios/fontaneria-y-saneamiento", text: "FONTANERIA" },
-      { href: "/servicios/climatizacion-y-calefaccion", text: "CLIMATIZACION" },
-      { href: "/servicios/reformas-integrales", text: "MANTENIMIENTO" }
+      { href: "/servicios/fontaneria-y-saneamiento", text: "FONTANERÍA" },
+      { href: "/servicios/climatizacion-y-calefaccion", text: "CLIMATIZACIÓN" },
+      { href: "/servicios/reformas-integrales", text: "REFORMAS" }
     ]
   },
   { href: "/estimador", text: "PLANIFICADOR" },
@@ -30,7 +30,7 @@ const currentHash = Astro.url.hash;
   <nav class="container mx-auto px-4 max-w-[2560px] h-20 lg:h-28 md:h-24 transition-all duration-300" role="navigation" aria-label="Navegacion principal">
     <div class="flex justify-between items-center h-full">
       <div class="h-full flex items-center">
-        <a href="/" class="text-base lg:text-xl font-bold flex items-center justify-center h-full py-2 transition-all duration-300" aria-label="IS.INSTALACIONES - Ir a inicio">
+        <a href="/" class="text-base lg:text-xl font-bold flex items-center justify-center h-full py-2 transition-all duration-300" aria-label="IS Instalaciones - Ir a inicio">
           <Logo client:load />
           <span class="hidden md:inline ml-2 text-sm lg:text-lg transition-all duration-300">IS.INSTALACIONES</span>
         </a>

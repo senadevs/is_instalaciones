@@ -99,7 +99,7 @@ const Logo: React.FC<LogoProps> = ({ className = "", forceVariant }) => {
     <div className={`h-full aspect-square relative ${className}`}>
       <img
         src={getLogoSrc()}
-        alt="Logo IS.INSTALACIONES"
+        alt="Logo IS Instalaciones"
         className={`h-full w-auto object-contain transition-all duration-400 ease-in-out
           ${isTransitioning ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'}`}
       />

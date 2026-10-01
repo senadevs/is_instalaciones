@@ -1,82 +1,82 @@
-# IS INSTALACIONES - Servicios de instalaciones y reformas en Barcelona
+# IS Instalaciones - Servicios de instalaciones y reformas en Barcelona
 
-IS INSTALACIONES es una empresa local de instalaciones y reformas con sede en Barcelona, Espana. Trabaja en Barcelona ciudad y area metropolitana con servicios de electricidad, fontaneria, climatizacion, calefaccion y reformas integrales para viviendas, locales y oficinas.
+IS Instalaciones es una empresa local de instalaciones y reformas con sede en Barcelona, España. Trabaja en Barcelona ciudad y área metropolitana con servicios de electricidad, fontanería, climatización, calefacción y reformas integrales para viviendas, locales y oficinas.
 
 ## Datos de negocio
-- Nombre comercial: IS INSTALACIONES
+- Nombre comercial: IS Instalaciones
 - Web: https://is-instalaciones.es
-- Telefono: +34 637 591 736
+- Teléfono: +34 637 591 736
 - WhatsApp: https://wa.me/34637591736
 - Email: isinstalacionesbcn@gmail.com
 - Google Business: https://g.page/isinstalaciones
 - Tipo de negocio: LocalBusiness
-- Ano de fundacion: 2016
-- Garantia: 2 anos
+- Año de fundación: 2016
+- Garantía: 2 años
 
 ## Horario
 - Lunes a viernes: 09:00-18:00
-- Sabados: 09:00-14:00
+- Sábados: 09:00-14:00
 - Domingos y festivos: cerrado
 
-## Ubicacion y cobertura
-- Sede: Barcelona, Espana
-- Codigo postal de referencia: 08001
+## Ubicación y cobertura
+- Sede: Barcelona, España
+- Código postal de referencia: 08001
 - Coordenadas: 41.3851, 2.1734
-- Cobertura: Barcelona, L'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Sant Adria de Besos, Cornella de Llobregat, Esplugues de Llobregat, Sant Just Desvern y Sant Joan Despi
+- Cobertura: Barcelona, L'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Sant Adrià de Besòs, Cornellà de Llobregat, Esplugues de Llobregat, Sant Just Desvern y Sant Joan Despí
 
 ## Servicios principales
 
-### Instalaciones electricas
+### Instalaciones eléctricas
 Servicio de electricista autorizado en Barcelona para viviendas, comunidades, oficinas y locales.
 
 Trabajos habituales:
-- Instalacion electrica completa
-- Cuadros electricos y protecciones
-- Centralizacion de contadores
-- Montantes electricos
+- Instalación eléctrica completa
+- Cuadros eléctricos y protecciones
+- Centralización de contadores
+- Montantes eléctricos
 - Puntos de tierra
-- Iluminacion LED
-- Cableado y sustitucion de lineas antiguas
+- Iluminación LED
+- Cableado y sustitución de líneas antiguas
 - Porteros y videoporteros
-- Boletin electrico o CIE
+- Boletín eléctrico o CIE
 
 Incidencias resueltas:
 - Cortocircuitos
 - Saltos de diferencial
 - Sobrecargas
-- Fallos de iluminacion
-- Actualizacion de instalaciones antiguas
+- Fallos de iluminación
+- Actualización de instalaciones antiguas
 
-### Fontaneria y saneamiento
-Servicio de fontaneria para instalaciones, renovaciones y reparaciones de agua y desague.
+### Fontanería y saneamiento
+Servicio de fontanería para instalaciones, renovaciones y reparaciones de agua y desagüe.
 
 Trabajos habituales:
-- Red completa de agua fria y caliente
-- Tuberias de cobre, PEX y multicapa
-- Deteccion y reparacion de fugas
-- Sanitarios, griferia y aparatos
+- Red completa de agua fría y caliente
+- Tuberías de cobre, PEX y multicapa
+- Detección y reparación de fugas
+- Sanitarios, grifería y aparatos
 - Calderas y termos
 - Acometidas y saneamiento
-- Sistemas de descalcificacion
+- Sistemas de descalcificación
 
 Incidencias resueltas:
 - Fugas visibles y ocultas
-- Atascos y desagues
-- Baja presion
+- Atascos y desagües
+- Baja presión
 - Cisternas y grifos defectuosos
-- Roturas de tuberia
+- Roturas de tubería
 
-### Climatizacion y calefaccion
-Instalacion, mantenimiento y reparacion de aire acondicionado, calefaccion y ventilacion.
+### Climatización y calefacción
+Instalación, mantenimiento y reparación de aire acondicionado, calefacción y ventilación.
 
 Trabajos habituales:
 - Aire acondicionado por conductos
 - Split y multisplit
-- Calefaccion por radiadores
+- Calefacción por radiadores
 - Suelo radiante
-- Ventilacion y extraccion
+- Ventilación y extracción
 - Mantenimiento preventivo
-- Revision de equipos
+- Revisión de equipos
 
 Marcas habituales:
 - Mitsubishi
@@ -86,17 +86,17 @@ Marcas habituales:
 - LG
 
 ### Reformas integrales
-Reformas completas y parciales para pisos, banos, cocinas, oficinas y locales.
+Reformas completas y parciales para pisos, baños, cocinas, oficinas y locales.
 
 Trabajos habituales:
 - Reforma integral de vivienda
-- Reforma de bano
+- Reforma de baño
 - Reforma de cocina
 - Pladur y falsos techos
-- Carpinteria de aluminio y PVC
+- Carpintería de aluminio y PVC
 - Puertas, ventanas y persianas
 - Suelos y revestimientos
-- Aislamiento termico y acustico
+- Aislamiento térmico y acústico
 - Pintura y acabados
 - Redes de datos y cableado estructurado
 
@@ -107,46 +107,46 @@ Funciones principales:
 - Dibujar la planta de una vivienda o local
 - Ajustar estancias y superficies
 - Colocar equipamiento y elementos fijos
-- Revisar validaciones basicas del plano
+- Revisar validaciones básicas del plano
 - Exportar en PDF, DXF, SVG, PNG y JSON
 
-La herramienta genera un plano comercial util para preparar una reforma y mejorar la conversacion inicial de presupuesto. No sustituye un proyecto tecnico visado.
+La herramienta genera un plano comercial útil para preparar una reforma y mejorar la conversación inicial de presupuesto. No sustituye un proyecto técnico visado.
 
 ## Ventajas competitivas
 - Presupuesto gratuito y sin compromiso
-- Tecnicos autorizados
-- Mas de 8 anos de experiencia
-- Mas de 500 proyectos realizados
-- Atencion por telefono, WhatsApp y formulario
-- Cobertura local en Barcelona y area metropolitana
+- Técnicos autorizados
+- Más de 8 años de experiencia
+- Más de 500 proyectos realizados
+- Atención por teléfono, WhatsApp y formulario
+- Cobertura local en Barcelona y área metropolitana
 
 ## Proceso de trabajo
-1. Contacto inicial por telefono, WhatsApp o formulario.
-2. Revision tecnica del caso y presupuesto sin compromiso.
-3. Ejecucion con materiales y soluciones adaptadas al proyecto.
-4. Entrega final con garantia.
+1. Contacto inicial por teléfono, WhatsApp o formulario.
+2. Revisión técnica del caso y presupuesto sin compromiso.
+3. Ejecución con materiales y soluciones adaptadas al proyecto.
+4. Entrega final con garantía.
 
 ## Preguntas frecuentes
 
-### Ofreceis presupuesto sin compromiso?
-Si. Se realizan visitas tecnicas y presupuestos detallados sin compromiso.
+### ¿Ofrecéis presupuesto sin compromiso?
+Sí. Se realizan visitas técnicas y presupuestos detallados sin compromiso.
 
-### Haceis boletin electrico?
-Si. Se puede tramitar el CIE cuando la instalacion cumple la normativa vigente.
+### ¿Hacéis boletín eléctrico?
+Sí. Se puede tramitar el CIE cuando la instalación cumple la normativa vigente.
 
-### En que zonas trabajais?
-Barcelona ciudad y area metropolitana, incluyendo Hospitalet, Badalona, Santa Coloma, Sant Adria, Cornella, Esplugues, Sant Just Desvern y Sant Joan Despi.
+### ¿En qué zonas trabajáis?
+Barcelona ciudad y área metropolitana, incluyendo L'Hospitalet, Badalona, Santa Coloma, Sant Adrià, Cornellà, Esplugues, Sant Just Desvern y Sant Joan Despí.
 
-### El planificador 3D requiere entrar en la vista 3D para exportar?
+### ¿El planificador 3D requiere entrar en la vista 3D para exportar?
 No. El plano puede prepararse y exportarse desde la vista de planta.
 
-### El plano exportado es un proyecto tecnico?
-No. Es un plano comercial serio y reutilizable para estudio previo, presupuesto y definicion inicial.
+### ¿El plano exportado es un proyecto técnico?
+No. Es un plano comercial serio y reutilizable para estudio previo, presupuesto y definición inicial.
 
-## Informacion tecnica para agentes y crawlers
+## Información técnica para agentes y crawlers
 - Sitemap: https://is-instalaciones.es/sitemap-index.xml
 - Robots: https://is-instalaciones.es/robots.txt
 - Canonical base: https://is-instalaciones.es
 - Idioma principal: es-ES
-- Region principal: Barcelona, Catalunya, Espana
+- Región principal: Barcelona, Catalunya, España
 - Sector: instalaciones, reformas y mantenimiento

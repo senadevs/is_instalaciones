@@ -32,8 +32,8 @@ const defaultKeywords = [
 ];
 
 const {
-  title = 'Servicios de Instalaciones y Reformas en Barcelona | IS INSTALACIONES',
-  description = 'Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontaneria, climatizacion y reformas integrales con tecnicos autorizados, presupuesto gratuito y 2 anos de garantia.',
+  title = 'Instalaciones y Reformas en Barcelona | IS Instalaciones',
+  description = 'Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontanería, climatización y reformas integrales con técnicos autorizados, presupuesto gratuito y 2 años de garantía.',
   image = '/img/logo.webp',
   keywords = defaultKeywords,
   noindex = false,
@@ -50,7 +50,7 @@ const businessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   '@id': `${siteUrl}#localbusiness`,
-  name: 'IS INSTALACIONES',
+  name: 'IS Instalaciones',
   image: imageUrl,
   url: canonicalURL.toString(),
   telephone: '+34637591736',
@@ -87,7 +87,7 @@ const businessSchema = {
     { '@type': 'City', name: "L'Hospitalet de Llobregat" },
     { '@type': 'City', name: 'Badalona' },
     { '@type': 'City', name: 'Santa Coloma de Gramenet' },
-    { '@type': 'City', name: 'Cornella de Llobregat' }
+    { '@type': 'City', name: 'Cornellà de Llobregat' }
   ],
   sameAs: [
     'https://g.page/isinstalaciones',
@@ -101,24 +101,24 @@ const businessSchema = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Instalaciones electricas',
-          description: 'Instalaciones electricas, cuadros, boletines y modernizacion de viviendas y locales en Barcelona.'
+          name: 'Instalaciones eléctricas',
+          description: 'Instalaciones eléctricas, cuadros, boletines y modernización de viviendas y locales en Barcelona.'
         }
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Fontaneria y saneamiento',
-          description: 'Fontaneria, fugas, tuberias, calderas y saneamiento para viviendas y negocios.'
+          name: 'Fontanería y saneamiento',
+          description: 'Fontanería, fugas, tuberías, calderas y saneamiento para viviendas y negocios.'
         }
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Climatizacion y calefaccion',
-          description: 'Instalacion y mantenimiento de aire acondicionado, calefaccion y ventilacion.'
+          name: 'Climatización y calefacción',
+          description: 'Instalación y mantenimiento de aire acondicionado, calefacción y ventilación.'
         }
       },
       {
@@ -126,7 +126,7 @@ const businessSchema = {
         itemOffered: {
           '@type': 'Service',
           name: 'Reformas integrales',
-          description: 'Reformas completas de pisos, cocinas, banos, oficinas y locales comerciales.'
+          description: 'Reformas completas de pisos, cocinas, baños, oficinas y locales comerciales.'
         }
       }
     ]
@@ -138,7 +138,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   '@id': `${siteUrl}#website`,
   url: siteUrl,
-  name: 'IS INSTALACIONES',
+  name: 'IS Instalaciones',
   inLanguage: 'es-ES',
   publisher: { '@id': `${siteUrl}#localbusiness` }
 };
@@ -167,7 +167,7 @@ import '../styles/global.css';
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
-    <meta name="author" content="IS INSTALACIONES" />
+    <meta name="author" content="IS Instalaciones" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="theme-color" content="#046a53" />
@@ -195,15 +195,15 @@ import '../styles/global.css';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:alt" content="IS INSTALACIONES, servicios de instalaciones y reformas en Barcelona" />
-    <meta property="og:site_name" content="IS.INSTALACIONES" />
+    <meta property="og:image:alt" content="IS Instalaciones, servicios de instalaciones y reformas en Barcelona" />
+    <meta property="og:site_name" content="IS Instalaciones" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <meta name="twitter:image:alt" content="IS INSTALACIONES, servicios de instalaciones y reformas en Barcelona" />
+    <meta name="twitter:image:alt" content="IS Instalaciones, servicios de instalaciones y reformas en Barcelona" />
 
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
