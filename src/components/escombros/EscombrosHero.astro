@@ -1,0 +1,78 @@
+---
+// Hero oscuro con parallax de fondo y reveal escalonado del titular.
+// Efectos: effects-pro.md §Parallax de imagen en contenedor + reveal por líneas.
+import { Icon } from 'astro-icon/components';
+---
+<section class="theme-escombros relative overflow-hidden border-b border-[color:var(--esc-border)]" data-esc-hero>
+  <!-- Fondo con parallax (imagen mayor que su marco, se traslada sin resamplear) -->
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img
+      src="/trabajos/reforma-integral-obra-proceso.jpeg"
+      alt=""
+      width="1600"
+      height="1000"
+      class="esc-hero-media h-[125%] w-full object-cover opacity-25"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-[color:var(--esc-bg)]/60 via-transparent to-[color:var(--esc-bg)]"></div>
+  </div>
+
+  <div class="container relative z-[1] mx-auto flex min-h-[88vh] flex-col justify-center px-4 py-28">
+    <p class="esc-reveal mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[color:var(--esc-border)] bg-[color:var(--esc-surface)]/80 px-4 py-1.5 text-sm font-medium text-[color:var(--esc-accent)]">
+      <Icon name="lucide:truck" class="h-4 w-4" aria-hidden="true" />
+      Retirada de escombros · Barcelona y área metropolitana
+    </p>
+
+    <h1 class="max-w-4xl font-[Outfit,system-ui,sans-serif] text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+      <span class="esc-reveal block">Tu obra, limpia.</span>
+      <span class="esc-reveal block text-[color:var(--esc-accent)]">Tus escombros, fuera hoy.</span>
+    </h1>
+
+    <p class="esc-reveal mt-6 max-w-2xl text-lg text-[color:var(--esc-text-muted)] sm:text-xl">
+      Contenedores, sacas y retirada de escombros con transporte y gestión del residuo incluidos.
+      Del mismo equipo de IS Instalaciones, con presupuesto cerrado y sin esperas.
+    </p>
+
+    <div class="esc-reveal mt-10 flex flex-wrap items-center gap-4">
+      <a
+        href="#contacto"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
+      >
+        Pide presupuesto gratis
+        <Icon name="lucide:arrow-right" class="h-5 w-5" aria-hidden="true" />
+      </a>
+      <a
+        href="tel:+34637591736"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[color:var(--esc-border)] bg-[color:var(--esc-surface)]/60 px-7 py-3.5 text-base font-semibold text-[color:var(--esc-text)] transition-colors duration-200 hover:border-[color:var(--esc-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
+      >
+        <Icon name="lucide:phone" class="h-5 w-5 text-[color:var(--esc-accent)]" aria-hidden="true" />
+        637 591 736
+      </a>
+    </div>
+
+    <ul class="esc-reveal mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[color:var(--esc-text-muted)]">
+      <li class="flex items-center gap-2"><Icon name="lucide:badge-check" class="h-4 w-4 text-[color:var(--esc-accent)]" aria-hidden="true" /> Presupuesto cerrado por adelantado</li>
+      <li class="flex items-center gap-2"><Icon name="lucide:recycle" class="h-4 w-4 text-[color:var(--esc-accent)]" aria-hidden="true" /> Residuo gestionado en planta autorizada</li>
+      <li class="flex items-center gap-2"><Icon name="lucide:clock" class="h-4 w-4 text-[color:var(--esc-accent)]" aria-hidden="true" /> Respuesta en menos de 24 h</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { gsap } from '../../lib/gsap';
+
+  document.querySelectorAll<HTMLElement>('[data-esc-hero]').forEach((root) => {
+    gsap.context(() => {
+      const mm = gsap.matchMedia();
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from('.esc-reveal', { y: 36, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.12 });
+        gsap.fromTo(
+          '.esc-hero-media',
+          { yPercent: -10 },
+          { yPercent: 10, ease: 'none', scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true } }
+        );
+      });
+    }, root);
+  });
+</script>

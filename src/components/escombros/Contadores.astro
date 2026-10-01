@@ -1,0 +1,46 @@
+---
+// Contadores animados al entrar en viewport (ScrollTrigger once). En reduced-motion se
+// pinta el valor final directamente. CIFRAS PROVISIONALES marcadas: confirmar con negocio.
+const stats = [
+  { value: 24, suffix: ' h', label: 'Tiempo máximo de respuesta' },
+  { value: 500, suffix: '+', label: 'Contenedores y sacas servidos' }, // PENDIENTE-CONFIRMAR
+  { value: 100, suffix: ' %', label: 'Residuo llevado a planta autorizada' },
+  { value: 2, suffix: ' años', label: 'Garantía en todos los trabajos' },
+];
+---
+<section class="theme-escombros border-b border-[color:var(--esc-border)] bg-[color:var(--esc-surface)] py-16 sm:py-20">
+  <div class="container mx-auto px-4">
+    <dl class="grid grid-cols-2 gap-10 lg:grid-cols-4">
+      {stats.map((s) => (
+        <div class="text-center">
+          <dd class="font-[Outfit,system-ui,sans-serif] text-4xl font-bold text-[color:var(--esc-accent)] sm:text-5xl">
+            <span data-counter={s.value}>0</span>{s.suffix}
+          </dd>
+          <dt class="mt-2 text-sm text-[color:var(--esc-text-muted)]">{s.label}</dt>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script>
+  import { gsap } from '../../lib/gsap';
+
+  const els = gsap.utils.toArray<HTMLElement>('[data-counter]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  els.forEach((el) => {
+    const end = Number(el.dataset.counter ?? 0);
+    if (reduce) {
+      el.textContent = end.toLocaleString('es-ES');
+      return;
+    }
+    const state = { v: 0 };
+    gsap.to(state, {
+      v: end,
+      duration: 1.6,
+      ease: 'power1.out',
+      onUpdate: () => { el.textContent = Math.round(state.v).toLocaleString('es-ES'); },
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    });
+  });
+</script>

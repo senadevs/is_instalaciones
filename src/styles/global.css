@@ -768,3 +768,16 @@ html {
   /* Cabecera "Modo inmersivo activo" y barra de herramientas */
   [data-theme="dark"] #isbot-immersive-stage .text-emerald-700\/80 { color: #6ee7b7 !important; }
 
+
+
+/* === Tema "industrial oscuro" del subdominio de escombros (design-system/is-escombros/MASTER.md) === */
+.theme-escombros {
+  --esc-bg: #101920;
+  --esc-surface: #0d1e23;
+  --esc-border: #1c343c;
+  --esc-text: #ffffff;
+  --esc-text-muted: #9db4ad;
+  --esc-accent: #2fbf9a;
+  background-color: var(--esc-bg);
+  color: var(--esc-text);
+}
