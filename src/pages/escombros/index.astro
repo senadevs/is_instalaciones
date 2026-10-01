@@ -1,6 +1,8 @@
 ---
 // Landing del subdominio de escombros. Diseño "industrial oscuro" según
 // design-system/is-escombros/MASTER.md (paleta de marca IS + Outfit/Work Sans).
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/work-sans';
 import Layout from '../../layouts/Layout.astro';
 import EscombrosHero from '../../components/escombros/EscombrosHero.astro';
 import MarqueeServicios from '../../components/escombros/MarqueeServicios.astro';
@@ -35,15 +37,8 @@ const serviceSchema = {
   ]}
   additionalSchema={serviceSchema}
 >
-  <!-- Tipografías del design system de escombros (solo esta página) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Work+Sans:wght@400;500;600&display=swap"
-  />
-
-  <main class="theme-escombros font-[\'Work_Sans\',system-ui,sans-serif]">
+  <!-- Tipografías del design system de escombros (autoalojadas, importadas arriba) -->
+  <main class="theme-escombros font-[Work_Sans_Variable,system-ui,sans-serif]">
     <EscombrosHero />
     <MarqueeServicios />
     <BeforeAfter />

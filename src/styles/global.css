@@ -5,12 +5,41 @@
    bg-zinc-900, rounded-[2rem]…) se purgaban en producción y se veía sin estilos. */
 @source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx,vue,svelte}";
 
+/* Tipografía de marca (autoalojada vía @fontsource en Layout.astro). Ver design-system/is-instalaciones. */
+@theme {
+  --font-sans: "Source Sans 3 Variable", system-ui, sans-serif;
+  --font-heading: "Archivo Variable", system-ui, sans-serif;
+}
+
 /* Base */
 
 html {
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-sans);
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+}
+
+/* Títulos con Archivo en mayúsculas (elección del cliente, ver gustos.md). h3-h6 mantienen su caja.
+   En @layer base para que las utilidades de cada componente (font-[…], tracking-*, normal-case) sigan mandando. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+  h1,
+  h2 {
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+  }
+  /* La landing de escombros tiene su propio design system (Outfit, sin mayúsculas forzadas). */
+  .theme-escombros h1,
+  .theme-escombros h2 {
+    text-transform: none;
+  }
 }
 
 /* Transiciones suaves para cambios de tema */

@@ -20,3 +20,10 @@
 - **Elección:** básico.
 - **Motivo:** web local sin campañas de Ads activas; prima el cumplimiento sencillo y verificable (0 peticiones sin consentimiento, comprobado).
 - **Consecuencias:** GA4 no ve a quien rechaza. Si se lanzan campañas de Google Ads, reevaluar el modo avanzado.
+
+## dev-008 — Pulir la web real en lugar de rediseñarla
+- **Contexto:** las maquetas A/B/C se plantearon como webs nuevas; el cliente respondió que se habían omitido sus temas y colores y que solo quería mejorar algunas cosas.
+- **Opciones:** construir la dirección elegida como rediseño vs aplicar mejoras puntuales sobre la web existente.
+- **Elección:** mejoras puntuales sobre la web real (empezando por la tipografía), con antes/después en los 3 temas.
+- **Motivo:** petición explícita del cliente; menor riesgo y cambios reversibles uno a uno.
+- **Consecuencias:** F3/F4 pasan a "pulido"; las maquetas quedan solo como referencia de tipografía e iconos.

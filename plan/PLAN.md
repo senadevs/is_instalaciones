@@ -18,7 +18,7 @@
 | F1 | Página `/escombros` completa con efectos, build en verde | done |
 | F2 | Verificación en navegador (375/768/1440, dark, consola) y ajustes | todo |
 | F3 | Base visual pro: design system del sitio, tipografía autoalojada, iconos y componentes base | todo |
-| F4 | Páginas rediseñadas (home, servicios, nosotros, contacto) con imágenes `astro:assets` | todo |
+| F4 | Páginas pulidas SOBRE la web actual (misma estructura, temas y colores) con imágenes `astro:assets` | todo |
 | F5 | Estimador con acabado profesional (panel, editor, 3D, presupuesto, móvil) | todo |
 | F6 | SEO: on-page corregido, schema completo, OG por página y Core Web Vitals medidos | todo |
 | F7 | Analítica: consentimiento RGPD correcto, plan de medición y GA4/GTM verificados en tiempo real | todo |
@@ -78,6 +78,8 @@
 - Verificar: navegador real con `npm run dev`.
 - Depende de: F1-T5
 
+- **2026-10-01 (tras F3-T1):** el usuario aclara que NO quiere una web nueva: se conservan estructura, los 3 temas (`default`, `dark-green`, `dark`) y la combinación de colores. F3/F4 pasan de "rediseño" a **pulido incremental sobre la web real**, con capturas antes/después en los 3 temas. De las maquetas solo se adopta la tipografía (Archivo + Source Sans 3) y el criterio de iconos.
+
 ## Ad hoc
 
 ### X-T1 · Erratas SEO urgentes  [S] [done]
@@ -98,19 +100,21 @@
 
 ## F3 — Base visual profesional
 
-### F3-T1 · Design system del sitio principal + 2 propuestas tipográficas  [M] [todo]
+### F3-T1 · Design system del sitio principal + 2 propuestas tipográficas  [M] [done]
 - Skill: ui-ux-pro-max → SKILL.md §flujo + `scripts/search.py --design-system -p "IS Instalaciones" --persist`; `--domain typography`
 - Archivos: `design-system/is-instalaciones/MASTER.md`
 - Hecho cuando: MASTER con la paleta actual conservada (#046a53 / #156051 / #0d1e23), pareja tipográfica elegida por el usuario entre 2 opciones A/B (muestra visual), escala tipográfica, radios, sombras y reglas de iconos.
 - Verificar: el usuario elige A o B; MASTER revisado.
 - Depende de: —
+- Devlog: [008](../devlog/2026-10-01/008-tipografia-autoalojada.md)
 
-### F3-T2 · Fuentes autoalojadas y tokens `@theme`  [M] [todo]
+### F3-T2 · Fuentes autoalojadas y tokens `@theme`  [M] [done]
 - Skill: ui-ux-pro-max → references/pro-rules.md §tipografía; code-quality → references/astro.md §assets
 - Archivos: `package.json` (@fontsource-variable/*), `src/styles/global.css`, `src/layouts/Layout.astro`, `src/pages/escombros/index.astro`
 - Hecho cuando: fuentes servidas desde el propio dominio (sin fonts.googleapis), preload de la principal, `@theme` con `--font-heading`/`--font-body`, escala de tamaños y tracking; `/escombros` migrado a fuentes locales.
 - Verificar: `npm run build`; en Network, 0 peticiones a fonts.googleapis/gstatic.
 - Depende de: F3-T1
+- Devlog: [008](../devlog/2026-10-01/008-tipografia-autoalojada.md)
 
 ### F3-T3 · Sistema de iconos y componentes base  [M] [todo]
 - Skill: ui-ux-pro-max → references/pro-rules.md §iconos + §estados; ui-styling (solo patrones de botón)
