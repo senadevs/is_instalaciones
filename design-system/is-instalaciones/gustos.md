@@ -11,4 +11,4 @@
 
 ## Dudas / pendiente
 - 2026-10-01 · Las maquetas A/B/C quedan solo como referencia de TIPOGRAFÍA (Archivo + Source Sans 3) y estilo de iconos; su estructura NO se aplica.
-- 2026-10-01 · "+500 proyectos" es aproximado: se redacta como «Cientos de trabajos en Barcelona» (elección del cliente). Aplicar en la web y en `llms.txt` al rediseñar.
+- 2026-10-01 · "+500 proyectos": el cliente pide QUITARLO de la web ("en la web quita lo de más de 500 trabajos"). Retirado de nosotros, servicios, reformas, chat (knowledge.md) y llms.txt. No reintroducir cifras de proyectos sin dato confirmado.

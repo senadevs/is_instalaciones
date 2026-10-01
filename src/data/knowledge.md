@@ -134,7 +134,6 @@ Somos especialistas en reformas integrales y parciales de viviendas y locales en
 - 2 años de garantía en mano de obra y materiales
 - Materiales de primera calidad de proveedores de referencia
 - Más de 8 años de experiencia
-- Más de 500 proyectos realizados
 - Soluciones orientadas a eficiencia energética
 
 ## Proceso de Trabajo
