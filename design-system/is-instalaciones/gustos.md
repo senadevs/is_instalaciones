@@ -5,7 +5,7 @@
 - 2026-10-01 · Mezcla elegida entre las maquetas A y B: **tipografía de B** (Archivo en mayúsculas para títulos + Source Sans 3 para texto) con **hero claro con foto al lado, servicios en tarjetas con foto y estilo suave de A** (botones píldora, esquinas redondeadas, iconos Phosphor). Maqueta resultante: `propuestas/direccion-c.html`.
 
 ## No (vetado — NUNCA proponer de nuevo sin preguntar)
-- 2026-10-01 · "no la veo tan profesional en la fuente y la forma en que lo mostramos": nada de `system-ui` como fuente de marca, iconos de colores distintos por servicio ni iconos dentro del párrafo.
+- 2026-10-01 · "no la veo tan profesional en la fuente y la forma en que lo mostramos": nada de la fuente del sistema (system-ui) como fuente PRINCIPAL de la marca (como respaldo en la pila de fuentes sí se permite), iconos de colores distintos por servicio ni iconos dentro del párrafo.
 - 2026-10-01 · "haz omitido todo lo que tenemos, los temas y los colores [...] solo queríamos mejorar algunas cosas, no que me cambies la web entera": NO rehacer estructura ni layouts. Se mejora sobre la web real conservando los 3 temas (`default`, `dark-green`, `dark`), la combinación de colores actual y la disposición de secciones. Cada mejora se enseña con antes/después en los 3 temas.
 - (siembra por defecto) lista negra anti-IA de `ui-ux-pro-max/references/es/anti-ia.md`: badges de disponibilidad, numeración de secciones, "trusted by" gris, métricas sin respaldo, copy hinchado, emojis como iconos.
 

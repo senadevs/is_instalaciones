@@ -2,6 +2,7 @@
 // Hero oscuro con parallax de fondo y reveal escalonado del titular.
 // Efectos: effects-pro.md §Parallax de imagen en contenedor + reveal por líneas.
 import { Icon } from 'astro-icon/components';
+import { ESCOMBROCERO_URL } from '../../data/escombrocero';
 ---
 <section class="theme-escombros relative overflow-hidden border-b border-[color:var(--esc-border)]" data-esc-hero>
   <!-- Fondo con parallax (imagen mayor que su marco, se traslada sin resamplear) -->
@@ -21,26 +22,27 @@ import { Icon } from 'astro-icon/components';
   <div class="container relative z-[1] mx-auto flex min-h-[88vh] flex-col justify-center px-4 py-28">
     <p class="esc-reveal mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[color:var(--esc-border)] bg-[color:var(--esc-surface)]/80 px-4 py-1.5 text-sm font-medium text-[color:var(--esc-accent)]">
       <Icon name="lucide:truck" class="h-4 w-4" aria-hidden="true" />
-      Retirada de escombros · Barcelona y área metropolitana
+      Escombrocero · empresa hermana de IS Instalaciones
     </p>
 
     <h1 class="max-w-4xl font-[Outfit_Variable,system-ui,sans-serif] text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-      <span class="esc-reveal block">Tu obra, limpia.</span>
-      <span class="esc-reveal block text-[color:var(--esc-accent)]">Tus escombros, fuera hoy.</span>
+      <span class="esc-reveal block">Escombros y limpieza de obra,</span>
+      <span class="esc-reveal block text-[color:var(--esc-accent)]">con Escombrocero.</span>
     </h1>
 
     <p class="esc-reveal mt-6 max-w-2xl text-lg text-[color:var(--esc-text-muted)] sm:text-xl">
-      Contenedores, sacas y retirada de escombros con transporte y gestión del residuo incluidos.
-      Del mismo equipo de IS Instalaciones, con presupuesto cerrado y sin esperas.
+      Para la retirada de escombros y la limpieza final de obra trabajamos con Escombrocero, nuestra empresa
+      hermana: el mismo equipo y el mismo teléfono, con su propia web para este servicio.
     </p>
 
     <div class="esc-reveal mt-10 flex flex-wrap items-center gap-4">
       <a
-        href="#contacto"
+        href={ESCOMBROCERO_URL}
+        data-cta="escombrocero_hero"
         class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
       >
-        Pide presupuesto gratis
-        <Icon name="lucide:arrow-right" class="h-5 w-5" aria-hidden="true" />
+        Ir a la web de Escombrocero
+        <Icon name="lucide:arrow-up-right" class="h-5 w-5" aria-hidden="true" />
       </a>
       <a
         href="tel:+34637591736"

@@ -98,6 +98,20 @@
 - Depende de: —
 - Devlog: [007](../devlog/2026-10-01/007-astro-check-en-verde.md)
 
+### X-T3 · /escombros como página puente a Escombrocero  [M] [done]
+- Skill: ui-ux-pro-max → references/pro-rules.md; marketing-seo → references/seo-onpage.md §on-page
+- Archivos: `src/data/escombrocero.ts` (nuevo), `src/pages/escombros/index.astro`, `src/components/escombros/*`, `Header.astro`, `Footer.astro`
+- Contexto: Escombrocero ya existe como web independiente (`D:\Magneto\Proyectos\escombrocero`, empresa hermana). El cliente quiere que cada web tenga una página para la otra. La landing completa de /escombros duplicaba a Escombrocero (contenido duplicado entre webs propias).
+- Hecho cuando: /escombros es una página corta (hero, 6 servicios reales de Escombrocero enlazados, contador con 100+, CTA) que envía a la web de Escombrocero; URL de Escombrocero en una sola constante; enlace desde el menú de servicios y el footer; componentes de la landing que ya no se usan, borrados.
+- Verificar: build, astro check, tests; capturas 375/1440 en los 3 temas; enlaces externos correctos.
+- Depende de: —
+- Devlog: [011](../devlog/2026-10-01/011-escombros-pagina-puente.md)
+
+### X-T4 · Página "Instalaciones y reformas" en Escombrocero hacia IS  [M] [todo]
+- Repo: `D:\Magneto\Proyectos\escombrocero` (seguir SUS convenciones, CLAUDE.md y bilingüe ES/CA).
+- Hecho cuando: página equivalente que presenta IS Instalaciones y enlaza a is-instalaciones.es.
+- Depende de: X-T3
+
 ## F3 — Base visual profesional
 
 ### F3-T1 · Design system del sitio principal + 2 propuestas tipográficas  [M] [done]

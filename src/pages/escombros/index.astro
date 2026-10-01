@@ -1,53 +1,67 @@
 ---
-// Landing del subdominio de escombros. Diseño "industrial oscuro" según
-// design-system/is-escombros/MASTER.md (paleta de marca IS + Outfit/Work Sans).
+// Página puente hacia Escombrocero, la empresa hermana de escombros y limpieza de obra.
+// Presenta el servicio y envía a su web; no repite su landing (evita contenido duplicado entre webs propias).
+// Diseño "industrial oscuro" según design-system/is-escombros/MASTER.md (paleta IS + Outfit/Work Sans).
 import '@fontsource-variable/outfit';
 import '@fontsource-variable/work-sans';
+import { Icon } from 'astro-icon/components';
 import Layout from '../../layouts/Layout.astro';
 import EscombrosHero from '../../components/escombros/EscombrosHero.astro';
-import MarqueeServicios from '../../components/escombros/MarqueeServicios.astro';
-import BeforeAfter from '../../components/escombros/BeforeAfter.astro';
+import ServiciosEscombrocero from '../../components/escombros/ServiciosEscombrocero.astro';
 import Contadores from '../../components/escombros/Contadores.astro';
-import ProcesoCards from '../../components/escombros/ProcesoCards.astro';
-import GaleriaObras from '../../components/escombros/GaleriaObras.astro';
-import ContactSection from '../../components/contact/ContactSection.astro';
+import { ESCOMBROCERO_URL } from '../../data/escombrocero';
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Retirada de escombros y limpieza de obra',
-  serviceType: 'Retirada de escombros',
+  serviceType: 'Retirada de escombros y limpieza de obra',
   areaServed: { '@type': 'City', name: 'Barcelona' },
-  provider: { '@id': 'https://is-instalaciones.es#localbusiness' },
-  description:
-    'Contenedores, sacas y retirada de escombros en Barcelona con transporte y gestión del residuo en planta autorizada. Presupuesto cerrado y justificante de gestión.',
+  provider: { '@type': 'Organization', name: 'Escombrocero', url: ESCOMBROCERO_URL },
+  brand: { '@id': 'https://is-instalaciones.es#localbusiness' },
+  url: ESCOMBROCERO_URL,
 };
 ---
 <Layout
-  title="Retirada de Escombros en Barcelona | Contenedores y Sacas | IS Instalaciones"
-  description="Retirada de escombros en Barcelona: contenedores de obra, sacas, limpieza fin de obra y vaciado de pisos con gestión del residuo en planta autorizada. Presupuesto cerrado en 24 h."
-  keywords={[
-    'retirada de escombros barcelona',
-    'contenedores de escombros barcelona',
-    'sacas de escombros barcelona',
-    'limpieza fin de obra barcelona',
-    'vaciado de pisos barcelona',
-    'gestion de residuos de obra barcelona',
-    'alquiler contenedor obra barcelona',
-  ]}
+  title="Escombros y limpieza de obra | IS Instalaciones"
+  description="Retirada de escombros y limpieza de obra en Barcelona con Escombrocero, la empresa hermana de IS Instalaciones: mismo equipo y mismo teléfono."
   additionalSchema={serviceSchema}
 >
-  <!-- Tipografías del design system de escombros (autoalojadas, importadas arriba) -->
   <main class="theme-escombros font-[Work_Sans_Variable,system-ui,sans-serif]">
     <EscombrosHero />
-    <MarqueeServicios />
-    <BeforeAfter />
+    <ServiciosEscombrocero />
     <Contadores />
-    <ProcesoCards />
-    <GaleriaObras />
 
-    <section id="contacto" class="bg-white text-theme">
-      <ContactSection />
+    <section class="theme-escombros py-20 sm:py-24">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col items-start justify-between gap-8 rounded-3xl border border-[color:var(--esc-border)] bg-[color:var(--esc-surface)] p-8 sm:p-12 lg:flex-row lg:items-center">
+          <div class="max-w-xl">
+            <h2 class="font-[Outfit_Variable,system-ui,sans-serif] text-3xl font-bold tracking-tight sm:text-4xl">
+              ¿Obra terminada y llena de escombros?
+            </h2>
+            <p class="mt-3 text-lg text-[color:var(--esc-text-muted)]">
+              Pide presupuesto en la web de Escombrocero o llámanos: te atiende el mismo equipo de IS Instalaciones.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href={ESCOMBROCERO_URL}
+              data-cta="escombrocero_cta_final"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
+            >
+              Ir a Escombrocero
+              <Icon name="lucide:arrow-up-right" class="h-5 w-5" aria-hidden="true" />
+            </a>
+            <a
+              href="tel:+34637591736"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[color:var(--esc-border)] px-7 py-3.5 text-base font-semibold text-[color:var(--esc-text)] transition-colors duration-200 hover:border-[color:var(--esc-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
+            >
+              <Icon name="lucide:phone" class="h-5 w-5 text-[color:var(--esc-accent)]" aria-hidden="true" />
+              637 591 736
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 </Layout>

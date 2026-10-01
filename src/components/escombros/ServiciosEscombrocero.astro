@@ -1,0 +1,41 @@
+---
+// Los 6 servicios reales de Escombrocero, cada uno enlazado a su página en la web hermana.
+// Textos resumidos de escombrocero/src/data/servicios.ts (ver src/data/escombrocero.ts).
+import { Icon } from 'astro-icon/components';
+import { escombroceroServices, escombroceroServiceUrl } from '../../data/escombrocero';
+---
+<section class="theme-escombros border-b border-[color:var(--esc-border)] py-20 sm:py-24">
+  <div class="container mx-auto px-4">
+    <div class="mb-12 max-w-2xl">
+      <h2 class="font-[Outfit_Variable,system-ui,sans-serif] text-3xl font-bold tracking-tight sm:text-5xl">
+        Qué hace <span class="text-[color:var(--esc-accent)]">Escombrocero</span>
+      </h2>
+      <p class="mt-4 text-lg text-[color:var(--esc-text-muted)]">
+        Todo lo que queda después de la obra, para particulares, comunidades, constructoras y negocios en Barcelona y
+        su área metropolitana.
+      </p>
+    </div>
+
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {escombroceroServices.map((s) => (
+        <li>
+          <a
+            href={escombroceroServiceUrl(s.slug)}
+            data-cta={`escombrocero_${s.slug}`}
+            class="group flex h-full flex-col gap-4 rounded-2xl border border-[color:var(--esc-border)] bg-[color:var(--esc-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--esc-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--esc-accent)]"
+          >
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-white">
+              <Icon name={s.icon} class="h-5 w-5" aria-hidden="true" />
+            </span>
+            <h3 class="font-[Outfit_Variable,system-ui,sans-serif] text-xl font-semibold">{s.name}</h3>
+            <p class="text-[color:var(--esc-text-muted)]">{s.short}</p>
+            <span class="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--esc-accent)]">
+              Ver en Escombrocero
+              <Icon name="lucide:arrow-up-right" class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
