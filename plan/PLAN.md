@@ -88,12 +88,13 @@
 - Depende de: —
 - Devlog: [006](../devlog/2026-10-01/006-erratas-seo-urgentes.md)
 
-### X-T2 · `astro check` en verde (13 errores preexistentes)  [S] [todo]
+### X-T2 · `astro check` en verde (13 errores preexistentes)  [S] [done]
 - Skill: code-quality → references/astro.md
 - Archivos: `src/components/cta/CTA.astro` (HTML roto y sin usar en ningún sitio), `src/components/services/Services.astro` (sin usar y con enlaces a URLs inexistentes: valorar borrarlos), `src/components/sections/Hero.astro` y `GlitchSlider.astro` (tipos de Swiper en los callbacks `on`), `src/data/immersiveContent.ts` (falta `id` en 4 servicios)
 - Hecho cuando: `npx astro check` → 0 errors. Hasta 2026-10-01 nunca se había ejecutado de verdad: faltaba `@astrojs/check` y el comando se quedaba en el prompt de instalación.
 - Verificar: `npx astro check`, `npm test`, `npm run build`.
 - Depende de: —
+- Devlog: [007](../devlog/2026-10-01/007-astro-check-en-verde.md)
 
 ## F3 — Base visual profesional
 

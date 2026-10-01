@@ -10,3 +10,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 004 | 2026-10-01 | Convenciones del proyecto adoptadas y selladas (/adoptar) | decisión | 003 | — |
 | 005 | 2026-10-01 | Consentimiento de cookies conforme a RGPD | fix | — | F7-T1 |
 | 006 | 2026-10-01 | Erratas SEO urgentes: tildes, marca y menú | fix | — | X-T1 |
+| 007 | 2026-10-01 | astro check en verde | fix | 005 | X-T2 |

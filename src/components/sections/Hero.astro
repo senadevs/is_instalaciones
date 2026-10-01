@@ -270,12 +270,12 @@ import { Icon } from 'astro-icon/components';
         type: "progressbar",
       },
       on: {
-        slideChange: function () {
-          this.slides.forEach((slide: HTMLElement) => {
+        slideChange: (swiper: Swiper) => {
+          swiper.slides.forEach((slide: HTMLElement) => {
             const video = slide.querySelector("video");
             if (video) video.pause();
           });
-          const activeSlide = this.slides[this.activeIndex];
+          const activeSlide = swiper.slides[swiper.activeIndex];
           if (activeSlide) {
             const video = activeSlide.querySelector("video");
             if (video) video.play();
