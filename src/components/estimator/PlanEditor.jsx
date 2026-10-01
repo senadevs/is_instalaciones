@@ -21,6 +21,71 @@ function toSvg(svg, e) {
   return { x: p.x, z: p.y };
 }
 
+// Verde de marca para selección y acentos del plano (el color por tipo de estancia es la leyenda).
+const BRAND = '#046a53';
+const DIM_COLOR = '#64748b';
+const HALO = { stroke: '#fff', strokeWidth: 0.05, paintOrder: 'stroke', strokeLinejoin: 'round' };
+
+// Tamaño de letra que cabe en el ancho disponible (aprox. 0.58 em por carácter en negrita).
+function fitFont(text, room, max) {
+  return Math.max(0.12, Math.min(max, (room - 0.3) / (text.length * 0.58)));
+}
+
+// Cotas de la estancia dibujadas POR DENTRO (ancho arriba, largo a la derecha) para que no caigan
+// sobre la estancia vecina y sigan a la estancia mientras se arrastra.
+function RoomDims({ x, y, w, l }) {
+  const inset = 0.16;
+  const tick = 0.07;
+  const hy = y + inset;
+  const vx = x + w - inset;
+  return (
+    <g style={{ pointerEvents: 'none' }}>
+      <g stroke={DIM_COLOR} strokeWidth={1} vectorEffect="non-scaling-stroke">
+        <line x1={x + 0.08} y1={hy} x2={x + w - 0.08} y2={hy} vectorEffect="non-scaling-stroke" />
+        <line x1={x + 0.08} y1={hy - tick} x2={x + 0.08} y2={hy + tick} vectorEffect="non-scaling-stroke" />
+        <line x1={x + w - 0.08} y1={hy - tick} x2={x + w - 0.08} y2={hy + tick} vectorEffect="non-scaling-stroke" />
+        <line x1={vx} y1={y + 0.08} x2={vx} y2={y + l - 0.08} vectorEffect="non-scaling-stroke" />
+        <line x1={vx - tick} y1={y + 0.08} x2={vx + tick} y2={y + 0.08} vectorEffect="non-scaling-stroke" />
+        <line x1={vx - tick} y1={y + l - 0.08} x2={vx + tick} y2={y + l - 0.08} vectorEffect="non-scaling-stroke" />
+      </g>
+      <text x={x + w / 2} y={hy + 0.05} textAnchor="middle" fontSize={0.15} fontWeight="600" fill="#334155" {...HALO}>
+        {w.toFixed(1)} m
+      </text>
+      <text
+        x={vx}
+        y={y + l / 2}
+        textAnchor="middle"
+        fontSize={0.15}
+        fontWeight="600"
+        fill="#334155"
+        transform={`rotate(-90 ${vx} ${y + l / 2})`}
+        dy={0.05}
+        {...HALO}
+      >
+        {l.toFixed(1)} m
+      </text>
+    </g>
+  );
+}
+
+// Nombre y superficie en dos líneas, ajustados al ancho de la estancia.
+function RoomLabel({ x, y, w, label, area }) {
+  const nameSize = fitFont(label, w, 0.3);
+  const areaText = `${area.toFixed(1)} m²`;
+  const areaSize = Math.min(nameSize * 0.8, fitFont(areaText, w, 0.24));
+  const top = y + 0.32 + nameSize;
+  return (
+    <g style={{ pointerEvents: 'none' }}>
+      <text x={x + w / 2} y={top} textAnchor="middle" fontSize={nameSize} fontWeight="700" fill="#1e293b" {...HALO}>
+        {label}
+      </text>
+      <text x={x + w / 2} y={top + areaSize * 1.3} textAnchor="middle" fontSize={areaSize} fontWeight="600" fill="#475569" {...HALO}>
+        {areaText}
+      </text>
+    </g>
+  );
+}
+
 function roomItems(room) {
   return (room.furniture || []).map((f) => {
     const c = FURNITURE_BY_KEY[f.key] || { w: 0.5, d: 0.5 };
@@ -153,7 +218,6 @@ export default function PlanEditor({
   }, []);
 
   const positions = drag?.mode === 'room' && drag.preview ? drag.preview : null;
-  const activeSheet = planModel?.sheets?.find((sheet) => sheet.level === activeLevel) || planModel?.sheets?.[0] || null;
   const selRoom = placed.find((r) => r.id === selectedId);
   const allowedCats = selRoom ? catsFor(selRoom.type) : Object.keys(FURNITURE_CATS);
   const cats = Object.entries(FURNITURE_CATS).filter(([k]) => allowedCats.includes(k));
@@ -231,34 +295,6 @@ export default function PlanEditor({
           </defs>
           <rect x={bounds.minX - pad} y={bounds.minZ - pad} width={bounds.spanX + 2 * pad} height={bounds.spanZ + 2 * pad} fill="url(#grid)" />
 
-          {activeSheet && (
-            <g opacity="0.92">
-              {activeSheet.dimensions.map((dimension, index) => (
-                <g key={`dim-${index}`}>
-                  <line
-                    x1={dimension.start.x}
-                    y1={dimension.start.y}
-                    x2={dimension.end.x}
-                    y2={dimension.end.y}
-                    stroke="#94a3b8"
-                    strokeWidth="0.03"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <text
-                    x={(dimension.start.x + dimension.end.x) / 2}
-                    y={(dimension.start.y + dimension.end.y) / 2 - 0.08}
-                    textAnchor="middle"
-                    fontSize={0.18}
-                    fill="#475569"
-                    style={{ pointerEvents: 'none' }}
-                  >
-                    {dimension.text}
-                  </text>
-                </g>
-              ))}
-            </g>
-          )}
-
           {placed.map((r) => {
             const pos = positions?.[r.id] || { cx: r.cx, cz: r.cz };
             const t = ROOM_TYPES[r.type];
@@ -280,9 +316,9 @@ export default function PlanEditor({
                   height={r.length}
                   rx={0.05}
                   fill={t.color}
-                  fillOpacity={sel ? 0.3 : 0.15}
-                  stroke={sel ? '#4f46e5' : t.color}
-                  strokeWidth={sel ? 0.08 : 0.05}
+                  fillOpacity={sel ? 0.28 : 0.15}
+                  stroke={sel ? BRAND : t.color}
+                  strokeWidth={sel ? 3 : 1}
                   vectorEffect="non-scaling-stroke"
                   style={{ cursor: 'grab' }}
                   onPointerDown={(e) => {
@@ -293,10 +329,6 @@ export default function PlanEditor({
                     setDrag({ mode: 'room', id: r.id, dx: p.x - pos.cx, dz: p.z - pos.cz });
                   }}
                 />
-                <text x={pos.cx} y={y + 0.45} textAnchor="middle" fontSize={0.35} fontWeight="700" fill="#334155" style={{ pointerEvents: 'none' }}>
-                  {t.label} · {(r.width * r.length).toFixed(1)} m²
-                </text>
-
                 {autoItems.map((f, i) => {
                   const deg = (f.rot || 0) * 180 / Math.PI;
                   const exportable = showsInPlan(f.key);
@@ -312,7 +344,7 @@ export default function PlanEditor({
                       fill={CAT_COLOR[FURNITURE_BY_KEY[f.key]?.cat] || '#94a3b8'}
                       fillOpacity={exportable ? 0.25 : 0.12}
                       stroke={exportable ? '#94a3b8' : '#cbd5e1'}
-                      strokeWidth={0.02}
+                      strokeWidth={1}
                       strokeDasharray={exportable ? '0.1 0.08' : '0.04 0.06'}
                       vectorEffect="non-scaling-stroke"
                       style={{ pointerEvents: 'none' }}
@@ -339,7 +371,7 @@ export default function PlanEditor({
                         fill={isDragged && !drag.ok ? '#ef4444' : col}
                         fillOpacity={isDragged ? 0.55 : exportable ? 0.85 : 0.35}
                         stroke={isSel ? '#fff' : '#1e293b'}
-                        strokeWidth={isSel ? 0.06 : 0.03}
+                        strokeWidth={isSel ? 2 : 1}
                         vectorEffect="non-scaling-stroke"
                         strokeDasharray={exportable ? undefined : '0.08 0.06'}
                         style={{ cursor: 'grab' }}
@@ -360,12 +392,25 @@ export default function PlanEditor({
               </g>
             );
           })}
+
+          {/* Cotas y rótulos al final para que queden por encima de muebles y estancias vecinas. */}
+          {placed.map((r) => {
+            const pos = positions?.[r.id] || { cx: r.cx, cz: r.cz };
+            const x = pos.cx - r.width / 2;
+            const y = pos.cz - r.length / 2;
+            return (
+              <g key={`label-${r.id}`}>
+                <RoomDims x={x} y={y} w={r.width} l={r.length} />
+                <RoomLabel x={x} y={y} w={r.width} label={ROOM_TYPES[r.type].label} area={r.width * r.length} />
+              </g>
+            );
+          })}
         </svg>
 
         {selFurn && (
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-zinc-900 px-3 py-2 text-sm text-white shadow-lg">
             <span className="text-xs text-zinc-400">Mueble</span>
-            <button onClick={() => onRotateFurniture(selFurn.roomId, selFurn.fid)} className="flex items-center gap-1 hover:text-indigo-300"><Icon name="rotate-cw" size={15} /> Rotar</button>
+            <button onClick={() => onRotateFurniture(selFurn.roomId, selFurn.fid)} className="flex items-center gap-1 hover:text-emerald-300"><Icon name="rotate-cw" size={15} /> Rotar</button>
             <button onClick={() => { onRemoveFurniture(selFurn.roomId, selFurn.fid); setSelFurn(null); }} className="flex items-center gap-1 hover:text-red-400"><Icon name="trash-2" size={15} /> Quitar</button>
           </div>
         )}

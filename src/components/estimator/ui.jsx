@@ -7,6 +7,7 @@ import {
   ChevronDown, ChevronRight, Trash2, Plus, Scaling, MessageCircle, Eye, LogOut,
   House, RotateCw, WandSparkles, Eraser, LayoutGrid, PlusCircle, Download, Layers,
   ChevronsUp, ArrowUpDown, TrendingUp, ChevronUp, Square,
+  FileText, Ruler, Scan, Image as ImageIcon, FolderDown, TriangleAlert,
 } from 'lucide-react';
 
 const ICONS = {
@@ -22,6 +23,8 @@ const ICONS = {
   'rotate-cw': RotateCw, 'wand-sparkles': WandSparkles, eraser: Eraser,
   'layout-grid': LayoutGrid, 'plus-circle': PlusCircle, download: Download, layers: Layers,
   'chevrons-up': ChevronsUp, 'arrow-up-down': ArrowUpDown, 'trending-up': TrendingUp, 'chevron-up': ChevronUp,
+  'file-text': FileText, ruler: Ruler, scan: Scan, image: ImageIcon, 'folder-down': FolderDown,
+  'triangle-alert': TriangleAlert,
 };
 
 // Icono lucide a partir de una clave 'lucide:nombre' (o 'nombre').

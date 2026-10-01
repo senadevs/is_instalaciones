@@ -488,7 +488,7 @@ export default function Estimator() {
             <button
               key={targetView}
               onClick={() => setView(targetView)}
-              className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === targetView ? 'bg-indigo-600 text-white' : 'text-zinc-400 hover:text-white'}`}
+              className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === targetView ? 'bg-emerald-700 text-white' : 'text-zinc-400 hover:text-white'}`}
             >
               <Icon name={icon} size={14} /> {label}
             </button>

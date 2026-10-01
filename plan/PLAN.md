@@ -169,12 +169,13 @@
 
 ## F5 — Estimador profesional
 
-### F5-T1 · Auditoría visual del estimador  [S] [todo]
+### F5-T1 · Auditoría visual del estimador  [S] [done]
 - Skill: ui-verify → references/browser-checks.md; ui-ux-pro-max → references/pro-rules.md
 - Archivos: — (informe en el devlog)
 - Hecho cuando: lista priorizada de problemas con captura (panel, editor 2D, 3D, presupuesto, móvil).
 - Verificar: capturas a 375 y 1440.
 - Depende de: F3-T3
+- Devlog: [010](../devlog/2026-10-01/010-planificador-pulido.md) — además se aplicaron los arreglos 1-7 de la auditoría (parte de F5-T2/F5-T3).
 
 ### F5-T2 · Panel lateral y controles  [M] [todo]
 - Skill: ui-ux-pro-max → references/pro-rules.md §formularios; motion-framer (solo transiciones de paneles)
