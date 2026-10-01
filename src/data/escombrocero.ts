@@ -8,7 +8,7 @@ export interface EscombroceroService {
   icon: string;
 }
 
-// PENDIENTE-CONFIRMAR: el cliente indicó escombros.is-instalaciones.es; el repo de Escombrocero usa escombrocero.es.
+// Subdominio confirmado por el cliente (2026-10-01). El repo de Escombrocero aún declara escombrocero.es: corregir allí (X-T4).
 export const ESCOMBROCERO_URL = "https://escombros.is-instalaciones.es";
 
 export const escombroceroServices: EscombroceroService[] = [

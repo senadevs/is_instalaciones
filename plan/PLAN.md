@@ -109,7 +109,7 @@
 
 ### X-T4 · Página "Instalaciones y reformas" en Escombrocero hacia IS  [M] [todo]
 - Repo: `D:\Magneto\Proyectos\escombrocero` (seguir SUS convenciones, CLAUDE.md y bilingüe ES/CA).
-- Hecho cuando: página equivalente que presenta IS Instalaciones y enlaza a is-instalaciones.es.
+- Hecho cuando: página equivalente que presenta IS Instalaciones y enlaza a is-instalaciones.es; `SITE.url` corregido a `https://escombros.is-instalaciones.es` (subdominio confirmado por el cliente).
 - Depende de: X-T3
 
 ## F3 — Base visual profesional

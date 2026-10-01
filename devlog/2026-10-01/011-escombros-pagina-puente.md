@@ -32,5 +32,5 @@
 - Entorno: de nuevo `504 Outdated Optimize Dep` en el dev server (ahora con GSAP); se resuelve reiniciando con `--force`.
 
 ## Pendiente
-- **Confirmar la URL de Escombrocero**: el cliente dijo `escombros.is-instalaciones.es`; el repo de Escombrocero usa `escombrocero.es` (`src/config/site.ts`). Se cambia en `src/data/escombrocero.ts`.
+- URL de Escombrocero confirmada por el cliente: subdominio `escombros.is-instalaciones.es`. Falta corregir `escombrocero/src/config/site.ts` (declara `escombrocero.es`) en X-T4.
 - X-T4: página equivalente en Escombrocero hacia IS Instalaciones.
