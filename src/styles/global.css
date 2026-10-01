@@ -58,7 +58,9 @@ footer {
     border-color 0.5s ease;
 }
 
-/* Transiciones para textos */
+/* Transiciones de color para el cambio de tema. Sin `opacity`: una transición CSS de opacidad
+   pelea con GSAP (que anima la opacidad por fotograma) y dejaba textos del hero de escombros
+   congelados a media opacidad. Las animaciones data-animate llevan su propia transición. */
 h1,
 h2,
 h3,
@@ -74,8 +76,7 @@ textarea {
   transition:
     color 0.4s ease,
     background-color 0.4s ease,
-    border-color 0.4s ease,
-    opacity 0.4s ease;
+    border-color 0.4s ease;
 }
 
 /* Transiciones para efectos visuales */
