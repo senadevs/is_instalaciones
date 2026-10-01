@@ -13,7 +13,7 @@
 - Resultado: 17 skills, 13 hooks (guard, secrets-guard, protect-files, conventions-guard, stop-guard…), 15 comandos; `CLAUDE.md` regenerado con `@CLAUDE.project.md` en la cabecera.
 
 ## Commits
-- Ninguno (rama `main` con cambios previos sin commitear; pendiente crear `chore/dev-standards`).
+- `b88b149` chore(dev-standards): instalar dev-standards y conservar la guia propia (rama `chore/adoptar-convenciones`)
 
 ## Decisiones (resumen; el detalle va en DECISIONES.md)
 - Respaldar e importar la guía propia en vez de descartarla (ver DECISIONES.md#dev-003).

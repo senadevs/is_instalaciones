@@ -37,3 +37,6 @@
 ## Notas
 - El init de dev-standards sobrescribió el `CLAUDE.MD` previo; el análisis original está en
   `docs/analisis-arquitectonico.md` (recuperado de git).
+
+## Commits
+- `74b030d` feat(escombros): landing de retirada de escombros con efectos GSAP (registrado el 2026-10-01)

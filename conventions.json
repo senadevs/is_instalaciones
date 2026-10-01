@@ -1,0 +1,14 @@
+{
+  "_sello": "dev-standards:inmutable",
+  "_generado": "/adoptar 2026-10-01 — no editar a mano; para cambiar: borrar y re-ejecutar /adoptar",
+  "rules": [
+    { "files": "^src/.*\\.(ts|tsx|js|jsx|astro)$", "forbid": "console\\.log\\(", "why": "sin console.log: solo console.error en los catch de API" },
+    { "files": "^src/.*\\.(ts|tsx|js|jsx|astro)$", "forbid": "from\\s+['\"]@/", "why": "no hay alias @/ configurado: usa imports relativos" },
+    { "files": "^src/.*\\.(ts|tsx|js|jsx|astro)$", "forbid": "process\\.env\\.", "why": "en src/ los secretos se leen con import.meta.env" },
+    { "files": "\\.(astro|jsx|tsx)$", "forbid": "\\b(bg|text|border|from|via|to|fill|stroke|ring|outline|shadow)-\\[#[0-9a-f]{3,8}\\]", "why": "sin hex arbitrarios en clases: usa los tokens del design system (primary, --esc-*)" },
+    { "files": "^(?!.*lib/gsap\\.ts$).*\\.(astro|ts|tsx|js|jsx)$", "forbid": "from\\s+['\"]gsap(/[^'\"]*)?['\"]", "why": "GSAP se importa solo desde src/lib/gsap.ts (punto unico de registro)" },
+    { "files": "\\.astro$", "forbid": "<img\\b", "why": "imagenes nuevas con <Image /> de astro:assets" },
+    { "files": "\\.(test|spec)\\.(ts|tsx|jsx|mjs|cjs)$|\\.spec\\.js$", "forbid": "from\\s+['\"]vitest['\"]", "why": "Vitest solo recoge src/**/*.test.js: los tests van en *.test.js" },
+    { "files": "components/estimator/(geometry|plan2d|catalog|state|renderPlacement|export/\\w+)\\.js$", "forbid": "from\\s+['\"](react|react-dom|three|@react-three/[^'\"]+)['\"]", "why": "los modulos puros del estimador no dependen de React ni Three" }
+  ]
+}
