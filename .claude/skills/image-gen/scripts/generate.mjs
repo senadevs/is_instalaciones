@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * dev-standards · image-gen: generador de imágenes multi-proveedor, sin dependencias (Node 18+).
+ * Senzu · image-gen: generador de imágenes multi-proveedor, sin dependencias (Node 18+).
  *
  * Uso:
  *   node generate.mjs "<prompt>" [opciones]

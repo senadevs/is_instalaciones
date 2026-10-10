@@ -9,8 +9,9 @@
 // Si no coincide, sale con 0 (permite continuar el flujo de permisos normal).
 // Se usa como capa "inteligente" además de permissions.deny (capa simple) en settings.json.
 
+import os from 'node:os';
 import { execFileSync } from 'node:child_process';
-import { readHookInput } from './lib.mjs';
+import { readHookInput, projectRoot, permisosProyecto, envSenzu, textoLogos, ramaProtegida, convencionesSelladas, relDelProyecto, rutaNativa, sinTextoCitado } from './lib.mjs';
 
 const p = readHookInput();
 if (!p) process.exit(0);
@@ -18,11 +19,39 @@ if (!['Bash', 'PowerShell'].includes(p.tool_name)) process.exit(0);
 
 const cmd = p.tool_input && p.tool_input.command ? String(p.tool_input.command) : '';
 if (!cmd.trim()) process.exit(0);
-const c = cmd;
+// Las reglas miran lo que se EJECUTA: el texto citado (mensajes de commit, heredocs a un archivo, echo, grep…) fuera.
+// El mensaje del commit (formato, Co-Authored-By) se valida sobre el comando original, cmd.
+const c = sinTextoCitado(cmd);
+const root = projectRoot();
+const permisos = permisosProyecto(root);
+// ramas principales (main, staging, production…): lista única en lib.mjs (ramaProtegida)
+function ramaActual() {
+    try { return execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { cwd: root, stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' }).trim(); } catch { return ''; }
+}
+
+// ¿Este git push lo permite el proyecto? (permisos en senzu/senzu.json; el forzado nunca)
+// Mira CADA "git push" de la línea: destino explícito (main, HEAD:main, origin main) o, si no hay, la rama actual.
+function pushPermitido() {
+    if (!permisos.push) return false;
+    const pushes = c.split(/&&|\|\||;|\n/).map(s => s.trim()).filter(s => /\bgit\s+push\b/i.test(s));
+    for (const s of pushes) {
+        // solo un «git push» escrito tal cual: dentro de bash -c, un heredoc, xargs o $( ) no se sabe con seguridad
+        // a qué rama va, así que no se permite (sigue bloqueado)
+        if (!/^git\s+push\b/i.test(s)) return false;
+        const args = s.replace(/^.*?\bgit\s+push\b/i, '').trim().split(/\s+/).filter(Boolean);
+        if (args.some(a => /^(-f|--force|--force-with-lease|--force-if-includes|--mirror|--delete|-d)(=|$)/i.test(a))) return false;
+        const posicionales = args.filter(a => !a.startsWith('-'));
+        const refspecs = posicionales.slice(1);   // el primero es el remoto
+        if (refspecs.some(r => r.startsWith('+') || r.startsWith(':'))) return false;   // +rama = forzado; :rama = borrar en remoto
+        const destinos = refspecs.length ? refspecs.map(r => r.split(':').pop().replace(/^refs\/heads\//, '')) : [ramaActual()];
+        if (destinos.some(d => !d || ramaProtegida(root, d)) && !permisos.pushMain) return false;
+    }
+    return pushes.length > 0;
+}
 
 // --- Patrones prohibidos: { p: patrón; m: motivo } ---
 const rules = [
-    { p: /\bgit\s+push\b/i,                                   m: 'git push está prohibido sin aprobación explícita.' },
+    { p: /\bgit\s+push\b/i,                                   m: 'Este git push no se permite: va a una rama principal (main, develop, staging, production, release/…), no se ve a qué rama va (dentro de bash -c, un heredoc, $( )…) o el proyecto tiene "push": false. A las ramas de trabajo (feat/…, fix/…) se sube con un git push directo. A una principal, solo si el usuario pone "pushMain": true en senzu/senzu.json (lo decide el usuario, no el agente) o lo sube él: ! git push …' },
     { p: /\bgit\s+push\s+.*--force/i,                         m: 'git push --force está terminantemente prohibido.' },
     { p: /--force-with-lease/i,                               m: 'push forzado (--force-with-lease) prohibido.' },
     { p: /\bdrop\s+(database|table|schema)\b/i,               m: 'DROP DATABASE/TABLE/SCHEMA en BD requiere aprobación explícita.' },
@@ -54,57 +83,108 @@ function deny(lines) {
     process.exit(2);
 }
 
+// --- Los permisos y los hooks apagados los decide SOLO el usuario ---
+// El agente no puede escribir el marcador (senzu/senzu.json o el antiguo .dev-standards.json) desde la terminal (redirecciones, tee, sed -i, Set-Content, cp/mv…)
+// ni lanzar el instalador con los flags que dan permisos o apagan hooks: eso lo ejecuta el usuario (menú o "!").
+// ¿El comando ESCRIBE, mueve o borra ESE archivo? Se mira el destino, trozo a trozo (;, &&, ||, |, saltos de
+// línea): leer el marcador y escribir en otro sitio en el mismo comando no es escribirlo. Antes bastaba con que
+// el comando tuviera un «>» o un «.write(» en cualquier parte (process.stdout.write al leer el marcador → bloqueo).
+const VERBOS_ESCRIBEN = /(\btee\b|\bsed\s+(-\w*\s+)*-i|\bperl\s+(-\w*\s+)*-i|\b(set|add|clear)-content\b|\bout-file\b|\bnew-item\b|\btruncate\b|\b(cp|mv|copy-item|move-item|rm|del|remove-item|ren|rename-item|unlink)\b|write(File|FileSync)\b|append(File|FileSync)\b|\b(rmSync|renameSync|copyFileSync|copyFile)\b|open\([^)]*['"][wa]|\bgit\s+(checkout|restore|stash|reset|rm|mv)\b)/i;
+function escribeEn(cmdTxt, archivo) {
+    const limpio = cmdTxt.replace(/\d?>&\d|\d?>\s*\/dev\/null|\d?>\s*\$null|\d?>\s*nul\b/gi, '');
+    const redir = new RegExp(`>>?\\|?\\s*["']?[^\\s"'|;&<>]*(?:${archivo.source})`, 'i');   // > senzu.json, >> "x/senzu.json"
+    if (redir.test(limpio)) return true;
+    return limpio.split(/&&|\|\||;|\n|\|/).some(s => archivo.test(s) && VERBOS_ESCRIBEN.test(s));
+}
+if (escribeEn(c, /\.dev-standards\.json|\bsenzu\.json\b/i)) {
+    deny(['[BLOQUEADO por Senzu] El marcador del proyecto (senzu/senzu.json) guarda los permisos del proyecto y solo lo cambia el usuario (o el instalador lanzado por el usuario). Léelo si lo necesitas, pero no lo escribas.']);
+}
+// --- Convenciones SELLADAS (/adoptar): tampoco desde la terminal ---
+// protect-files para las ediciones; esto, para los comandos (sed -i, >, rm, mv, Set-Content, git checkout…).
+// No hay escape para el agente: si el usuario decide cambiarlas, lo hace él (o las borra y re-ejecuta /adoptar).
+if (/\bconventions\.(md|json)\b|\bcapas\.json\b/i.test(c) && convencionesSelladas(root) && escribeEn(c, /\bconventions\.(md|json)\b|\bcapas\.json\b/i)) {
+    deny(['[BLOQUEADO por Senzu] Las convenciones del proyecto están SELLADAS como inmutables (/adoptar): no se escriben, mueven, borran ni restauran desde el agente, por ningún camino.',
+        'Léelas y escribe el código como dicen. Si el usuario quiere cambiarlas, que lo haga él: borra conventions.md y conventions.json y re-ejecuta /adoptar.']);
+}
+if (/\b(SENZU|DEV_STANDARDS)_ALLOW_CONVENCIONES\b/i.test(c)) {
+    deny(['[BLOQUEADO por Senzu] SENZU_ALLOW_CONVENCIONES es la llave del usuario para commitear un cambio de las convenciones selladas: no la usa el agente.']);
+}
+// El menú del instalador es para el usuario: el agente no le pasa respuestas por tubería ni redirección
+// (dentro de la MISMA orden: sin cruzar saltos de línea; el «-i» de un sed en la línea siguiente no es el menú)
+if (/\|\s*(node|npx)\b[^|;&\n]*\binit\.mjs\b|\b(node|npx)\s[^|;&\n]*\binit\.mjs\b[^|;&\n]*<\s*\S|\b(node|npx)\s[^|;&\n]*\binit\.mjs\b[^|;&\n]*\s(-i|--interactivo)\b/i.test(c)) {
+    deny(['[BLOQUEADO por Senzu] El menú del instalador lo responde el usuario (ahí se dan permisos y se apagan hooks). Para instalar sin menú usa los flags de selección (--seleccion, --grupos...); el menú, que lo abra él en su terminal.']);
+}
+// Instalar en la carpeta temporal (proyectos de prueba que se tiran) con esos flags no da permisos a nadie
+const rutasDestino = [...c.matchAll(/(?:^|\s)-{1,2}path\s+("[^"]+"|'[^']+'|[^\s;&|]+)/gi)].map(m => m[1].replace(/^["']|["']$/g, ''));
+// (en temp Y fuera del proyecto actual: «--path .» es este proyecto aunque él mismo viva en temp)
+const soloEnTemporal = rutasDestino.length > 0 && rutasDestino.every(r => !/[$%]/.test(r)
+    && relDelProyecto(os.tmpdir(), rutaNativa(r, root)) !== null && relDelProyecto(root, rutaNativa(r, root)) === null);
+if (!soloEnTemporal && /(^|\s)(--permitir|-permitir|--apagar-hooks|-apagarhooks|--sin-permisos|-sinpermisos|--encender-hooks|-encenderhooks|--omitir-paso|--sin-omitir)\b/i.test(c)) {
+    deny(['[BLOQUEADO por Senzu] Dar permisos, apagar hooks u omitir pasos del método lo decide el usuario: que lo ejecute él (en Claude Code, escribiendo "!" delante del comando) o desde el menú del instalador.']);
+}
+
 // --- Reglas de git commit: rama protegida, Conventional Commits, sin co-autores ---
 if (/\bgit\s+commit\b/i.test(c)) {
-    let branch = '';
-    try { branch = execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' }).trim(); } catch {}
-    if (['main', 'master', 'develop'].includes(branch)) {
-        deny([`[BLOQUEADO por dev-standards] No se commitea en '${branch}'. Crea una rama (git switch -c feat/...) y commitea ahi.`]);
+    const branch = ramaActual();
+    if (ramaProtegida(root, branch) && !permisos.commitEnMain) {
+        deny([`[BLOQUEADO por Senzu] No se commitea en '${branch}'. Crea una rama (git switch -c feat/...) y commitea ahi. (Si el usuario lo quiere permitir en este proyecto: "permisos": { "commitEnMain": true } en senzu/senzu.json.)`]);
     }
-    if (/co-authored-by/i.test(c)) {
-        deny(['[BLOQUEADO por dev-standards] Los commits no llevan Co-Authored-By (regla del equipo).']);
+    if (/co-authored-by/i.test(cmd)) {
+        deny(['[BLOQUEADO por Senzu] Los commits no llevan Co-Authored-By (regla del equipo).']);
     }
     // Mensaje: -m "..." o -m '...'  (se valida solo el primer -m)
     let msg = null;
-    let m = /-m\s+"([^"]*)"/is.exec(c);
+    let m = /-m\s+"([^"]*)"/is.exec(cmd);
     if (m) msg = m[1];
-    else { m = /-m\s+'([^']*)'/is.exec(c); if (m) msg = m[1]; }
+    else { m = /-m\s+'([^']*)'/is.exec(cmd); if (m) msg = m[1]; }
     if (msg) {
         const first = msg.split(/\r?\n/)[0].trim();
         if (!/^(feat|fix|refactor|docs|test|chore|perf|build|ci|style|revert)(\([\w\-\./ ]+\))?!?:\s\S/.test(first)) {
-            deny([`[BLOQUEADO por dev-standards] El mensaje no sigue Conventional Commits: '${first}'. Formato: tipo(scope): descripcion  (feat|fix|refactor|docs|test|chore|perf|build|ci|style|revert).`]);
+            deny([`[BLOQUEADO por Senzu] El mensaje no sigue Conventional Commits: '${first}'. Formato: tipo(scope): descripcion  (feat|fix|refactor|docs|test|chore|perf|build|ci|style|revert).`]);
         }
         if (first.length > 72) {
-            deny([`[BLOQUEADO por dev-standards] Primera linea del commit > 72 caracteres (${first.length}). Acortala y pasa el detalle al cuerpo.`]);
+            deny([`[BLOQUEADO por Senzu] Primera linea del commit > 72 caracteres (${first.length}). Acortala y pasa el detalle al cuerpo.`]);
         }
     }
 }
 
 // --- Deploy a produccion: NUNCA sin aprobacion explicita del usuario ---
-if (process.env.DEV_STANDARDS_ALLOW_DEPLOY !== '1') {
+if (envSenzu('ALLOW_DEPLOY') !== '1') {
     const deployPat = /(netlify\s+deploy(?=.*--prod))|(\bvercel\b(?=.*--prod))|(\bfly\s+deploy\b)|(\bwrangler\s+(deploy|publish)\b(?!.*--env[= ](dev|preview)))/i;
     if (deployPat.test(c)) {
         deny([
-            '[BLOQUEADO por dev-standards] Deploy a PRODUCCION detectado. Requiere aprobacion explicita del usuario en este momento (checklist /desplegar: backup fresco verificado + plan de rollback + smoke posterior).',
-            'Con la aprobacion recibida: reintenta con DEV_STANDARDS_ALLOW_DEPLOY=1 y documenta la aprobacion y el resultado en el devlog. Los deploys de preview (sin --prod) pasan sin muro.',
+            '[BLOQUEADO por Senzu] Deploy a PRODUCCION detectado. Requiere aprobacion explicita del usuario en este momento (checklist /desplegar: backup fresco verificado + plan de rollback + smoke posterior).',
+            'Con la aprobacion recibida: reintenta con SENZU_ALLOW_DEPLOY=1 y documenta la aprobacion y el resultado en el devlog. Los deploys de preview (sin --prod) pasan sin muro.',
         ]);
     }
+}
+
+// --- Logo ya elegido: los generadores de logos e iconos no se lanzan sin que el usuario lo pida ---
+// (graphic-design scripts/logo|icon/generate.py, o image-gen con un prompt de logo). Escape tras pedirlo: SENZU_ALLOW_LOGO=1.
+if (envSenzu('ALLOW_LOGO') !== '1' && (/scripts[\\/](logo|icon)[\\/]generate\.py/i.test(c) || (/image-gen[\\/]scripts[\\/]generate\.mjs/i.test(c) && /\b(logo|logotipo|isotipo|s[ií]mbolo|favicon)\b/i.test(c)))) {
+    const elegido = textoLogos(root);
+    if (elegido) deny([
+        '[BLOQUEADO por Senzu] ' + elegido,
+        'Si el usuario ha pedido EXPLÍCITAMENTE nuevas variantes o sustituir el logo: reintenta con SENZU_ALLOW_LOGO=1 y anótalo en el devlog.',
+    ]);
 }
 
 // --- Librerias vetadas (regla dura: sin jQuery/Bootstrap ni segunda libreria de componentes sin aprobacion) ---
-if (process.env.DEV_STANDARDS_ALLOW_LIB !== '1' && /\b(npm|pnpm|yarn|bun)\s+(install|add|i)\b/i.test(c)) {
+if (envSenzu('ALLOW_LIB') !== '1' && /\b(npm|pnpm|yarn|bun)\s+(install|add|i)\b/i.test(c)) {
     if (/\b(jquery|bootstrap)\b/i.test(c)) {
         deny([
-            '[BLOQUEADO por dev-standards] jQuery/Bootstrap estan vetados por defecto (regla dura 12: se reutiliza lo que ya hay; nada de segundas librerias de componentes).',
-            'Si el usuario lo aprueba explicitamente: que lo ejecute el, o reintenta con DEV_STANDARDS_ALLOW_LIB=1 en el entorno y documenta la aprobacion en el devlog.',
+            '[BLOQUEADO por Senzu] jQuery/Bootstrap estan vetados por defecto (regla dura 12: se reutiliza lo que ya hay; nada de segundas librerias de componentes).',
+            'Si el usuario lo aprueba explicitamente: que lo ejecute el, o reintenta con SENZU_ALLOW_LIB=1 en el entorno y documenta la aprobacion en el devlog.',
         ]);
     }
 }
 
+const pushOk = pushPermitido();
 for (const r of rules) {
+    if (pushOk && r === rules[0]) continue;   // push normal permitido por el proyecto (las reglas de forzado siguen)
     if (r.p.test(c)) {
         deny([
-            `[BLOQUEADO por dev-standards] ${r.m}`,
+            `[BLOQUEADO por Senzu] ${r.m}`,
             `Comando: ${cmd}`,
             'Si de verdad quieres hacerlo, pídeme aprobación explícita y ejecútalo tú, o autorízalo para esta vez.',
         ]);

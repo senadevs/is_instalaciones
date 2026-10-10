@@ -3,7 +3,7 @@
 - **Objetivo:** <una frase: qué resultado observable obtiene el usuario>
 - **Estado:** en curso | pausado | cerrado · **Actualizado:** YYYY-MM-DD
 - **Stack / perfil:** <laravel · Laravel + Inertia + Vue 3 + Tailwind>
-- **Brief:** `plan/brief.md` · **Design system:** `design-system/<slug>/MASTER.md` (si aplica) · **Devlog:** `devlog/INDEX.md`
+- **Brief:** `senzu/plan/brief.md` · **Design system:** `senzu/design-system/<slug>/MASTER.md` (si aplica) · **Devlog:** `senzu/devlog/INDEX.md`
 - **Definición de hecho global:** <tests y lint en verde, a11y básica, sin secretos, devlog al día, sin deploy>
 
 ## Alcance
@@ -23,12 +23,15 @@
 ## F1 — <título de la fase>
 
 ### F1-T1 · <Verbo + objeto>  [S|M] [todo|doing|blocked|done]
+- Para qué: <el objetivo del usuario que cumple, en sus palabras>
 - Skill: <skill → referencia/sección>  (o "sin skill: cambio trivial")
 - Archivos: …
 - Hecho cuando: …
 - Verificar: <comando / URL / captura>
 - Depende de: —
-- Devlog: —
+- Verificado: — (al cerrar: <comando> → <resultado real>)
+- Cumple: — (al cerrar: cómo cumple el «Para qué»)
+- Devlog: — (al cerrar: `senzu/devlog/YYYY-MM-DD/NNN-slug.md`)
 
 ### F1-T2 · …
 

@@ -3,7 +3,7 @@ name: code-quality
 description: "Buenas prácticas de código (Laravel/PHP, TypeScript, React/Next, Vue, Astro, Python): tipado, tests, errores/logs, seguridad, rendimiento, APIs, PR. Úsala al escribir o refactorizar lógica, testear, revisar PR o diseñar endpoints."
 ---
 
-# code-quality (dev-standards)
+# code-quality (Senzu)
 
 Referencias por tema en `references/`. **No las leas todas**: cada una empieza con un índice; lee solo
 la sección que necesites (Read con offset/limit o Grep). Una referencia por tarea salvo que la tarea cruce temas.
@@ -45,11 +45,14 @@ Completo: **`references/backend-catalog.md`** (tarea/síntoma → receta §secci
 | Abrir o revisar un PR, commits | `references/git-and-reviews.md` §checklist |
 | Qué API/sintaxis permite la versión del stack, upgrades, EOL | `references/stack-versions.md` (la versión REAL manda) |
 | Proyecto heredado: adoptar sus convenciones (/adoptar) | `references/adopt-conventions.md` |
+| Arquitectura: capas, servicios, DTO, carpetas, hexagonal o DDD declarados (`senzu/arquitectura/capas.json`) | `references/arquitectura-declarada.md` + `scripts/arquitectura.mjs` (`--detectar`, `--plantilla`, `--comprobar`) |
 | Auditar el backend, deuda técnica, refactor grande (/auditar, /refactor) | skill `backend-audit` (encuentra con pruebas; las recetas de aquí lo arreglan) |
-| Verificar el proyecto tras TUS cambios | `scripts/verify-build.mjs` (lint+types+tests+build; corrige hasta 0 fallos) |
+| Explicar un proyecto a quien llega nuevo: estructura, flujos, dónde tocar (/mapa) | `references/mapa-proyecto.md` |
+| Algo falla o no funciona mientras construyes | skill `depurar` (método: reproducir, test que falla, hipótesis, acotar) |
+| Verificar el proyecto tras TUS cambios | `scripts/verify-build.mjs` desde la raíz (lint+types+tests+build; corrige hasta 0 fallos). En monorepos verifica cada paquete con cambios en su carpeta y lenguaje (JS con su gestor, Python con uv/poetry, PHP, Go); `--plan` enseña qué ejecutaría, `--paquete apps/web`, `--todos`, `--sin-build`. Entiende también Rust, Ruby, Maven/Gradle, .NET, Deno, Python con requirements.txt y Makefile/justfile. **Sin manifiesto no es un build**: ejecuta las suites propias del repo (`tools/test-*`, `check-*`), la sintaxis de lo cambiado y los enlaces de los `.md` cambiados (`--rapido` sin suites) |
 
 ## Principios transversales (aplican siempre, sin leer nada más)
-1. **Lee antes de escribir**: imita naming, estructura y estilo del código vecino; no introduzcas patrones nuevos sin motivo. Si existe `conventions.md` (adoptado con `/adoptar`), es ley.
+1. **Lee antes de escribir**: imita naming, estructura y estilo del código vecino; no introduzcas patrones nuevos sin motivo. Si existe `senzu/conventions.md` (adoptado con `/adoptar`), es ley.
 2. **Tipado estricto** en todos los lenguajes (`declare(strict_types=1)`, `strict: true`, mypy/pyright estricto). Sin `any`/`mixed` sin justificar.
 3. **Validar en el borde, confiar dentro**: entrada externa (HTTP, colas, LLM, ficheros) se valida y se convierte a tipos; el núcleo asume datos válidos.
 4. **Funciones pequeñas, una responsabilidad, nombres que digan qué hacen**. Sin comentarios que repitan el código; sí comentarios de "por qué".
@@ -57,7 +60,7 @@ Completo: **`references/backend-catalog.md`** (tarea/síntoma → receta §secci
 6. **Tests que protegen comportamiento**, no implementación: happy path + errores + bordes; rápidos en dominio, integración acotada.
 7. **Seguridad por defecto**: autorización en cada acción sensible, consultas parametrizadas, secretos en entorno, dependencias auditadas.
 8. **Rendimiento medido**: sin optimizar a ciegas; N+1, índices, paginación y caché son lo primero que se revisa.
-9. **Cambios pequeños y reversibles**: PR < 400 líneas, Conventional Commits, sin co-autores, nunca `git push` sin aprobación.
+9. **Cambios pequeños y reversibles**: PR < 400 líneas, Conventional Commits, sin co-autores, push solo a la rama de trabajo (nunca a una principal ni forzado).
 10. **Verifica antes de afirmar**: lint + tests + tipos del stack (`commands` en `stack.json`) antes de decir "hecho"; pega la salida.
 
 ## Checklist de PR (bloqueante)
@@ -71,7 +74,7 @@ Completo: **`references/backend-catalog.md`** (tarea/síntoma → receta §secci
 
 ## Reglas aprendidas (extensible)
 Si detectas una regla GENERAL del stack o lenguaje (error repetido en proyectos, convención del equipo),
-no la dejes morir en el devlog: propón añadirla a dev-standards y, con el ok del usuario, escríbela en
+no la dejes morir en el devlog: propón añadirla a Senzu y, con el ok del usuario, escríbela en
 `stacks/<stack>/rules/<tema>.md` (se anexa al CLAUDE.md/AGENTS.md de los proyectos al correr `sync.ps1`)
 o como sección nueva de la referencia del lenguaje (`references/<lenguaje>.md`). Regla + porqué + ejemplo mínimo.
 

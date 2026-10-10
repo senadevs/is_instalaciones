@@ -1,6 +1,6 @@
 // Hook PreToolUse (Edit|Write|MultiEdit|NotebookEdit): bloquea la edición de archivos protegidos.
 // Bloquea (exit 2 + motivo en STDERR):
-//   - archivos GENERADOS por dev-standards (CLAUDE.md, AGENTS.md, .cursor/rules, .windsurf/rules, .claude/skills/**, ...)
+//   - archivos GENERADOS por Senzu (CLAUDE.md, AGENTS.md, .cursor/rules, .windsurf/rules, .claude/skills/**, ...)
 //   - secretos y config sensible: .env, .env.*, *.pem, *.key, id_rsa*, credentials*, secrets*
 //   - dependencias y artefactos: vendor/**, node_modules/**, .git/**, dist/**, build/**, storage/framework/**, __pycache__/**
 //   - migraciones ya ejecutadas/compartidas: que existan en git (no nuevas)
@@ -9,7 +9,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { readHookInput, projectRoot, hookConfig, git, readText } from './lib.mjs';
+import { readHookInput, projectRoot, hookConfig, git, readText, relDelProyecto, rutaNativa } from './lib.mjs';
 
 const p = readHookInput();
 if (!p || !['Edit', 'Write', 'MultiEdit', 'NotebookEdit'].includes(p.tool_name)) process.exit(0);
@@ -19,40 +19,49 @@ if (!file && p.tool_input && p.tool_input.notebook_path) file = String(p.tool_in
 if (!file) process.exit(0);
 
 const root = projectRoot();
-let rel = file;
-try {
-    const full = path.resolve(file);
-    if (full.toLowerCase().startsWith(String(root).toLowerCase())) rel = full.slice(String(root).length).replace(/^[\\/]+/, '');
-} catch {}
-rel = rel.replace(/\\/g, '/');
+// Relativa a la raíz con «/», llegue la ruta como llegue (C:\, C:/, /c/…); fuera del proyecto, la absoluta
+let rel = relDelProyecto(root, file);
+if (rel === null) rel = rutaNativa(file, root).replace(/\\/g, '/');
 const exists = fs.existsSync(file);
 
 function deny(why) {
-    process.stderr.write(`[BLOQUEADO por dev-standards] ${why}\n`);
+    process.stderr.write(`[BLOQUEADO por Senzu] ${why}\n`);
     process.stderr.write(`Archivo: ${rel}\n`);
     process.exit(2);
 }
 
-// 1) Generados por dev-standards
+// 1) Generados por Senzu (antes dev-standards: se reconocen las dos marcas)
 if (/^(CLAUDE\.md|AGENTS\.md)$/i.test(rel) && exists) {
     const head = (readText(file) || '').split(/\r?\n/).slice(0, 2).join(' ');
-    if (/GENERADO por dev-standards/i.test(head)) deny('Archivo generado por dev-standards. Edita stacks\\<stack>\\ o core\\ en D:\\dev-standards y corre sync.ps1.');
+    if (/GENERADO por (Senzu|dev-standards)/i.test(head))   // compat-dev-standards
+        deny('Archivo generado por Senzu. Edita stacks/<stack>/ o core/ en el paquete Senzu y actualiza el proyecto con /instalar.');
 }
 if (/^(\.claude\/skills|\.agents\/skills|\.cursor\/skills|\.windsurf\/skills|\.cursor\/rules|\.windsurf\/rules|\.claude\/hooks)\//i.test(rel)
-    || /^(\.claude\/settings\.json|\.mcp\.json|\.dev-standards\.json)$/i.test(rel)) {
-    deny('Archivo generado por dev-standards (skills, reglas, hooks, settings, mcp, marcador). Edita el origen en dev-standards y corre sync.ps1; para permisos locales usa .claude/settings.local.json.');
+    || /^(\.claude\/settings\.json|\.mcp\.json|\.dev-standards\.json|senzu\/senzu\.json)$/i.test(rel)) {   // compat-dev-standards
+    deny('Archivo generado por Senzu (skills, reglas, hooks, settings, mcp, marcador con permisos). Edita el origen en el paquete Senzu y actualiza con /instalar; para permisos locales usa .claude/settings.local.json.');
 }
 if (/^(plugins|core\/skills-vendor)\//i.test(rel) && fs.existsSync(path.join(root, 'tools', 'vendor.ps1'))) {
-    deny('Carpeta generada de dev-standards (plugins/ o core/skills-vendor/). Edita core/skills-overlay o core/skills y regenera con build-plugins.ps1 / vendor.ps1.');
+    deny('Carpeta generada de Senzu (plugins/ o core/skills-vendor/). Edita core/skills-overlay o core/skills y regenera con build-plugins.ps1 / vendor.ps1.');
+}
+
+// 1a) Maestros del logo elegido (design-system/<slug>/logos/final/): no se sobrescriben ni se borran. Añadir
+//     archivos nuevos (otro tamaño, otro formato) sí se permite.
+if (/(^|\/)design-system\/[^/]+\/logos\/final\//i.test(rel) && exists) {
+    deny('Es un maestro del logo ELEGIDO (logos/final/): no se sobrescribe. Si el usuario quiere cambiar el logo, que lo diga explícitamente: el nuevo va con otro nombre, se actualiza «Fijado» en gustos.md y la memoria, y el anterior lo retira el usuario.');
 }
 
 // 1b) Convenciones adoptadas (/adoptar) selladas como inmutables
-if (/^conventions\.(md|json)$/i.test(rel) && exists && (readText(file) || '').includes('dev-standards:inmutable')) {
-    deny('Convenciones del proyecto SELLADAS como inmutables (/adoptar): no se editan sin decision explicita del usuario. Con su aprobacion: borra el archivo (rm conventions.json conventions.md) y re-ejecuta /adoptar, o que lo edite el mismo.');
+if (/^(senzu\/)?conventions\.(md|json)$/i.test(rel) && exists && /(senzu|dev-standards):inmutable/.test(readText(file) || '')) {   // compat-dev-standards
+    deny('Convenciones del proyecto SELLADAS como inmutables (/adoptar): no se editan sin decision explicita del usuario. Con su aprobacion: borra los archivos conventions.json y conventions.md y re-ejecuta /adoptar, o que los edite el mismo.');
+}
+// 1c) Arquitectura declarada sellada (senzu/arquitectura/capas.json): relajarla para que pase un cambio no es arreglarlo
+if (/^(senzu\/)?arquitectura\/capas\.json$/i.test(rel) && exists && /senzu:inmutable/.test(readText(file) || '')) {
+    deny('Arquitectura del proyecto SELLADA (capas.json): no se edita para que pase un cambio. Mueve el código a la capa que le toca; si el usuario decide cambiar la arquitectura o añadir una excepción, que la edite él (o que quite el sello) y se anota en el devlog.');
 }
 
 // 2) Secretos
-if (/(^|\/)\.env(\.|$)/i.test(rel) || /\.(pem|key|p12|pfx)$/i.test(rel) || /(^|\/)(id_rsa|id_ed25519)/i.test(rel) || /(^|\/)(credentials|secrets?)(\.|\/|$)/i.test(rel)) {
+// (.env.example y parecidos NO: son la documentación de las claves, sin valores reales; feature-guard pide tenerlos al día)
+if ((/(^|\/)\.env(\.|$)/i.test(rel) && !/(^|\/)\.env\.(example|sample|dist|template)$/i.test(rel)) ||/\.(pem|key|p12|pfx)$/i.test(rel) || /(^|\/)(id_rsa|id_ed25519)/i.test(rel) || /(^|\/)(credentials|secrets?)(\.|\/|$)/i.test(rel)) {
     deny('Archivo de secretos/credenciales. No se edita desde el agente: hazlo tu a mano.');
 }
 

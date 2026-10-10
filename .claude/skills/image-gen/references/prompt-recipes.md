@@ -3,7 +3,7 @@
 Estructura universal del prompt (rellena y elimina lo que no aplique):
 **[sujeto preciso] + [estilo/medio] + [iluminación] + [cámara/encuadre] + [paleta desde tokens] +
 [fondo] + [mood del design system] + [lo que NO quieres]**. En inglés rinde mejor en todos los modelos.
-Guarda cada prompt usado en `design-system/<slug>/prompts.md` (la serie entera reutiliza los mismos
+Guarda cada prompt usado en `senzu/design-system/<slug>/prompts.md` (la serie entera reutiliza los mismos
 descriptores de luz/paleta/estilo: así todas las imágenes parecen de la misma sesión).
 
 ## 1. Producto flotante / levitación (el hero de e-commerce moderno)

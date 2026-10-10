@@ -43,7 +43,7 @@ for (const pt of patterns) {
         const start = Math.max(0, m.index - 40);
         const ctx = text.substring(start, start + Math.min(120, text.length - start));
         if (placeholder.test(ctx)) continue;
-        process.stderr.write(`[BLOQUEADO por dev-standards] Parece que vas a escribir un secreto real (${pt.n}) en el codigo.\n`);
+        process.stderr.write(`[BLOQUEADO por Senzu] Parece que vas a escribir un secreto real (${pt.n}) en el codigo.\n`);
         process.stderr.write('Usa variables de entorno (.env, config) y nunca commitees credenciales. Si es un valor de ejemplo, usa un placeholder claro (xxx, your-key, <API_KEY>).\n');
         process.exit(2);
     }

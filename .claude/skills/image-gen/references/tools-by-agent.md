@@ -40,7 +40,7 @@
    hero destroza el LCP.
 3. Dimensiones (`width`/`height` o `aspect-ratio`) + `alt` que describa el CONTENIDO (no "imagen generada").
 4. Fondos transparentes: genera con `--background transparent` o quita fondo (remove.bg / rembg local).
-5. El prompt usado se guarda en `design-system/<slug>/prompts.md` (para regenerar coherente en el futuro).
+5. El prompt usado se guarda en `senzu/design-system/<slug>/prompts.md` (para regenerar coherente en el futuro).
 
 ## Licencias y ética (resumen operativo)
 - OpenAI/Google/FLUX-pro/Recraft: el output es utilizable comercialmente según sus términos vigentes —

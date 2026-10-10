@@ -7,7 +7,7 @@
   "bundles": [
     "core-3d-animation"
   ],
-  "standardsRoot": "C:\\Users\\Black\\.dev-standards",
+  "standardsRoot": "D:\\dev-standards",
   "frontProfile": {
     "label": "Astro + React islands + Tailwind",
     "stacks": [

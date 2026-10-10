@@ -3,10 +3,10 @@ name: image-gen
 description: "Generar imágenes IA coherentes con la web: producto flotando, heros, fondos, 3D, mockups. PRIMERO la generación nativa del host (app de ChatGPT/Codex, Antigravity); scripts/generate.mjs por API solo si no hay. Paleta y estilo del design system."
 ---
 
-# image-gen (dev-standards)
+# image-gen (Senzu)
 
 Genera imágenes **acordes a la web** (nunca genéricas): la paleta, el mood y el estilo salen de
-`design-system/<slug>/MASTER.md` (o BRAND.md) y entran en el prompt. Recetas por tipo de imagen en
+`senzu/design-system/<slug>/MASTER.md` (o BRAND.md) y entran en el prompt. Recetas por tipo de imagen en
 `references/prompt-recipes.md`; qué herramienta según tu agente en `references/tools-by-agent.md`.
 
 ## 1. REGLA 0 — ¿tu entorno ya genera imágenes? Úsalo directo, sin script
@@ -50,7 +50,7 @@ y NO improvises imágenes de stock como si fueran generadas.
 2. Personas generadas: sin caras de personas reales/famosas; cuidado con manos y texto (revisa siempre).
 3. Sin logos ni marcas de terceros dentro de la imagen; el logo del cliente se compone después, en HTML/SVG.
 4. Coherencia de serie: misma receta + mismos descriptores de luz/paleta para todas las imágenes de la web;
-   guarda los prompts usados en `design-system/<slug>/prompts.md` para reutilizarlos.
+   guarda los prompts usados en `senzu/design-system/<slug>/prompts.md` para reutilizarlos.
 5. Toda imagen pasa por compresión y lleva dimensiones + `alt`; el hero además `fetchpriority="high"`.
 6. Coste: gpt-image ~0,02-0,19 $/imagen según calidad — genera 2-3 variantes, no 20.
 

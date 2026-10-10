@@ -14,6 +14,7 @@
 - [Formas y SVG](#formas-y-svg)
 - [Tipografía cinética](#tipografía-cinética)
 - [Microinteracciones, menús y entrada](#microinteracciones-menús-y-entrada)
+- [Física e impacto](#física-e-impacto)
 - [WebGL avanzado](#webgl-avanzado)
 - [Reglas al aplicar cualquier efecto](#reglas-al-aplicar-cualquier-efecto)
 - [Si el efecto no está aquí](#si-el-efecto-no-está-aquí)
@@ -148,6 +149,10 @@ Cuando la tipografía ES el diseño. Una pieza protagonista por página; nunca a
 | Texto que se resalta al leerlo / highlight on scroll | front-activation → `references/recipes/tipografia-cinetica.md` §Texto que se resalta al leerlo | Todos | Resaltado ya aplicado | Bajo |
 | Split-flap (panel de aeropuerto) / split-flap text | front-activation → `references/recipes/tipografia-cinetica.md` §Split-flap | Todos | Palabra final directa | Bajo |
 | Titular gigante con scroll / oversized scrolling headline | front-activation → `references/recipes/tipografia-cinetica.md` §Titular gigante con scroll | Todos | Titular estático | Medio |
+| Texto que rodea una forma en movimiento (Pretext) / text wrap around moving shape | front-activation → `references/recipes/tipografia-cinetica.md` §Texto que rodea una forma en movimiento | Todos (navegador) | Forma quieta, una sola maquetación | Medio |
+| Titular que se reajusta al cambiar el ancho (Pretext) / reflowing headline | front-activation → `references/recipes/tipografia-cinetica.md` §Titular que se reajusta mientras cambia el ancho | Todos (navegador) | Sin animación de ancho | Bajo |
+| Altura exacta para listas y masonry (Pretext) / exact text height | front-activation → `references/recipes/tipografia-cinetica.md` §Altura exacta para listas y masonry | Todos (navegador) | Mantener | Bajo |
+| Texto multilínea en canvas o WebGL (Pretext) / canvas text wrapping | front-activation → `references/recipes/tipografia-cinetica.md` §Texto en canvas o WebGL con saltos de línea | Todos (canvas, Three, Pixi) | Mantener | Medio |
 
 ## Microinteracciones, menús y entrada
 
@@ -164,7 +169,25 @@ Respuestas de 150-300 ms que informan de algo. Si no informa, es decoración.
 | Menú a pantalla completa / fullscreen menu | front-activation → `references/recipes/microinteracciones.md` §Menú a pantalla completa | Todos | Apertura instantánea | Bajo |
 | Hamburguesa que se transforma / morphing burger | front-activation → `references/recipes/microinteracciones.md` §Hamburguesa que se transforma | Todos | Cambio de icono directo | Bajo |
 | Preloader con porcentaje real / real-progress preloader | front-activation → `references/recipes/microinteracciones.md` §Preloader con porcentaje | Solo con assets pesados (3D, vídeo) | Barra sin animación | Bajo |
-| Intro de marca / brand intro | front-activation → `references/recipes/microinteracciones.md` §Intro de marca | Todos | Sin intro | Medio |
+| Intro de marca / brand intro | front-activation → `references/recipes/microinteracciones.md` §Intro de marca (con caída y cristal roto: `references/recipes/fisica-impacto.md` §Intro o loader) | Todos | Sin intro | Medio |
+
+## Física e impacto
+
+Objetos con gravedad, choques y cristal que se rompe. Demos que funcionan en `references/recipes/demos/`.
+Uno por página, con intención (al entrar una vez, al pulsar o al llegar), saltable, y el motor cargado solo cuando se usa.
+
+| Efecto (es / en) | Receta: skill → archivo §sección o línea | Stacks | Reduced-motion | Coste móvil |
+|---|---|---|---|---|
+| Intro con caída y pantalla rota / falling object + shattered screen intro | front-activation → `references/recipes/fisica-impacto.md` §Intro o loader (demo `demos/intro-rotura.html`, sin dependencias) | Todos | Sin intro | Medio (menos trozos) |
+| Loader que se agrieta con la carga y se rompe al terminar / cracking loader | front-activation → `references/recipes/fisica-impacto.md` §Intro o loader (modo loader) | Solo con carga pesada real | Barra o texto de carga | Medio |
+| La web se rompe como un cristal (trozos = la propia página) / real page shatter | front-activation → `references/recipes/fisica-impacto.md` §La web se rompe como un cristal (demo `demos/web-rota.html`, sin dependencias) | Todos | Fundido a lo de detrás | Medio (menos trozos) |
+| Pantalla o sección que se rompe / screen shatter | front-activation → `references/recipes/fisica-impacto.md` §Pantalla que se rompe (radial o Voronoi con d3-delaunay) | Todos | Sin rotura (estado final) | Medio |
+| Objeto que cae encima de todo y se apoya / object drop onto page | front-activation → `references/recipes/fisica-impacto.md` §Objeto que cae (demo `demos/objeto-cae.html`, matter-js) | Todos (3D: react-three-rapier) | Aparece ya apoyado | Medio (2D) · Alto (3D) |
+| La página se desmorona / page gravity collapse | front-activation → `references/recipes/fisica-impacto.md` §La página se desmorona (demo `demos/pagina-desmorona.html`) | Todos | Sin botón | Medio |
+| Arrastrar y lanzar con inercia / drag and throw | front-activation → `references/recipes/fisica-impacto.md` §Arrastrar y lanzar | Todos | Arrastre sin inercia | Bajo |
+| Confeti con física / physics confetti | front-activation → `references/recipes/fisica-impacto.md` §Confeti (canvas-confetti) | Todos | Sin confeti (`disableForReducedMotion`) | Bajo |
+| El producto explota en partículas / particle explode | front-activation → `references/recipes/fisica-impacto.md` §El producto explota + skill threejs-webgl | Todos (canvas) | Imagen fija | Alto |
+| Tela, cuerda, gelatina / verlet cloth & rope | front-activation → `references/recipes/fisica-impacto.md` §Tela, cuerda y gelatina | Todos (canvas) | Estático | Bajo |
 
 ## WebGL avanzado
 

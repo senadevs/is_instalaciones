@@ -3,17 +3,23 @@
 // MARCADORES DE CONFLICTO de git escritos en cualquier archivo de código, y `.only`/`.skip`
 // INTRODUCIDOS en archivos de test (desactivan media suite en CI sin que nadie lo vea).
 // Bloquea solo lo que se INTRODUCE (patrón en lo nuevo y no en lo viejo). Escape puntual: si la línea
-// que contiene el match lleva "dev-standards-allow", se permite (para scripts CLI legítimos).
+// que contiene el match lleva "senzu-allow", se permite (para scripts CLI legítimos).
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { readHookInput, projectRoot, findFirstFile, testIntroduced } from './lib.mjs';
+import {
+    readHookInput, projectRoot, findFirstFile, testIntroduced, ruta, relDelProyecto,
+} from './lib.mjs';
 
 const p = readHookInput();
 if (!p || !['Edit', 'Write', 'MultiEdit'].includes(p.tool_name)) process.exit(0);
 const file = p.tool_input && p.tool_input.file_path ? String(p.tool_input.file_path) : '';
 if (!file) process.exit(0);
 if (!/\.(ts|tsx|js|jsx|mjs|cjs|vue|astro|svelte|php|html|css|blade\.php)$/i.test(file)) process.exit(0);
+// Un script en la carpeta temporal del agente (fuera del proyecto) no es código que se vaya a entregar. Solo eso:
+// el código de fuera del proyecto en otro sitio (un paquete hermano de un monorepo) se sigue revisando.
+if (relDelProyecto(projectRoot(), file) === null && relDelProyecto(os.tmpdir(), file) !== null) process.exit(0);
 const isExcluded = /(\.config\.|vite\.config|astro\.config|tailwind\.config|[\\/](scripts?|tools|\.claude|devlog|design-system|node_modules|vendor)[\\/])/i.test(file);
 const isTest = /(test|spec)/i.test(file);
 
@@ -28,7 +34,7 @@ else if (p.tool_name === 'MultiEdit') for (const e of [].concat(ti.edits || []))
 for (const pair of pairs) {
     const hit = testIntroduced(/^(<{7}|>{7})( |$)|^={7}$/m, pair[0], pair[1]);
     if (hit) {
-        process.stderr.write(`[BLOQUEADO por dev-standards] Estas escribiendo un MARCADOR DE CONFLICTO de git ('${hit}'): resuelve el merge de verdad (elige o combina el contenido) en vez de guardar el archivo con los marcadores dentro.\n`);
+        process.stderr.write(`[BLOQUEADO por Senzu] Estas escribiendo un MARCADOR DE CONFLICTO de git ('${hit}'): resuelve el merge de verdad (elige o combina el contenido) en vez de guardar el archivo con los marcadores dentro.\n`);
         process.exit(2);
     }
 }
@@ -45,7 +51,7 @@ if (isTest) {
         for (const sp of skipPatterns) {
             const hit = testIntroduced(sp.p, pair[0], pair[1]);
             if (hit) {
-                process.stderr.write(`[BLOQUEADO por dev-standards] Estas introduciendo ${sp.m} en un test: '${hit}'. Un test enfocado o apagado que llega a CI desactiva la suite en silencio. Si es a proposito (bug documentado), anade 'dev-standards-allow' con el motivo en esa linea.\n`);
+                process.stderr.write(`[BLOQUEADO por Senzu] Estas introduciendo ${sp.m} en un test: '${hit}'. Un test enfocado o apagado que llega a CI desactiva la suite en silencio. Si es a proposito (bug documentado), anade 'senzu-allow' con el motivo en esa linea.\n`);
                 process.exit(2);
             }
         }
@@ -64,9 +70,10 @@ const debugPatterns = [
 ];
 for (const pair of pairs) {
     for (const dp of debugPatterns) {
-        const hit = testIntroduced(dp.p, pair[0], pair[1]);
+        // solo el código: un string o un comentario que la MENCIONA no es una llamada de depuración
+        const hit = testIntroduced(dp.p, pair[0], pair[1], { strings: true, almohadilla: /\.php$/i.test(file) });
         if (hit) {
-            process.stderr.write(`[BLOQUEADO por dev-standards] Estas introduciendo ${dp.m}: '${hit}'. Usa el logger del proyecto o eliminalo antes de guardar. Si es intencional (script CLI), anade 'dev-standards-allow' como comentario en esa linea.\n`);
+            process.stderr.write(`[BLOQUEADO por Senzu] Estas introduciendo ${dp.m}: '${hit}'. Usa el logger del proyecto o eliminalo antes de guardar. Si es intencional (script CLI), anade 'senzu-allow' como comentario en esa linea.\n`);
             process.exit(2);
         }
     }
@@ -81,7 +88,7 @@ for (const pair of pairs) {
     for (const ap of aiSlopPatterns) {
         const hit = testIntroduced(ap.p, pair[0], pair[1]);
         if (hit) {
-            process.stderr.write(`[BLOQUEADO por dev-standards] Estas introduciendo ${ap.m}: '${hit}'. Lista negra: ui-ux-pro-max references/es/anti-ia.md (que usar en su lugar). Solo si el USUARIO lo pidio por su nombre: anade 'dev-standards-allow' en esa linea y anotalo en gustos.md.\n`);
+            process.stderr.write(`[BLOQUEADO por Senzu] Estas introduciendo ${ap.m}: '${hit}'. Lista negra: ui-ux-pro-max references/es/anti-ia.md (que usar en su lugar). Solo si el USUARIO lo pidio por su nombre: anade 'senzu-allow' en esa linea y anotalo en gustos.md.\n`);
             process.exit(2);
         }
     }
@@ -89,7 +96,7 @@ for (const pair of pairs) {
 
 // --- 2. Vetos de gustos.md (términos entre acentos graves bajo "## No") ---
 const root = projectRoot();
-const gustos = findFirstFile(path.join(root, 'design-system'), 'gustos.md');
+const gustos = findFirstFile(ruta(root, 'design-system'), 'gustos.md');
 if (gustos) {
     let txt = '';
     try { txt = fs.readFileSync(gustos, 'utf8'); } catch {}
@@ -102,7 +109,7 @@ if (gustos) {
             const pat = new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
             const hit = testIntroduced(pat, pair[0], pair[1]);
             if (hit) {
-                process.stderr.write(`[BLOQUEADO por dev-standards] '${v}' esta VETADO por el cliente en ${path.relative(root, gustos).replace(/\\/g, '/')} (seccion No): '${hit}'. No se re-propone un veto sin preguntar explicitamente al usuario.\n`);
+                process.stderr.write(`[BLOQUEADO por Senzu] '${v}' esta VETADO por el cliente en ${path.relative(root, gustos).replace(/\\/g, '/')} (seccion No): '${hit}'. No se re-propone un veto sin preguntar explicitamente al usuario.\n`);
                 process.exit(2);
             }
         }

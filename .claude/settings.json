@@ -1,8 +1,10 @@
 {
   "permissions": {
     "deny": [
-      "Bash(git push:*)",
-      "PowerShell(git push:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "PowerShell(git push --force:*)",
+      "PowerShell(git push -f:*)",
       "Bash(git reset --hard:*)",
       "PowerShell(git reset --hard:*)",
       "Bash(git clean:*)",
@@ -33,6 +35,11 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/prompt-router.mjs\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/memoria-viva.mjs\"",
+            "timeout": 30
           }
         ]
       }
@@ -49,7 +56,7 @@
         ]
       },
       {
-        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|apply_patch",
         "hooks": [
           {
             "type": "command",
@@ -73,6 +80,36 @@
           },
           {
             "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/arquitectura-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/backend-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/back-skill-reminder.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/memoria-archivo.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/tarjeta-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/arranque-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/front-skill-reminder.mjs\"",
             "timeout": 30
           }
@@ -81,7 +118,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit",
+        "matcher": "Edit|Write|MultiEdit|apply_patch",
         "hooks": [
           {
             "type": "command",
@@ -94,6 +131,21 @@
             "timeout": 30
           }
         ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/depurar-coach.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/feature-guard.mjs\"",
+            "timeout": 30
+          }
+        ]
       }
     ],
     "Stop": [
@@ -102,6 +154,21 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/cierre-limpio.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/feature-guard.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/estado-sesion.mjs\"",
             "timeout": 30
           }
         ]
@@ -113,6 +180,11 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-compact.mjs\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/estado-sesion.mjs\"",
             "timeout": 30
           }
         ]

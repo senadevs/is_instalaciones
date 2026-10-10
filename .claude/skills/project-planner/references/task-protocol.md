@@ -1,6 +1,6 @@
 # Protocolo de ejecución de UNA tarea
 
-Este protocolo se aplica a cada tarjeta de `plan/PLAN.md`, sin excepciones y sin saltos.
+Este protocolo se aplica a cada tarjeta de `senzu/plan/PLAN.md`, sin excepciones y sin saltos.
 Su objetivo es que una tarea empiece, termine y quede documentada en una sola sesión,
 usando solo la skill que necesita.
 
@@ -36,13 +36,15 @@ Duración objetivo: una tarea S o M por sesión; nunca dos tareas a medias.
 
 ## Paso 1: leer la tarjeta
 
-Leer la tarjeta completa y responder mentalmente tres preguntas:
+Leer la tarjeta completa y responder mentalmente cuatro preguntas:
 
+- ¿Para qué sirve? ("Para qué": el objetivo del usuario o el hallazgo que resuelve). Si no lo dice, pregúntalo
+  antes de empezar: sin objetivo no se puede saber si está bien hecha.
 - ¿Qué comportamiento observable tengo que producir? ("Hecho cuando")
 - ¿Cómo lo demuestro? ("Verificar")
 - ¿Están `done` todas las dependencias? Si no, la tarea no se empieza.
 
-Si la tarjeta no permite responder a las tres, se corrige la tarjeta antes de tocar código
+Si la tarjeta no permite responder a las cuatro, se corrige la tarjeta antes de tocar código
 (y se anota en "Cambios"). Tarjetas vagas producen trabajo vago.
 
 ## Paso 2: marcar doing
@@ -54,7 +56,7 @@ Edición mínima en PLAN.md:
 ```
 
 y en la tabla `## Fases`, la fila de la fase pasa a `doing` si no lo estaba. Comprobar con
-`grep -c '\[doing\]' plan/PLAN.md` que el resultado es `1`. Si es `2`, hay una tarea
+`grep -c '\[doing\]' senzu/plan/PLAN.md` que el resultado es `1`. Si es `2`, hay una tarea
 abandonada: cerrarla o pasarla a `blocked` antes de seguir.
 
 ## Paso 3: leer solo la skill indicada
@@ -95,7 +97,7 @@ PASS  Tests\Unit\Facturacion\EmitirFacturaTest
 Tests: 4 passed (11 assertions) · Duration: 0.42s
 ```
 
-Para UI: URL abierta + captura guardada en `devlog/assets/` + comprobación responsive y teclado.
+Para UI: URL abierta + captura guardada en `senzu/devlog/assets/` + comprobación responsive y teclado.
 Para migraciones: `migrate --pretend` sin sentencias destructivas + `migrate:rollback` probado.
 
 Si la verificación falla, se vuelve al paso 4. No se marca `done` con verificación parcial.
@@ -104,9 +106,9 @@ Además de lo indicado, siempre se ejecutan lint y tipos del área tocada.
 ## Paso 6: devlog y commit
 
 1. Crear la entrada de devlog siguiendo `devlog §Plantilla de entrada` (skill `devlog`):
-   `devlog/<YYYY-MM-DD>/NNN-<slug>.md` con numeración global correlativa, campo `Tarea: <id>`,
+   `senzu/devlog/<YYYY-MM-DD>/NNN-<slug>.md` con numeración global correlativa, campo `Tarea: <id>`,
    qué se hizo, decisiones, salida de verificación, desviaciones, siguiente paso. Actualizar
-   `devlog/INDEX.md` (y `DECISIONES.md` del día si hubo decisiones).
+   `senzu/devlog/INDEX.md` (y `DECISIONES.md` del día si hubo decisiones).
 2. Commit Conventional; el cuerpo lleva siempre la línea `Tarea: <id>`:
 
 ```text
@@ -126,9 +128,15 @@ Actualizar la tarjeta:
 ```markdown
 ### F1-T3 · Crear caso de uso EmitirFactura  [M] [done]
 - ...
-- Devlog: devlog/2026-08-25/014-f1-t3-emitir-factura.md
+- Verificado: php artisan test --filter=EmitirFactura → 4 passed (11 assertions)
+- Cumple: el pedido cerrado se factura con número correlativo, que era el «Para qué» (facturar sin hojas de cálculo)
+- Devlog: senzu/devlog/2026-08-25/014-f1-t3-emitir-factura.md
 - Notas: tamaño real S. Se añadió `PedidoNoCerrado` como excepción de dominio (no prevista). Archivos extra: app/Facturacion/Domain/Exceptions/PedidoNoCerrado.php.
 ```
+
+**Lo exige un muro (tarjeta-guard)**: la tarjeta no pasa a `[done]` sin «Verificado» (la salida real del
+paso 5, o «no aplica: <motivo>»), «Cumple» (cómo cumple su «Para qué») y un «Devlog» que exista (paso 6
+antes del 7). Si no está terminada, se queda en `[doing]` y se dice qué falta; si no se puede, `[blocked]`.
 
 Desviaciones que siempre se anotan: tamaño real distinto, archivos no previstos, decisiones
 tomadas, supuestos nuevos, cosas que quedaron fuera y por qué. Actualizar la fila de la fase
@@ -156,7 +164,7 @@ las demás); se cierra T3a con su verificación y se anota en "Cambios al plan".
 urgente) con el bug descrito y cómo reproducirlo. No se arregla dentro de la tarea actual,
 salvo que impida verificarla; en ese caso se anota como desviación.
 
-**Falta una skill.** La tarjeta pide `gsap-scrolltrigger` y no está en `.dev-standards.json`.
+**Falta una skill.** La tarjeta pide `gsap-scrolltrigger` y no está en `senzu/senzu.json`.
 Se pasa la tarea a `blocked` con nota "requiere instalar skill gsap-scrolltrigger" y se pide
 al usuario que la instale (o autorice instalarla). No se improvisa sin la skill si la tarea
 depende de ella; sí se puede avanzar en otra tarea desbloqueada.
@@ -181,7 +189,7 @@ leer el hilo.
 - Verificación: `php artisan test --filter=EmitirFactura` -> 4 passed (0.42 s). Lint y tipos limpios.
 - Archivos: app/Facturacion/Application/EmitirFactura.php, app/Facturacion/Domain/Exceptions/PedidoNoCerrado.php, tests/Unit/Facturacion/EmitirFacturaTest.php
 - Commit: `feat(facturacion): emitir factura desde pedido cerrado` (a1b2c3d)
-- Devlog: devlog/2026-08-25/014-f1-t3-emitir-factura.md
+- Devlog: senzu/devlog/2026-08-25/014-f1-t3-emitir-factura.md
 - Desviaciones: tamaño real S; excepción de dominio no prevista.
 - Plan: F1 3/4 · siguiente F1-T4 (M) Crear ruta y página de listado.
 - Preguntas: ninguna.
@@ -196,7 +204,7 @@ Siete a nueve líneas. Sin narrativa del proceso; solo resultado, prueba y sigui
 - [ ] Solo se leyó la skill/sección indicada (o se anotó la corrección).
 - [ ] Implementación completa, con caso negativo y tests.
 - [ ] Verificación ejecutada tal como dice la tarjeta, salida pegada; lint y tipos limpios.
-- [ ] Devlog creado e indexado (`devlog/<YYYY-MM-DD>/NNN-<slug>.md`); commit Conventional con `Tarea: <id>` en el cuerpo.
+- [ ] Devlog creado e indexado (`senzu/devlog/<YYYY-MM-DD>/NNN-<slug>.md`); commit Conventional con `Tarea: <id>` en el cuerpo.
 - [ ] Tarjeta `[done]` con desviaciones y enlace al devlog; tabla de fases y fecha actualizadas.
 - [ ] Siguiente tarea propuesta según dependencias.
 - [ ] Bloque de cierre de tarea en la respuesta.

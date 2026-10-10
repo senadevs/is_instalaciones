@@ -1,7 +1,7 @@
 # Crítica visual de capturas: de "no está roto" a "está bien"
 
 `verify-ui.mjs` detecta lo objetivo (overflow, consola, tap targets). Esto es el paso siguiente y es
-OBLIGATORIO para el veredicto APTA: **abrir las capturas** (`.ui-verify/*.png` con Read, o el navegador)
+OBLIGATORIO para el veredicto APTA: **abrir las capturas** (`senzu/ui-verify/*.png` con Read, o el navegador)
 y evaluarlas como diseñador. Una página puede pasar el script y seguir viéndose amateur.
 
 ## Protocolo (por cada captura: 375 primero, luego 1440)

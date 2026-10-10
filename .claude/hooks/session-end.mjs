@@ -1,4 +1,4 @@
-// Hook SessionEnd: limpia los marcadores de sesión de dev-standards en el temp (rápido: presupuesto de 1,5 s).
+// Hook SessionEnd: limpia los marcadores de sesión de Senzu en el temp (prefijo interno dev-standards-) (rápido: presupuesto de 1,5 s).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +9,7 @@ const p = readHookInput();
 const sid = p && p.session_id ? String(p.session_id).replace(/[^a-zA-Z0-9_-]/g, '') : 'default';
 const tmp = os.tmpdir();
 let entries = [];
-try { entries = fs.readdirSync(tmp).filter(n => n.startsWith('dev-standards-') && n.endsWith('.flag')); } catch {}
+try { entries = fs.readdirSync(tmp).filter(n => n.startsWith('dev-standards-') && n.endsWith('.flag')); } catch {}   // compat-dev-standards
 const cutoff = Date.now() - 2 * 24 * 60 * 60 * 1000;
 for (const n of entries) {
     const f = path.join(tmp, n);

@@ -27,7 +27,7 @@ triggers, variables, carpetas, versionar y publicar. Dos formas: server alojado 
 Google, o CLI local con tus credenciales (sigue su README para la config del .mcp.json).
 
 Flujo correcto con el agente (pídelo en llano):
-1. "Lee el plan de medición (`plan/brief.md` §Medición) y **monta el contenedor**": el agente crea las
+1. "Lee el plan de medición (`senzu/plan/brief.md` §Medición) y **monta el contenedor**": el agente crea las
    variables del dataLayer, los triggers sobre `data-track` y un tag GA4 por evento — con la convención
    de nombres de `analytics-gtm.md` (`GA4 - Evento - click_llamar`…), en un workspace nuevo.
 2. "Audita este contenedor heredado y organízalo": listar tags muertos/duplicados, renombrar a la
@@ -43,7 +43,7 @@ Para escrituras en GA4 (marcar key events, dimensiones custom) el MCP oficial de
 lectura: se hace a mano en la UI (2 clics) o vía Admin API con script propio si se repite mucho.
 
 ## Cómo conectar en Claude Code (por proyecto)
-En el `.mcp.json` del proyecto (dev-standards ya genera uno por stack; se le añaden servers):
+En el `.mcp.json` del proyecto (Senzu ya genera uno por stack; se le añaden servers):
 ```jsonc
 {
   "mcpServers": {

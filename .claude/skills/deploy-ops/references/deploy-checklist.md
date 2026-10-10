@@ -5,7 +5,7 @@ Cada punto se marca con su evidencia (comando+salida, captura o URL). El deploy 
 
 ## PRE (no se despliega sin esto)
 - [ ] Suites en verde AHORA: `verify-build.mjs` (lint/types/tests/build) con salida pegada.
-- [ ] Si es web pública y es su primer deploy o un cambio grande: `/lanzar` en APTA.
+- [ ] Si es web pública y es su primer deploy o un cambio grande: `/lanzar` en LISTA.
 - [ ] **Backup fresco y VERIFICADO** de BD+uploads (de hoy; comprobado que no está vacío). En estáticos
   sin BD: N/A explícito.
 - [ ] **Plan de rollback escrito en una línea**: "si falla → X" (deploy anterior de Netlify / tag docker
@@ -17,7 +17,7 @@ Cada punto se marca con su evidencia (comando+salida, captura o URL). El deploy 
 ## DEPLOY
 - [ ] Por el camino reproducible (pipeline con environment aprobado, deploy hook, script de Forge) —
   no comandos sueltos inventados sobre la marcha.
-- [ ] Con `DEV_STANDARDS_ALLOW_DEPLOY=1` solo tras la aprobación de arriba, y documentándolo.
+- [ ] Con `SENZU_ALLOW_DEPLOY=1` solo tras la aprobación de arriba, y documentándolo.
 - [ ] Si es VPS/Laravel: el script completo (pull → deps → build → migrate → caches → **queue:restart**).
 
 ## POST (los 10 minutos que separan "desplegado" de "terminado")

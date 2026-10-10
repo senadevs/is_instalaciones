@@ -9,15 +9,15 @@ creces en re-trabajo evitado.
 ## Paso 1 — Blueprint: aprobar la ESTRUCTURA antes que la estética
 
 Con el brief (`brief-discovery.md`) y el playbook del negocio (`business-playbooks.md`), escribe
-`design-system/<slug>/blueprint.md` y pídele al usuario que lo apruebe ANTES de diseñar nada:
+`senzu/design-system/<slug>/blueprint.md` y pídele al usuario que lo apruebe ANTES de diseñar nada:
 
 ```markdown
 # Blueprint — <página> (PENDIENTE DE APROBACIÓN | APROBADO <fecha>)
-| # | Sección | Contenido (esbozado con texto REAL) | Lo trae |
-|---|---|---|---|
-| 1 | Hero | "Tu obra limpia, sin esperas" + tel + CTA presupuesto | copy: yo · foto: cliente |
-| 2 | Servicios | 4 cards: contenedores, sacas, retirada, fin de obra | copy: yo |
-| … | | | |
+| # | Sección | Contenido (esbozado con texto REAL) | En móvil (`movil.md`) | Lo trae |
+|---|---|---|---|---|
+| 1 | Hero | "Tu obra limpia, sin esperas" + tel + CTA presupuesto | tel arriba; foto debajo del titular; CTA ancho completo | copy: yo · foto: cliente |
+| 2 | Servicios | 4 cards: contenedores, sacas, retirada, fin de obra | carrusel con scroll-snap; sin tilt | copy: yo |
+| … | | | | |
 Preguntas abiertas: ¿mostramos precios? ¿cuántas fotos de obras hay?
 ```
 
@@ -28,7 +28,9 @@ Preguntas abiertas: ¿mostramos precios? ¿cuántas fotos de obras hay?
 ## Paso 2 — Maquetas A/B: dos direcciones que se pueden ABRIR
 
 Dos archivos HTML **autocontenidos** (doble clic y se ven, sin build ni servidor):
-`design-system/<slug>/propuestas/direccion-a.html` y `direccion-b.html`.
+`senzu/design-system/<slug>/propuestas/ronda-1/a.html` y `b.html`, copiadas de `plantilla-maqueta.html`
+(piezas etiquetadas `A·T1`, `B·B2`… y panel «Tu opinión» para votar cada pieza). Es la ronda 1 de
+`rondas.md`: las siguientes fijan lo que gustó, vetan lo que no y siempre traen algo nuevo.
 
 Reglas de cada maqueta:
 1. **Un solo archivo**: CSS inline en `<style>`, tipografías por `<link>` de Google Fonts, imágenes como
@@ -41,20 +43,26 @@ Reglas de cada maqueta:
    geométrica/tech), ambas dentro de la marca (BRAND.md manda en las dos). Dos grises casi iguales no
    son una elección.
 5. Banner fijo arriba: `PROPUESTA <A|B> — baja fidelidad, para elegir dirección` (que nadie la confunda
-   con la web final). Responsive básico correcto (375 px sin romper).
+   con la web final). Versión móvil PENSADA, no encogida: aplica la columna «En móvil» del blueprint
+  (`movil.md`: efectos, menú, tamaños, hover) y pásale `verify-ui` a 375 antes de enseñarla.
 
 Presentación: abre ambas en el navegador (o da las dos rutas) y pregunta en llano: "¿cuál te pega más
 con tu negocio? ¿qué te gusta de cada una? Se pueden mezclar (los colores de A con la tipografía de B)".
-**No defiendas una favorita**; si el usuario pide una tercera vía, mezcla y regenera UNA maqueta más (máx 3).
+**No defiendas una favorita**. Si quiere mezclar o ver más, no improvises: siguiente ronda con `/ronda`
+(`rondas.md`), que fija lo aprobado, quita lo vetado y propone algo nuevo en cada maqueta.
 
 ## Paso 3 — Registrar la elección y los gustos
 
-1. La dirección elegida (o la mezcla) → `design-system/<slug>/MASTER.md` (tokens definitivos) con una
+1. La dirección elegida (o la mezcla) → `senzu/design-system/<slug>/MASTER.md` (tokens definitivos) con una
    línea de trazabilidad: "Dirección B elegida por el usuario el <fecha> (maqueta en propuestas/)".
-2. TODO lo que el usuario opinó → `design-system/<slug>/gustos.md`:
+2. TODO lo que el usuario opinó → `senzu/design-system/<slug>/gustos.md`:
 
 ```markdown
 # Gustos del cliente (leer SIEMPRE antes de diseñar)
+## Fijado (se mantiene igual en todas las rondas; valor exacto entre acentos graves)
+| Categoría | Decisión | Valor | Desde |
+|---|---|---|---|
+| Tipografía titulares | Fraunces 600 | `Fraunces` | R1 · B·T1 |
 ## Sí (le gusta)
 - 2026-09-17 · "los fondos oscuros me encantan" (elección de dirección B)
 ## No (vetado — NUNCA proponer de nuevo sin preguntar)

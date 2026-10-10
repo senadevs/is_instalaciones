@@ -5,7 +5,7 @@
 
 ## 1. Dónde va cada cosa
 - **Plugin propio**: lógica de negocio, CPTs, taxonomías, shortcodes, endpoints REST, integraciones.
-  Sobrevive a cambios de theme. Un solo plugin "sinapsis-core" mejor que diez micro-plugins.
+  Sobrevive a cambios de theme. Un solo plugin "miweb-core" mejor que diez micro-plugins.
 - **Child theme**: presentación (templates, CSS, `functions.php` solo para lo visual del theme).
 - **Nunca**: core, themes/plugins de terceros (se pierde en el siguiente update).
 
@@ -17,7 +17,7 @@ $texto = sanitize_text_field( wp_unslash( $_POST['nombre'] ?? '' ) );
 // SALIDA: escapar según el contexto
 echo esc_html( $titulo );  echo esc_url( $enlace );  echo esc_attr( $clase );  echo wp_kses_post( $html_permitido );
 // ACCIÓN admin/AJAX: nonce + capability, siempre los dos
-check_ajax_referer( 'sinapsis_accion', 'nonce' );
+check_ajax_referer( 'miweb_accion', 'nonce' );
 if ( ! current_user_can( 'edit_posts' ) ) { wp_send_json_error( null, 403 ); }
 ```
 - REST API propia: `register_rest_route` con `permission_callback` REAL (nunca `__return_true` en escritura).

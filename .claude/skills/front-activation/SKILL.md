@@ -3,21 +3,21 @@ name: front-activation
 description: "ÚSAME PRIMERO en tareas de front: detecta el stack (Laravel+Inertia+Vue, Next, Astro, Vue) y aplica el árbol de front: 1º ui-ux-pro-max (design system y patrón), luego el efecto (catálogo de efectos), animación (gsap) o 3D (three). Contexto mínimo."
 ---
 
-# front-activation (dev-standards)
+# front-activation (Senzu)
 
 Esta skill es el punto de entrada cuando el proyecto NO tiene el bloque "Front y diseño" generado por
-`sync.ps1` (es decir, cuando dev-standards se instaló como plugin o skills globales). Haz esto en orden:
+`sync.ps1` (es decir, cuando Senzu se instaló como plugin o skills globales). Haz esto en orden:
 
 ## Árbol de front (empieza aquí)
 1. ¿Tarea de UI (página, componente, layout, tema)? → 1º `ui-ux-pro-max` (design system + patrón + componentes).
-2. ¿Efecto concreto (marquee, parallax, hover WebGL, blob, gooey, view transitions, microinteracción…)? → `references/effects-catalog.md` (79 recetas; las nuevas en `references/recipes/`: CSS moderno, formas y SVG, tipografía cinética, microinteracciones, WebGL avanzado); si no está: `references/effect-sources.md` (Codrops/CodePen + protocolo para hacerlo receta).
+2. ¿Efecto concreto (marquee, parallax, hover WebGL, blob, gooey, view transitions, microinteracción…)? → `references/effects-catalog.md` (las recetas propias en `references/recipes/`: CSS moderno, formas y SVG, tipografía cinética, microinteracciones, WebGL avanzado, **física e impacto**: objeto que cae, pantalla rota, intro o loader que se rompe, con demos que funcionan en `recipes/demos/`); si no está: `references/effect-sources.md` (Codrops/CodePen + protocolo para hacerlo receta).
 3. ¿Animación? → árbol F2 de `skill-router/references/decision-trees.md`.
 4. ¿3D? → árbol F3 del mismo archivo. Antes de implementar cualquier efecto, valida el coste con F4.
 
 ## 1. Detecta el stack de front (nunca lo asumas)
 | Evidencia | Perfil | `--stack` del buscador (en orden) |
 |---|---|---|
-| `.dev-standards.json` con `frontProfile` | el que indique | `frontProfile.stacks` |
+| `senzu/senzu.json` con `frontProfile` | el que indique | `frontProfile.stacks` |
 | `composer.json` con `inertiajs/inertia-laravel` (+ `vue` en `package.json`) | Laravel + Inertia + Vue 3 | `laravel`, `vue`, `html-tailwind`, `shadcn` |
 | `package.json` con `next` | Next.js (App Router) + React | `nextjs`, `react`, `shadcn`, `html-tailwind` |
 | `package.json` con `astro` | Astro + React islands | `astro`, `react`, `shadcn`, `html-tailwind` |
@@ -34,7 +34,6 @@ Esta skill es el punto de entrada cuando el proyecto NO tiene el bloque "Front y
 | Tokens de diseño (primitivos → semánticos → componente), CSS variables, validación de tokens | `design-system` (si está instalada) | Front y diseño |
 | Componentes shadcn/ui (React o Vue) y utilidades/tema de Tailwind | `ui-styling` (si está instalada) | Front y diseño |
 | Verificar una UI terminada en navegador real: responsive 375/768/1440, dark mode, consola y accesibilidad (axe); obligatoria antes de dar una vista por hecha | `ui-verify` | Front y diseño |
-| Proyecto propio o white-label de la agencia Sinapsis: tokens de marca, tono de voz y convenciones de entrega (legales RGPD, analítica, crédito) | `sinapsis-brand` (si está instalada) | Front y diseño |
 | Generar imágenes IA acordes a la web: producto flotante, heros, fondos, 3D, mockups, texturas (gpt-image en Codex, Nano Banana en Antigravity, script multi-proveedor) | `image-gen` | Front y diseño |
 | Tendencias y principios de diseño web moderno | `modern-web-design` (si está instalada) | Front y diseño |
 | Animación declarativa en React/Next con Motion (variants, gestos, layout animations) | `motion-framer` (si está instalada) | Animación |
@@ -63,7 +62,7 @@ Esta skill es el punto de entrada cuando el proyecto NO tiene el bloque "Front y
 | Logos, iconos, identidad corporativa, mockups (generación con IA) | `graphic-design` (si está instalada) | Diseño gráfico y marca |
 | Voz de marca, identidad visual, guías de marca | `brand` (si está instalada) | Diseño gráfico y marca |
 <!-- END GENERATED -->
-Si una skill necesaria no está instalada, dilo y propón instalarla (`/plugin install bundle-core-3d-animation@dev-standards`
+Si una skill necesaria no está instalada, dilo y propón instalarla (`/plugin install bundle-core-3d-animation@senzu`
 o `tools/install-skills.ps1 -Bundle …`); no improvises esas librerías sin su skill.
 
 ## 2b. Lectura mínima por tarea (no cargues más)
@@ -72,7 +71,7 @@ o `tools/install-skills.ps1 -Bundle …`); no improvises esas librerías sin su 
 | Landing / página de marketing | `ui-ux-pro-max/SKILL.md` §2 flujo + `ui-ux-pro-max/references/es/page-patterns.md` (patrón) + `search.py --design-system` |
 | Dashboard / admin / tabla | `ui-ux-pro-max/references/es/components-spec.md` §Table, §Empty state, §Skeleton + guías `--stack` |
 | Formulario | `components-spec.md` §Input, §Form (tu stack) + `ui-ux-pro-max/references/es/accessibility.md` §Formularios |
-| Componente suelto | `components-spec.md` (solo ese componente) + tokens de `design-system/*/MASTER.md` |
+| Componente suelto | `components-spec.md` (solo ese componente) + tokens de `senzu/design-system/*/MASTER.md` |
 | Tema / tokens / dark mode | `ui-ux-pro-max/references/es/tokens-tailwind.md` (sección de tu stack) |
 | Auditoría de UI existente | `ui-ux-pro-max/references/es/review-rubric.md` |
 | Animación | `gsap-scrolltrigger/SKILL.md` §1 (tu stack) + un patrón de `gsap-scrolltrigger/references/es/scrolltrigger-patterns.md` |
@@ -81,10 +80,10 @@ o `tools/install-skills.ps1 -Bundle …`); no improvises esas librerías sin su 
 Protocolo: una skill por tarea; `SKILL.upstream.md` y referencias por secciones (Read offset/limit o Grep), nunca enteras.
 
 ## 3. Design system del proyecto
-Si existe `design-system/*/MASTER.md`, es la fuente de verdad (y `pages/<página>.md` prevalece para esa página).
+Si existe `senzu/design-system/*/MASTER.md`, es la fuente de verdad (y `pages/<página>.md` prevalece para esa página).
 Si no existe, genéralo con `ui-ux-pro-max`:
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/../ui-ux-pro-max/scripts/search.py "<producto industria keywords>" --design-system -p "<Proyecto>" --persist -o .
+python3 ${CLAUDE_SKILL_DIR}/../ui-ux-pro-max/scripts/search.py "<producto industria keywords>" --design-system -p "<Proyecto>" --persist -o senzu
 # Windows: py -3 ...
 ```
 (En plugin, la skill vive en `${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/`.)

@@ -37,7 +37,7 @@ dataLayer.push({ event: 'form_presupuesto', form_id: 'contacto', servicio: 'esco
 // E-commerce: usa el esquema estándar GA4 (add_to_cart, begin_checkout, purchase con items[])
 ```
 - El push va en el ÉXITO de la acción (envío ok, no click del botón) — regla de measurement.md.
-- Los nombres de evento del dataLayer = los del plan de medición, documentados en `plan/brief.md`
+- Los nombres de evento del dataLayer = los del plan de medición, documentados en `senzu/plan/brief.md`
   §Medición. Cambiar un nombre = cambiar plan + código + contenedor a la vez.
 - SPA/View Transitions: empuja `page_view` virtual en cada navegación (GA4 no las ve solo).
 - Nunca PII en el dataLayer (ni email ni teléfono del visitante).

@@ -3,7 +3,7 @@ name: marketing-seo
 description: "Marketing de la web: SEO on-page y local, GA4 + Tag Manager (contenedores, dataLayer, Consent Mode) y MCPs de analítica para operar con agentes (GA4 oficial, Search Console, PostHog). Úsala para posicionar y medir; el diseño es de ui-ux-pro-max."
 ---
 
-# marketing-seo (dev-standards)
+# marketing-seo (Senzu)
 
 El directorio de crecimiento: que la web **se encuentre** (SEO), **se mida** (GA4/GTM) y se pueda
 **operar con agentes** (MCPs de analítica). Trabaja SOBRE una web ya construida — el diseño es de
