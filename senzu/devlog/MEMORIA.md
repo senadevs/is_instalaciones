@@ -37,7 +37,7 @@
 - `astro check` se queda sin memoria si existe `dist-perf/` (lo analiza): borrarlo antes · ver 019
 - Hook `code-hygiene` de Senzu: bloqueaba los nombres internos de tema porque `gustos.md` los citaba en «No»; resuelto reformulando `gustos.md` sin citarlos (no volver a escribirlos allí) · ver 019, 020
 
-- NVIDIA retira modelos sin aviso (410/404 aunque salgan en `/v1/models`): el chat usa `openai/gpt-oss-20b` + `reasoning_effort: low` y `NVIDIA_CHAT_MODEL` con respaldo; probar el modelo de verdad antes de cambiarlo · ver 022
+- NVIDIA retira modelos sin aviso (410/404 aunque salgan en `/v1/models`): el chat usa modelos FIJOS en el código (decisión del usuario, no por env): `openai/gpt-oss-20b` + `reasoning_effort: low` y respaldo `nvidia/nemotron-3-super-120b-a12b` sin thinking; probar el modelo de verdad antes de cambiarlo · ver 022
 
 ## Pendientes abiertos
 - X-T5 chat en móvil · X-T6 cookies en móvil · X-T9 desplegar sin /escombros · X-T11 WebMCP y ai-catalog.json · ver 017, 021

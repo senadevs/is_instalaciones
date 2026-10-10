@@ -5,15 +5,12 @@ import knowledgeBase from '../../data/knowledge.md?raw';
 const NVIDIA_API_KEY = import.meta.env.NVIDIA_API_KEY;
 const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1';
 // NVIDIA retira modelos sin aviso: 'meta/llama-3.1-8b-instruct' empezó a devolver 410 Gone y el chat dejó
-// de responder (X-T7, 2026-10-10). Se prueba en orden; NVIDIA_CHAT_MODEL (lista separada por comas) manda.
-const DEFAULT_MODELS = ['openai/gpt-oss-20b'];
-const CONFIGURED_MODELS = ((import.meta.env.NVIDIA_CHAT_MODEL as string | undefined) ?? '')
-  .split(',')
-  .map((m) => m.trim())
-  .filter(Boolean);
-const MODELS = CONFIGURED_MODELS.length ? CONFIGURED_MODELS : DEFAULT_MODELS;
-// Modelos de razonamiento (gpt-oss): con 'low' el primer token llega en ~1 s en vez de 3-6 s.
-const REASONING_EFFORT = 'low';
+// de responder (X-T7, 2026-10-10). Se prueban en orden; si el primero no está, se usa el siguiente.
+// Cada modelo lleva su parámetro para no razonar de más (probado: primer token en ~1 s con ambos).
+const MODELS: { id: string; options: Record<string, unknown> }[] = [
+  { id: 'openai/gpt-oss-20b', options: { reasoning_effort: 'low' } },
+  { id: 'nvidia/nemotron-3-super-120b-a12b', options: { chat_template_kwargs: { enable_thinking: false } } },
+];
 const REQUEST_TIMEOUT_MS = 20_000;
 const FALLBACK_REPLY =
   'Ahora mismo no puedo responder. Llámanos al 637 59 17 36 o escríbenos por WhatsApp y te atendemos enseguida.';
@@ -198,19 +195,19 @@ export const POST: APIRoute = async ({ request }) => {
     for (const model of MODELS) {
       try {
         completion = await openai.chat.completions.create({
-          model,
+          model: model.id,
+          ...model.options,
           messages: [{ role: 'system', content: buildSystemPrompt(mode) }, ...messages],
           temperature: mode === 'immersive' ? 0.45 : 0.3,
           top_p: 0.95,
           max_tokens: 4000,
-          reasoning_effort: REASONING_EFFORT,
           stream: true,
         } as any);
         break;
       } catch (err: any) {
         lastError = err;
         if (!isModelUnavailable(err)) throw err;
-        console.error(`Chat: modelo ${model} no disponible (${err?.status ?? err?.name}); probando el siguiente`);
+        console.error(`Chat: modelo ${model.id} no disponible (${err?.status ?? err?.name}); probando el siguiente`);
       }
     }
     if (!completion) throw lastError ?? new Error('Sin modelos de chat disponibles');

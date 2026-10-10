@@ -19,6 +19,11 @@
 - El 500 ya no expone al navegador el texto del proveedor (queda en el log).
 - `.env.example` nuevo con los nombres de las variables (`NVIDIA_API_KEY`, `NVIDIA_CHAT_MODEL`, `GOOGLE_API_KEY`, `GOOGLE_PLACE_ID`), sin valores.
 
+## Cambio pedido por el usuario (mismo día)
+- Los modelos van **fijos en el código**, no por variable de entorno («ya en otro momento lo paso por env»): fuera `NVIDIA_CHAT_MODEL` del código y de `.env.example`.
+- Lista fija: `openai/gpt-oss-20b` (`reasoning_effort: 'low'`) y de respaldo `nvidia/nemotron-3-super-120b-a12b` (`chat_template_kwargs: { enable_thinking: false }`; sin ese parámetro gastaba los 300 tokens razonando y devolvía 0 caracteres; con él, primer token en 0,6 s). Descartados por 404: `llama-3.1-nemotron-70b-instruct` y `mistral-large-2-instruct`.
+- Verificado: `astro check` 0 errores; `POST /api/chat` «¿Cuánto cuesta el presupuesto?» → 200, primer byte 0,65 s, «El presupuesto es gratuito y sin compromiso…».
+
 ## Commits
 - `3abca49` fix(chat): modelo vigente de nvidia con respaldo y respuesta amable
 
@@ -30,4 +35,4 @@
 - `verify-build`: types PASS, build PASS (lint no configurado); `npm test` 11/11.
 
 ## Próximos pasos
-- En producción el chat sigue roto hasta desplegar (X-T9: desplegar sin /escombros). En Netlify no hace falta variable nueva; `NVIDIA_CHAT_MODEL` es opcional.
+- En producción el chat sigue roto hasta desplegar (X-T9: desplegar sin /escombros). En Netlify no hace falta variable nueva; no hace falta ninguna variable nueva.
