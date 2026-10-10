@@ -11,7 +11,7 @@
 - Con `false`: fuera del submenú de Servicios (`Header.astro`) y del footer (`Footer.astro`); la página hace `Astro.rewrite('/404')` (404 + `noindex`, igual que hoy en producción); el sitemap la filtra (`astro.config.mjs`, `sitemap({ filter })`). Para publicarla: `true`.
 
 ## Commits
-- (ver siguiente commit) feat(escombros): ocultar /escombros hasta aprobar su publicacion
+- `3795ddb` feat(escombros): ocultar /escombros hasta aprobar su publicacion
 
 ## Verificación
 - `npm run build` → `dist/sitemap-0.xml` con 10 URL y 0 de /escombros.
