@@ -29,6 +29,7 @@
 
 ## Commits
 - `3f24bba` perf(web): imagenes lcp responsive, fotos recomprimidas y video diferido
+- `a9c7a67` perf(web): fotos fuente ligeras y astro check sin dist-perf
 
 ## Verificación (Lighthouse móvil, mediana de 3, build de producción con brotli)
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO | FCP | LCP | TBT | CLS |
