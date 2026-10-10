@@ -17,6 +17,7 @@
 - D-011 · Negocio sin local (solo domicilio fiscal; no se dice en público): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
 - D-012 · OG 1200x630 por página con fotos reales de obra (no IA) y favicons desde el logo; se regeneran con `node scripts/generate-social-images.mjs` · ver 018
 - D-013 · Rendimiento: imágenes LCP con `<Picture>` responsive y `fetchpriority`, vídeo del hero sin autoplay, fotos de `/trabajos` ≤ 1600 px, logo de cabecera sin JS (`LogoTema.astro`); medir con build + brotli, no con `astro dev` · ver 019, 020
+- D-014 · WebMCP: una herramienta por propósito y página (`solicitar_presupuesto` = formulario de contacto, sin autoenvío; `preguntar_asistente` = chat, con autoenvío); hero e inmersivo sin registrar; sin `ai-catalog.json`/`ard.json` mientras no haya recursos para agentes · ver 023
 
 ## Reglas del cliente
 - No decir en público que no hay local (resta prestigio): ni en textos, ni en `llms.txt`; el schema simplemente no publica dirección · ver 017
@@ -40,7 +41,7 @@
 - NVIDIA retira modelos sin aviso (410/404 aunque salgan en `/v1/models`): el chat usa modelos FIJOS en el código (decisión del usuario, no por env): `openai/gpt-oss-20b` + `reasoning_effort: low` y respaldo `nvidia/nemotron-3-super-120b-a12b` sin thinking; probar el modelo de verdad antes de cambiarlo · ver 022
 
 ## Pendientes abiertos
-- X-T5 chat en móvil · X-T6 cookies en móvil · X-T9 desplegar sin /escombros · X-T11 WebMCP y ai-catalog.json · ver 017, 021
+- X-T5 chat en móvil · X-T6 cookies en móvil · X-T9 desplegar sin /escombros · ver 017, 021
 - «cientos de proyectos» (`CTAServices.astro:225`) y «cientos de familias» (reformas): cifras sin respaldo, preguntar al cliente · ver 021
 - X-T4: página "Instalaciones y reformas" en Escombrocero hacia IS y corregir allí `SITE.url` (declara escombrocero.es) · ver 011
 - Cliente: ¿móvil del planificador con pestañas "Plano / Ajustes"? y encuadre de la vista 3D · ver 010

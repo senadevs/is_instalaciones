@@ -147,12 +147,17 @@
 - Hecho cuando: navegación de enlaces sin `menubar`/`menu`/`menuitem`; el submenú de Servicios se abre también con teclado.
 - Verificar: Lighthouse a11y sin `aria-required-children`; submenú visible con foco.
 
-### X-T11 · WebMCP y `ai-catalog.json` para agentes de IA  [M] [todo]
+### X-T11 · WebMCP y `ai-catalog.json` para agentes de IA  [M] [done] → senzu/devlog/2026-10-10/023-webmcp-formularios.md (ai-catalog: no aplica, sin recursos para agentes)
 - Skill: code-quality (+ ui-ux-pro-max §formularios si se anotan formularios)
 - Origen: Lighthouse «Navegación agéntica» (categoría experimental): cobertura de formularios WebMCP, herramientas registradas, esquemas válidos y `ai-catalog.json`.
 - Hecho cuando: especificación vigente consultada (es experimental y cambia); formularios de presupuesto/contacto anotados para agentes y, si procede, herramientas registradas con esquema válido; `ai-catalog.json` válido si la especificación está estable; sin romper el formulario ni el consentimiento (D-003).
 - Verificar: Lighthouse «Navegación agéntica» sin errores en local y consola limpia.
 - Depende de: —
+
+### X-T12 · Redirección del formulario de contacto a un dominio ajeno  [S] [done] → senzu/devlog/2026-10-10/023-webmcp-formularios.md
+- Origen: encontrado al anotar los formularios (X-T11): `redirectTo="https://thejornalia.es"` en `ContactSection.astro`.
+- Hecho cuando: tras enviar, el usuario vuelve a is-instalaciones.es.
+- Verificar: `redirectTo` en el HTML de /, servicios y /contacto/.
 
 ### X-T9 · Desplegar sin /escombros  [S] [todo]
 - Skill: deploy-ops
