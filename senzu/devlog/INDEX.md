@@ -24,3 +24,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 018 | 2026-10-10 | Imágenes sociales (OG) por página y favicons | feature | 014 | F6-T4 |
 | 019 | 2026-10-10 | Core Web Vitals: imágenes LCP responsive, fotos recomprimidas, vídeo diferido | perf | 014 | F6-T5 |
 | 020 | 2026-10-10 | Logo de la cabecera sin React y cierre de Core Web Vitals | perf | 019 | F6-T5 |
+| 021 | 2026-10-10 | Menú sin roles de menú y llms.txt en formato llmstxt.org | fix | 017 | X-T10, X-T8 |

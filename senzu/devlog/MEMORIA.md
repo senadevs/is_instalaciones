@@ -38,7 +38,8 @@
 - Hook `code-hygiene` de Senzu: bloqueaba los nombres internos de tema porque `gustos.md` los citaba en «No»; resuelto reformulando `gustos.md` sin citarlos (no volver a escribirlos allí) · ver 019, 020
 
 ## Pendientes abiertos
-- X-T5 chat en móvil · X-T6 cookies en móvil · X-T7 el agente del chat no responde (¿modelo `meta/llama-3.1-8b-instruct` inexistente o retirado?) · X-T8 `llms.txt` con buenas prácticas · X-T9 desplegar sin /escombros · ver 017
+- X-T5 chat en móvil · X-T6 cookies en móvil · X-T7 el agente del chat no responde (¿modelo `meta/llama-3.1-8b-instruct` inexistente o retirado?) · X-T9 desplegar sin /escombros · X-T11 WebMCP y ai-catalog.json · ver 017, 021
+- «cientos de proyectos» (`CTAServices.astro:225`) y «cientos de familias» (reformas): cifras sin respaldo, preguntar al cliente · ver 021
 - X-T4: página "Instalaciones y reformas" en Escombrocero hacia IS y corregir allí `SITE.url` (declara escombrocero.es) · ver 011
 - Cliente: ¿móvil del planificador con pestañas "Plano / Ajustes"? y encuadre de la vista 3D · ver 010
 - Cliente: confirmar las cifras del contador de escombros (24 h, 100 %) · ver 011

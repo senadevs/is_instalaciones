@@ -38,7 +38,7 @@ const currentHash = Astro.url.hash;
       </div>
 
       <div class="flex items-center justify-end flex-1 space-x-4 lg:ml-8 h-full">
-        <div class="hidden md:flex space-x-2 lg:space-x-6 justify-center font-bold flex-1" role="menubar">
+        <div class="hidden md:flex space-x-2 lg:space-x-6 justify-center font-bold flex-1">
           {menuItems.map(item => {
             const isSelected =
               (item.href === '/' && currentPath === '/') ||
@@ -52,11 +52,8 @@ const currentHash = Astro.url.hash;
                   class={`px-2 lg:px-3 py-1 rounded-lg transition-all duration-300 text-xs md:text-sm lg:text-base whitespace-nowrap inline-flex items-center
                         hover:bg-white/10 hover:border-white/20 hover:border
                         ${isSelected ? 'bg-white/10 border border-white/20' : 'border border-transparent'}`}
-                  role={item.submenu ? 'button' : 'menuitem'}
-                  tabindex="0"
                   data-section={item.href.includes('#') ? item.href.split('#')[1] : null}
                   aria-current={isSelected ? 'page' : undefined}
-                  aria-expanded={item.submenu ? 'false' : undefined}
                 >
                   {item.text}
                   {item.submenu && (
@@ -66,13 +63,12 @@ const currentHash = Astro.url.hash;
                   )}
                 </a>
                 {item.submenu && (
-                  <div class="absolute top-full left-0 pt-2 w-52 hidden group-hover:block">
+                  <div class="absolute top-full left-0 pt-2 w-52 hidden group-hover:block group-focus-within:block">
                     <div class="bg-primary border border-white/20 rounded-xl shadow-xl py-2">
                       {item.submenu.map(subItem => (
                         <a
                           href={subItem.href}
                           class="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-white/10 transition-colors"
-                          role="menuitem"
                         >
                           <span class="w-1.5 h-1.5 bg-white/40 rounded-full"></span>
                           {subItem.text}
@@ -119,8 +115,6 @@ const currentHash = Astro.url.hash;
     <div
       id="mobile-menu"
       class="md:hidden absolute left-0 right-0 top-[100%] bg-primary border-t border-primary dark:border-white hidden"
-      role="menu"
-      aria-label="Menu movil"
     >
       <div class="flex flex-col w-full p-4">
         {menuItems.map(item => {
@@ -152,7 +146,6 @@ const currentHash = Astro.url.hash;
                     <a
                       href={subItem.href}
                       class="block text-white text-base px-6 py-2 rounded-lg hover:bg-white/10 transition-colors"
-                      role="menuitem"
                     >
                       {subItem.text}
                     </a>

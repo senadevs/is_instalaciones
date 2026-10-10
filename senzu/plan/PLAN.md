@@ -135,12 +135,24 @@
 - Verificar: petición real a `/api/chat` en local con respuesta y prueba del error (clave inválida) sin romper la UI.
 - Depende de: —
 
-### X-T8 · `llms.txt` con buenas prácticas  [S] [todo]
+### X-T8 · `llms.txt` con buenas prácticas  [S] [done] → senzu/devlog/2026-10-10/021-menu-aria-y-llms.md
 - Skill: marketing-seo → references/seo-onpage.md
 - Archivos: `public/llms.txt`, `public/llm.txt`
 - Hecho cuando: formato llmstxt.org (H1, resumen en blockquote, secciones con listas de enlaces a las páginas canónicas con una línea de descripción), datos coherentes con la web y el schema (D-011, sin cifras sin respaldo), sin duplicar archivos (`llm.txt` redirige o se elimina) y enlazado desde `robots.txt`/`<link>`. Nota: Google no usa `llms.txt` para posicionar; lo que cuenta para sus funciones de IA es el SEO normal (contenido, schema, enlaces). Sirve para otros asistentes (ChatGPT, Claude, Perplexity).
 - Verificar: validación del formato y enlaces sin 404 (`curl` de cada URL).
 - Depende de: F6-T3
+
+### X-T10 · Menú de la cabecera sin roles ARIA de menú  [S] [done] → senzu/devlog/2026-10-10/021-menu-aria-y-llms.md
+- Origen: Lighthouse «Navegación agéntica» (el usuario, 2026-10-10): `role="menubar"` sin hijos `menuitem` válidos.
+- Hecho cuando: navegación de enlaces sin `menubar`/`menu`/`menuitem`; el submenú de Servicios se abre también con teclado.
+- Verificar: Lighthouse a11y sin `aria-required-children`; submenú visible con foco.
+
+### X-T11 · WebMCP y `ai-catalog.json` para agentes de IA  [M] [todo]
+- Skill: code-quality (+ ui-ux-pro-max §formularios si se anotan formularios)
+- Origen: Lighthouse «Navegación agéntica» (categoría experimental): cobertura de formularios WebMCP, herramientas registradas, esquemas válidos y `ai-catalog.json`.
+- Hecho cuando: especificación vigente consultada (es experimental y cambia); formularios de presupuesto/contacto anotados para agentes y, si procede, herramientas registradas con esquema válido; `ai-catalog.json` válido si la especificación está estable; sin romper el formulario ni el consentimiento (D-003).
+- Verificar: Lighthouse «Navegación agéntica» sin errores en local y consola limpia.
+- Depende de: —
 
 ### X-T9 · Desplegar sin /escombros  [S] [todo]
 - Skill: deploy-ops
