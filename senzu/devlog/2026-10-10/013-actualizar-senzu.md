@@ -16,7 +16,7 @@
 - `CLAUDE.md` regenerado; sigue importando `CLAUDE.project.md` (sin tocar).
 
 ## Commits
-- Pendiente (sin commitear a la espera de aprobación).
+- `8a34c0b` chore(senzu): actualizar instalacion y migrar a senzu/
 
 ## Decisiones (resumen)
 - Actualizar con la selección guardada en vez de reinstalar «Todo» (elección del usuario).
@@ -28,6 +28,6 @@
 - `grep` de rutas antiguas en `CLAUDE.project.md` y `README.md`: sin coincidencias.
 
 ## Próximos pasos
-- Reiniciar la sesión de Claude Code para cargar hooks y comandos nuevos.
-- Commitear la instalación: `chore(senzu): actualizar instalacion y migrar a senzu/`.
+- Sesión reiniciada; `npx astro check` 0 errores y `npm run build` Complete! antes del commit.
+- Actualizar en MEMORIA.md las rutas antiguas (devlog/, plan/, design-system/) a senzu/.
 - Dar upstream a la rama de `D:/dev-standards` (o volver a `main`) para que `/instalar` pueda actualizarse.
