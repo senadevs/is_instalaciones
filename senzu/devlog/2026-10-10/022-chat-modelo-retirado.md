@@ -26,6 +26,7 @@
 
 ## Commits
 - `3abca49` fix(chat): modelo vigente de nvidia con respaldo y respuesta amable
+- `a7c1732` fix(chat): modelos fijos en el codigo con respaldo nemotron
 
 ## Verificación
 - Con `NVIDIA_CHAT_MODEL="meta/llama-3.1-8b-instruct,openai/gpt-oss-20b"`: log `Chat: modelo meta/llama-3.1-8b-instruct no disponible (410); probando el siguiente` y respuesta 200.
