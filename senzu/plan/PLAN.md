@@ -279,7 +279,7 @@
 - Verificar: Rich Results Test / validator.schema.org sin errores (capturas).
 - Depende de: F6-T2
 
-### F6-T4 · Imágenes sociales y favicons  [S] [todo]
+### F6-T4 · Imágenes sociales y favicons  [S] [done] → senzu/devlog/2026-10-10/018-imagenes-sociales-favicons.md
 - Skill: image-gen o banner-design (OG 1200x630 con la marca); marketing-seo §OG
 - Archivos: `public/og/*.jpg`, `Layout.astro`, `public/site.manifest`
 - Hecho cuando: OG 1200x630 por página principal y favicon y apple-touch en PNG de tamaños correctos.

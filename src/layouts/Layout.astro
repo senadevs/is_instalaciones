@@ -22,7 +22,7 @@ interface Props {
 const {
   title = 'Instalaciones y Reformas en Barcelona | IS Instalaciones',
   description = 'Instalaciones y reformas en Barcelona: electricidad, fontanería, climatización y reformas integrales. Técnicos autorizados y 2 años de garantía.',
-  image = '/img/logo.webp',
+  image = '/og/home.jpg',
   noindex = false,
   additionalSchema,
   breadcrumbs,
@@ -33,6 +33,9 @@ const {
 const siteUrl = SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const imageUrl = new URL(image, siteUrl).toString();
+// Las de /og/ salen de scripts/generate-social-images.mjs a 1200x630 (F6-T4).
+const isOgImage = image.startsWith('/og/');
+const imageAlt = `${title.split(' | ')[0].trim()} | IS Instalaciones`;
 
 // Negocio de zona de servicio (sin local): dirección solo con localidad, sin calle, CP ni coordenadas.
 const businessSchema = {
@@ -189,17 +192,21 @@ import '../styles/global.css';
     <link rel="alternate" hreflang="es-ES" href={canonicalURL} />
     <link rel="canonical" href={canonicalURL} />
 
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/webp" sizes="any" href="/img/logo.webp" />
-    <link rel="apple-touch-icon" href="/img/logo.webp" />
-    <link rel="manifest" href="/site.manifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:alt" content="IS Instalaciones, servicios de instalaciones y reformas en Barcelona" />
+    {isOgImage && <meta property="og:image:type" content="image/jpeg" />}
+    {isOgImage && <meta property="og:image:width" content="1200" />}
+    {isOgImage && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:site_name" content="IS Instalaciones" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -207,7 +214,7 @@ import '../styles/global.css';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <meta name="twitter:image:alt" content="IS Instalaciones, servicios de instalaciones y reformas en Barcelona" />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
