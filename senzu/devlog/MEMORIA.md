@@ -15,6 +15,7 @@
 - D-009 · Todo lo de Senzu vive en `senzu/` (devlog, plan, design-system, convenciones y marcador); push solo a ramas de trabajo, nunca a main · ver 013
 - D-010 · SEO on-page: un h1 por página (Panoramic con `nivel="p"` donde la página ya tiene h1), titles ≤ 60 con «| IS Instalaciones», descriptions ≤ 155, sin `meta keywords`; cada servicio enlaza a los otros con `RelatedServices` · ver 015
 - D-011 · Negocio sin local (solo domicilio fiscal; no se dice en público): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
+- D-012 · OG 1200x630 por página con fotos reales de obra (no IA) y favicons desde el logo; se regeneran con `node scripts/generate-social-images.mjs` · ver 018
 
 ## Reglas del cliente
 - No decir en público que no hay local (resta prestigio): ni en textos, ni en `llms.txt`; el schema simplemente no publica dirección · ver 017
