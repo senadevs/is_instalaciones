@@ -18,3 +18,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 012 | 2026-10-01 | Verificación de UI de la sesión y memoria del proyecto | docs | — | — |
 | 013 | 2026-10-10 | Actualización a Senzu y migración a senzu/ | infra | 003 | — |
 | 014 | 2026-10-10 | Auditoría SEO técnica con evidencia | docs | — | F6-T1 |
+| 015 | 2026-10-10 | Correcciones on-page: h1, titles, descriptions, keywords y enlazado interno | fix | 014 | F6-T2 |

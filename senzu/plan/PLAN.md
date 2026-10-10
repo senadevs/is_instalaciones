@@ -228,7 +228,7 @@
 - Verificar: salida del script de auditoría y de Lighthouse pegadas.
 - Depende de: —
 
-### F6-T2 · Correcciones on-page  [M] [todo]
+### F6-T2 · Correcciones on-page  [M] [done] → senzu/devlog/2026-10-10/015-correcciones-on-page.md
 - Skill: marketing-seo → §on-page + §SEO local
 - Archivos: `src/layouts/Layout.astro`, `src/pages/**/*.astro`
 - Hecho cuando: tildes correctas en metas, marca unificada ("IS Instalaciones"), sin `meta keywords`, titles ≤60 y descriptions ≤155, un h1 por página, `nosotros` corregido, enlazado interno entre servicios.

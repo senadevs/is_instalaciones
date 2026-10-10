@@ -3,39 +3,17 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
-  keywords?: string[];
   noindex?: boolean;
   additionalSchema?: object;
   hideFooter?: boolean;
   hideBanner?: boolean;
 }
 
-const defaultKeywords = [
-  'instalaciones barcelona',
-  'reformas barcelona',
-  'electricista barcelona',
-  'fontanero barcelona',
-  'aire acondicionado barcelona',
-  'calefaccion barcelona',
-  'instalador autorizado barcelona',
-  'reformas integrales barcelona',
-  'mantenimiento instalaciones barcelona',
-  'presupuesto reformas barcelona',
-  'servicios de instalaciones barcelona',
-  'servicios de reformas barcelona',
-  'servicios de electricidad barcelona',
-  'servicios de fontaneria barcelona',
-  'servicios de climatizacion barcelona',
-  'reformas pisos barcelona',
-  'planificador de reformas',
-  'estimador 3d reformas'
-];
-
+// Sin <meta name="keywords">: Google la ignora y solo enseña las keywords a la competencia (F6-T2).
 const {
   title = 'Instalaciones y Reformas en Barcelona | IS Instalaciones',
-  description = 'Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontanería, climatización y reformas integrales con técnicos autorizados, presupuesto gratuito y 2 años de garantía.',
+  description = 'Instalaciones y reformas en Barcelona: electricidad, fontanería, climatización y reformas integrales. Técnicos autorizados y 2 años de garantía.',
   image = '/img/logo.webp',
-  keywords = defaultKeywords,
   noindex = false,
   additionalSchema,
   hideFooter = false,
@@ -168,7 +146,6 @@ import '../styles/global.css';
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords.join(', ')} />
     <meta name="author" content="IS Instalaciones" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />

@@ -85,10 +85,11 @@ async function audit(path) {
   if (keywords !== undefined) issues.push('meta keywords (obsoleta)');
   if (!types.length && path !== '/404') issues.push('sin JSON-LD');
   if (imgsSinAlt) issues.push(`${imgsSinAlt} img sin alt`);
-  if (imgsSinDim) issues.push(`${imgsSinDim} img sin width/height`);
+  // Las dimensiones son de rendimiento (CLS, F6-T5), no de on-page: aviso, no error.
+  const warnings = imgsSinDim ? [`${imgsSinDim} img sin width/height`] : [];
   if (lang !== 'es') issues.push(`lang="${lang}"`);
 
-  return { path, status: res.status, title, titleLen: title.length, description, descLen: description?.length ?? 0, h1s, canonical, robots, ogTitle: !!ogTitle, ogImage, schema: types, issues };
+  return { path, status: res.status, title, titleLen: title.length, description, descLen: description?.length ?? 0, h1s, canonical, robots, ogTitle: !!ogTitle, ogImage, schema: types, issues, warnings };
 }
 
 const results = [];
@@ -99,11 +100,11 @@ if (asJson) {
 } else {
   const cut = (s, n) => (s && s.length > n ? s.slice(0, n - 1) + '…' : s ?? '—');
   console.log(`Auditoría SEO · ${base} · ${results.length} URL\n`);
-  console.log('| URL | HTTP | title (car.) | desc. (car.) | h1 | canonical | indexable | OG | schema | problemas |');
-  console.log('|---|---|---|---|---|---|---|---|---|---|');
+  console.log('| URL | HTTP | title (car.) | desc. (car.) | h1 | canonical | indexable | OG | schema | problemas | avisos |');
+  console.log('|---|---|---|---|---|---|---|---|---|---|---|');
   for (const r of results) {
     console.log(
-      `| \`${r.path}\` | ${r.status} | ${cut(r.title, 48)} (${r.titleLen}) | ${r.descLen} | ${r.h1s.length}: ${cut(r.h1s[0], 32)} | ${r.canonical ? (r.canonical.replace(SITE, '') || '/') : '—'} | ${r.robots && /noindex/i.test(r.robots) ? 'no' : 'sí'} | ${r.ogTitle ? 'título' : '—'}${r.ogImage ? '+img' : ''} | ${r.schema.join(', ') || '—'} | ${r.issues.join('; ') || 'OK'} |`,
+      `| \`${r.path}\` | ${r.status} | ${cut(r.title, 48)} (${r.titleLen}) | ${r.descLen} | ${r.h1s.length}: ${cut(r.h1s[0], 32)} | ${r.canonical ? (r.canonical.replace(SITE, '') || '/') : '—'} | ${r.robots && /noindex/i.test(r.robots) ? 'no' : 'sí'} | ${r.ogTitle ? 'título' : '—'}${r.ogImage ? '+img' : ''} | ${r.schema.join(', ') || '—'} | ${r.issues.join('; ') || 'OK'} | ${r.warnings.join('; ') || '—'} |`,
     );
   }
   const total = results.reduce((n, r) => n + r.issues.length, 0);

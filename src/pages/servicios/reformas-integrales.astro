@@ -4,6 +4,7 @@ import Panoramic from '../../components/sections/Panoramic.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
 import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import { Icon } from 'astro-icon/components';
 
@@ -94,13 +95,14 @@ const faqSchema = {
 ---
 
 <Layout
-  title="Reformas Integrales en Barcelona | Baños, Cocinas y Viviendas | IS Instalaciones"
-  description="Reformas integrales y parciales en Barcelona: reforma de baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado gratuito y 2 años de garantía."
+  title="Reformas Integrales en Barcelona | IS Instalaciones"
+  description="Reformas integrales y parciales en Barcelona: baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado y 2 años de garantía."
   additionalSchema={faqSchema}
 >
 
   <main class="pt-20">
     <Panoramic
+      nivel="p"
       imagen="/trabajos/reforma-salon-led.jpeg"
       texto="Reformas Integrales"
     />
@@ -250,6 +252,8 @@ const faqSchema = {
         </div>
       </div>
     </section>
+
+    <RelatedServices actual="reformas-integrales" />
 
     <ContactSection />
   </main>

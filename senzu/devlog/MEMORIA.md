@@ -13,6 +13,7 @@
 - D-007 · Planificador: color por tipo de estancia = leyenda; acentos de interfaz en verde de marca; cotas del editor por dentro de cada estancia (la exportación no cambia) · ver 010
 - D-008 · /escombros es página puente a Escombrocero (empresa hermana, web propia en el subdominio escombros.is-instalaciones.es); no duplicar su contenido · ver 011
 - D-009 · Todo lo de Senzu vive en `senzu/` (devlog, plan, design-system, convenciones y marcador); push solo a ramas de trabajo, nunca a main · ver 013
+- D-010 · SEO on-page: un h1 por página (Panoramic con `nivel="p"` donde la página ya tiene h1), titles ≤ 60 con «| IS Instalaciones», descriptions ≤ 155, sin `meta keywords`; cada servicio enlaza a los otros con `RelatedServices` · ver 015
 
 ## Reglas del cliente
 - Paleta verde (#046a53 / #156051 / #0d1e23) intocable; se mejora la presentación, no los colores · ver 008
@@ -35,5 +36,6 @@
 - Sin linter configurado (`npm run lint` no existe) · ver 004
 - ui-verify (2026-10-01): imágenes sin dimensiones, tap targets < 44 px, texto < 12 px, 2 h1 en servicios → F4/F5/F6 · ver 012
 - Producción va por detrás de la rama: `/escombros/` da 404 allí y está en el sitemap; titles antiguos «IS.INSTALACIONES» · ver 014
-- SEO: 2 h1 en servicios, titles/descriptions largos, `meta keywords`, sin BreadcrumbList, NAP sin calle; LCP móvil 3,8-4,3 s → F6-T2/T3/T5 · ver 014
+- SEO: sin BreadcrumbList, NAP sin calle, `sameAs` con wa.me; LCP móvil 3,8-4,3 s → F6-T3/T5 (h1, metas y keywords ya corregidos en 015) · ver 014, 015
+- `legal/privacidad.astro:74`: enlace en Markdown dentro del HTML, sale literal · ver 015
 - El aviso "¿Tienes dudas? Abrir asistente" tapa el hero en escritorio (propuesta: moverlo a la derecha) · ver 011

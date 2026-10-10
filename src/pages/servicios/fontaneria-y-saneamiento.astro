@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
@@ -83,13 +84,14 @@ const faqSchema = {
 ---
 
 <Layout
-  title="Servicios de Fontanería y Saneamiento en Barcelona | IS Instalaciones"
+  title="Fontanería y Saneamiento en Barcelona | IS Instalaciones"
   description="Fontaneros profesionales en Barcelona: instalaciones de agua, detección de fugas, cambio de tuberías y calderas. Más de 8 años de experiencia."
   additionalSchema={faqSchema}
 >
 
   <main class="pt-20">
     <Panoramic
+    nivel="p"
     imagen="/trabajos/fontaneria-contadores.jpeg"
     texto="Servicios de Fontanería"/>
 
@@ -234,6 +236,8 @@ const faqSchema = {
       title="¿Tienes una fuga o necesitas un fontanero?"
       text="Pide tu presupuesto de fontanería gratuito y sin compromiso. Fontaneros autorizados, respuesta rápida y 2 años de garantía en cada trabajo."
     />
+
+    <RelatedServices actual="fontaneria-y-saneamiento" />
 
     <ContactSection />
   </main>

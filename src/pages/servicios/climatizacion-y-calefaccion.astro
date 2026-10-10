@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Panoramic from "../../components/sections/Panoramic.astro";
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
@@ -90,6 +91,7 @@ const faqSchema = {
 
   <main class="pt-20">
     <Panoramic
+    nivel="p"
     imagen="/trabajos/conductos-aislados.jpeg"
     texto="Servicios de Climatización"/>
 
@@ -234,6 +236,8 @@ const faqSchema = {
       title="¿Quieres instalar aire acondicionado o calefacción?"
       text="Pide tu presupuesto de climatización gratuito y sin compromiso. Técnicos certificados en gases fluorados, estudio personalizado y 2 años de garantía."
     />
+
+    <RelatedServices actual="climatizacion-y-calefaccion" />
 
     <ContactSection />
   </main>
