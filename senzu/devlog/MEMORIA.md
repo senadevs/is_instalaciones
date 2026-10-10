@@ -14,9 +14,11 @@
 - D-008 · /escombros es página puente a Escombrocero (empresa hermana, web propia en el subdominio escombros.is-instalaciones.es); no duplicar su contenido · ver 011
 - D-009 · Todo lo de Senzu vive en `senzu/` (devlog, plan, design-system, convenciones y marcador); push solo a ramas de trabajo, nunca a main · ver 013
 - D-010 · SEO on-page: un h1 por página (Panoramic con `nivel="p"` donde la página ya tiene h1), titles ≤ 60 con «| IS Instalaciones», descriptions ≤ 155, sin `meta keywords`; cada servicio enlaza a los otros con `RelatedServices` · ver 015
-- D-011 · Negocio de zona de servicio (sin local, solo domicilio fiscal): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
+- D-011 · Negocio sin local (solo domicilio fiscal; no se dice en público): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
 
 ## Reglas del cliente
+- No decir en público que no hay local (resta prestigio): ni en textos, ni en `llms.txt`; el schema simplemente no publica dirección · ver 017
+- /escombros NO se sube a producción todavía (X-T9) · ver 017
 - Paleta verde (#046a53 / #156051 / #0d1e23) intocable; se mejora la presentación, no los colores · ver 008
 - Sin cifras sin respaldo: "más de 500 proyectos" retirado de toda la web y del chat · ver 009
 - Analítica: GTM-5L2DX9HF + GA4 G-5WKP5VC1WL (la etiqueta de GA4 ya mide páginas vistas) · ver 005
@@ -30,6 +32,7 @@
 - `vectorEffect="non-scaling-stroke"` con grosores < 1: líneas invisibles (el grosor pasa a píxeles de pantalla) · ver 010
 
 ## Pendientes abiertos
+- X-T5 chat en móvil · X-T6 cookies en móvil · X-T7 el agente del chat no responde (¿modelo `meta/llama-3.1-8b-instruct` inexistente o retirado?) · X-T8 `llms.txt` con buenas prácticas · X-T9 desplegar sin /escombros · ver 017
 - X-T4: página "Instalaciones y reformas" en Escombrocero hacia IS y corregir allí `SITE.url` (declara escombrocero.es) · ver 011
 - Cliente: ¿móvil del planificador con pestañas "Plano / Ajustes"? y encuadre de la vista 3D · ver 010
 - Cliente: confirmar las cifras del contador de escombros (24 h, 100 %) · ver 011

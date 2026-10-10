@@ -29,6 +29,8 @@
   - Metas sin tildes en las páginas clave: "Fontaneria", "2 anos de garantia" (`index.astro:43`, `Layout.astro` por defecto). La marca aparece como "IS.INSTALACIONES" y "IS INSTALACIONES". `nosotros` se titula "Sobre Mí". La imagen OG es el logo.
   - Analítica: Consent Mode v2 y GTM se cargan tras el consentimiento, y hay eventos al `dataLayer` (bien). En contra: la casilla "Analíticas" viene marcada por defecto (`CookieBanner.astro`), lo que no vale como consentimiento RGPD; no hay forma de cambiar el consentimiento después; y desde el código no se puede saber si GTM tiene activadores y etiquetas GA4 para esos eventos.
 
+- **2026-10-10:** el usuario pide: no mencionar en público que no hay local (resta prestigio; el schema sigue sin dirección, sin decirlo); revisar el chat y el banner de cookies en móvil; el agente del chat no responde (posible modelo retirado); no subir aún /escombros a producción; y mejorar `llms.txt` según buenas prácticas. Se añaden X-T5 a X-T9.
+
 ---
 
 ## F1 — Landing de escombros
@@ -111,6 +113,41 @@
 - Repo: `D:\Magneto\Proyectos\escombrocero` (seguir SUS convenciones, CLAUDE.md y bilingüe ES/CA).
 - Hecho cuando: página equivalente que presenta IS Instalaciones y enlaza a is-instalaciones.es; `SITE.url` corregido a `https://escombros.is-instalaciones.es` (subdominio confirmado por el cliente).
 - Depende de: X-T3
+
+### X-T5 · Chat en móvil  [S] [todo]
+- Skill: ui-ux-pro-max → components-spec.md (solo el componente) + ui-verify
+- Archivos: `src/components/ui/ChatBubble.astro`
+- Hecho cuando: a 375 px el aviso, el botón y el panel del chat no tapan el hero ni el CTA, el panel cabe sin scroll horizontal, el input no queda bajo el teclado y se cierra con teclado/botón (tap targets ≥ 44 px).
+- Verificar: ui-verify a 375/768 con el chat abierto y cerrado, en los 3 temas.
+- Depende de: —
+
+### X-T6 · Banner de cookies en móvil  [S] [todo]
+- Skill: ui-ux-pro-max + ui-verify
+- Archivos: `src/components/**/CookieBanner.astro`
+- Hecho cuando: a 375 px el banner no tapa más de un tercio de la pantalla, los 3 botones caben y miden ≥ 44 px, el texto es legible (≥ 12 px) y el panel «Configurar» se puede recorrer y cerrar; sin cambiar el comportamiento RGPD de F7-T1 (D-003).
+- Verificar: ui-verify a 375/768/1440 con el banner y con «Configurar» abierto.
+- Depende de: —
+
+### X-T7 · El agente del chat no responde  [S] [todo]
+- Skill: depurar + code-quality → references/llm-apps.md
+- Archivos: `src/pages/api/chat.ts` (`MODEL = 'meta/llama-3.1-8b-instruct'`, vía @openrouter/ai-sdk-provider)
+- Hecho cuando: causa reproducida y anotada (hipótesis: ese id no existe en OpenRouter, donde sería `meta-llama/...`, o el modelo se retiró); modelo vigente configurado, errores del proveedor registrados con `console.error` y mensaje amable al usuario si falla.
+- Verificar: petición real a `/api/chat` en local con respuesta y prueba del error (clave inválida) sin romper la UI.
+- Depende de: —
+
+### X-T8 · `llms.txt` con buenas prácticas  [S] [todo]
+- Skill: marketing-seo → references/seo-onpage.md
+- Archivos: `public/llms.txt`, `public/llm.txt`
+- Hecho cuando: formato llmstxt.org (H1, resumen en blockquote, secciones con listas de enlaces a las páginas canónicas con una línea de descripción), datos coherentes con la web y el schema (D-011, sin cifras sin respaldo), sin duplicar archivos (`llm.txt` redirige o se elimina) y enlazado desde `robots.txt`/`<link>`. Nota: Google no usa `llms.txt` para posicionar; lo que cuenta para sus funciones de IA es el SEO normal (contenido, schema, enlaces). Sirve para otros asistentes (ChatGPT, Claude, Perplexity).
+- Verificar: validación del formato y enlaces sin 404 (`curl` de cada URL).
+- Depende de: F6-T3
+
+### X-T9 · Desplegar sin /escombros  [S] [todo]
+- Skill: deploy-ops
+- Archivos: `Header.astro`, `Footer.astro`, `src/pages/escombros/`, sitemap
+- Hecho cuando: al desplegar la rama, /escombros no se publica (ni enlace en menú y footer, ni URL en el sitemap) hasta que el cliente lo apruebe; decidir con el usuario el mecanismo (rama de despliegue sin la página o bandera de entorno).
+- Verificar: build de despliegue sin /escombros en el sitemap ni en los enlaces.
+- Depende de: —
 
 ## F3 — Base visual profesional
 
