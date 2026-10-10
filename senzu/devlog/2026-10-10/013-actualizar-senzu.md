@@ -29,5 +29,5 @@
 
 ## Próximos pasos
 - Sesión reiniciada; `npx astro check` 0 errores y `npm run build` Complete! antes del commit.
-- Actualizar en MEMORIA.md las rutas antiguas (devlog/, plan/, design-system/) a senzu/.
+- MEMORIA.md actualizada: rutas a senzu/ y nueva decisión D-009.
 - Dar upstream a la rama de `D:/dev-standards` (o volver a `main`) para que `/instalar` pueda actualizarse.

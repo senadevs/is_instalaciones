@@ -1,17 +1,18 @@
 # Memoria del proyecto — IS Instalaciones
 
-> Lo vigente en una línea por punto, con la entrada que lo explica. Detalle en `devlog/<fecha>/NNN-*.md`.
-> Gustos y vetos del cliente: `design-system/is-instalaciones/gustos.md` · Convenciones: `conventions.md` · Plan: `plan/PLAN.md`.
+> Lo vigente en una línea por punto, con la entrada que lo explica. Detalle en `senzu/devlog/<fecha>/NNN-*.md`.
+> Gustos y vetos del cliente: `senzu/design-system/is-instalaciones/gustos.md` · Convenciones: `senzu/conventions.md` · Plan: `senzu/plan/PLAN.md`.
 
 ## Decisiones vigentes
-- D-001 · Guía propia en `CLAUDE.project.md`; `CLAUDE.md` lo genera dev-standards y no se edita a mano · ver 003
-- D-002 · Convenciones selladas (`conventions.md/json`): idioma mixto, JS solo en `estimator/`, imágenes nuevas con `astro:assets`, commits en español · ver 004
+- D-001 · Guía propia en `CLAUDE.project.md`; `CLAUDE.md` lo genera Senzu y no se edita a mano · ver 003, 013
+- D-002 · Convenciones selladas (`senzu/conventions.md/json`): idioma mixto, JS solo en `estimator/`, imágenes nuevas con `astro:assets`, commits en español · ver 004
 - D-003 · Consent Mode básico: GTM solo tras consentimiento, "Analíticas" desmarcada por defecto, revocable desde el footer · ver 005
 - D-004 · Marca textual "IS Instalaciones" en titles, OG, schema y footer (el logotipo en mayúsculas se revisa en F3-T4) · ver 006
 - D-005 · Pulir la web real, NO rediseñar: se conservan estructura, los 3 temas y los colores; cada cambio con antes/después en los 3 temas · ver 008
 - D-006 · Tipografía: Archivo (h1/h2 en mayúsculas) + Source Sans 3, autoalojadas con fontsource; Google Fonts remoto prohibido · ver 008
 - D-007 · Planificador: color por tipo de estancia = leyenda; acentos de interfaz en verde de marca; cotas del editor por dentro de cada estancia (la exportación no cambia) · ver 010
 - D-008 · /escombros es página puente a Escombrocero (empresa hermana, web propia en el subdominio escombros.is-instalaciones.es); no duplicar su contenido · ver 011
+- D-009 · Todo lo de Senzu vive en `senzu/` (devlog, plan, design-system, convenciones y marcador); push solo a ramas de trabajo, nunca a main · ver 013
 
 ## Reglas del cliente
 - Paleta verde (#046a53 / #156051 / #0d1e23) intocable; se mejora la presentación, no los colores · ver 008
