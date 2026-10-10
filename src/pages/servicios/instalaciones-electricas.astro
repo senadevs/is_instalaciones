@@ -1,6 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/contadores-electricos.webp';
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
@@ -68,6 +71,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Instalaciones eléctricas en Barcelona',
+  serviceType: 'Electricista',
+  description: 'Instalaciones eléctricas en Barcelona: reformas, cuadros, iluminación LED y boletines (CIE). Electricistas autorizados con más de 8 años de experiencia.',
+  path: '/servicios/instalaciones-electricas/',
+});
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -83,15 +93,17 @@ const faqSchema = {
 ---
 
 <Layout
-  title="Instalaciones Eléctricas Profesionales en Barcelona - IS.INSTALACIONES"
-  description="Servicios de instalaciones eléctricas en Barcelona: reformas, cuadros eléctricos, iluminación LED y boletines (CIE). Electricistas autorizados con más de 8 años de experiencia."
-  additionalSchema={faqSchema}
+  title="Instalaciones Eléctricas en Barcelona | IS Instalaciones"
+  image="/og/instalaciones-electricas.jpg"
+  description="Instalaciones eléctricas en Barcelona: reformas, cuadros, iluminación LED y boletines (CIE). Electricistas autorizados con más de 8 años de experiencia."
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-10" id="electricidad">
     <!-- Hero Section -->
     <Panoramic
-    imagen="/trabajos/contadores-electricos.jpeg"
+    nivel="p"
+    imagen={heroImagen}
     texto="Servicios de Electricidad"/>
 
     <!-- Services Section -->
@@ -236,6 +248,8 @@ const faqSchema = {
       title="¿Necesitas un electricista en Barcelona?"
       text="Pide tu presupuesto eléctrico gratuito y sin compromiso. Electricistas autorizados, materiales de calidad y trabajo garantizado 2 años."
     />
+
+    <RelatedServices actual="instalaciones-electricas" />
 
     <ContactSection />
   </main>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Propuesta B — Técnica y sólida | IS Instalaciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Solo para la maqueta: pinta los iconos reales del set propuesto (Tabler). En la web irán con astro-icon. -->
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      /* Paleta actual de IS Instalaciones (se conserva) */
+      --primary: #046a53;
+      --primary-hover: #035541;
+      --primary-bright: #2fb38f;
+      --secondary: #156051;
+      --ink: #0d1e23;
+      --ink-2: #1c343c;
+      --ink-muted: #4d5c61;
+      --surface: #ffffff;
+      --background: #ffffff;
+      --rule: #d9e1df;
+      /* Dirección B */
+      --font-heading: 'Archivo', system-ui, sans-serif;
+      --font-body: 'Source Sans 3', system-ui, sans-serif;
+      --radius: 4px;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font-body); color: var(--ink); background: var(--background); font-size: 1.0625rem; line-height: 1.6; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    iconify-icon { display: inline-block; width: 1em; height: 1em; }
+    .proposal-flag { position: sticky; top: 0; z-index: 50; background: #fff4d6; color: #5c4400; text-align: center; font: 600 .8rem/1.4 var(--font-body); padding: .5rem 1rem; border-bottom: 1px solid #f0d98a; }
+    .wrap { width: min(1240px, 100% - 2.5rem); margin-inline: auto; }
+    .kicker { font: 600 .8rem/1 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: .14em; color: var(--primary); }
+
+    /* Topbar + header */
+    .topbar { background: var(--ink); color: #b9c8c6; font-size: .85rem; }
+    .topbar .wrap { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem 0; }
+    .topbar span { display: inline-flex; align-items: center; gap: .4rem; }
+    header { background: var(--surface); border-bottom: 1px solid var(--rule); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; height: 72px; }
+    .brand { font: 800 1.25rem/1 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; display: flex; align-items: center; gap: .65rem; }
+    .brand-mark { width: 36px; height: 36px; background: var(--primary); color: #fff; display: grid; place-items: center; font-size: .9rem; border-radius: var(--radius); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; padding: 0; font: 600 .82rem/1 var(--font-heading); font-stretch: 108%; text-transform: uppercase; letter-spacing: .08em; }
+    .nav-links a { text-decoration: none; color: var(--ink-2); padding: .5rem 0; border-bottom: 2px solid transparent; }
+    .nav-links a:hover { border-color: var(--primary); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; padding: .95rem 1.5rem; border-radius: var(--radius); font: 700 .85rem/1 var(--font-heading); font-stretch: 108%; text-transform: uppercase; letter-spacing: .06em; text-decoration: none; transition: background-color .2s, color .2s, border-color .2s; border: 1.5px solid transparent; white-space: nowrap; }
+    .btn iconify-icon { font-size: 1.2rem; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-line { border-color: rgba(255, 255, 255, .5); color: #fff; }
+    .btn-line:hover { background: rgba(255, 255, 255, .08); }
+    .btn:focus-visible { outline: 2px solid var(--primary-bright); outline-offset: 3px; }
+
+    /* Hero oscuro a sangre */
+    .hero { position: relative; color: #fff; background: var(--ink); overflow: hidden; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .38; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink) 18%, rgba(13, 30, 35, .55) 60%, rgba(13, 30, 35, .2)); }
+    .hero .wrap { position: relative; z-index: 1; padding: clamp(4rem, 9vw, 7.5rem) 0 clamp(3rem, 6vw, 4.5rem); }
+    .hero .kicker { color: var(--primary-bright); }
+    h1 { font: 800 clamp(2.5rem, 5vw + 1rem, 5.25rem)/1 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: -.01em; margin: 1.25rem 0 1.5rem; max-width: 15ch; }
+    h1 em { font-style: normal; color: var(--primary-bright); }
+    .lead { font-size: 1.2rem; color: #cfdcda; max-width: 36rem; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.25rem; }
+    .facts { position: relative; z-index: 1; border-top: 1px solid rgba(255, 255, 255, .14); }
+    .facts .wrap { display: grid; grid-template-columns: repeat(4, 1fr); padding: 0; }
+    .fact { padding: 1.5rem 1.25rem; border-left: 1px solid rgba(255, 255, 255, .14); display: flex; gap: .85rem; align-items: center; }
+    .fact:first-child { border-left: 0; padding-left: 0; }
+    .fact iconify-icon { font-size: 1.6rem; color: var(--primary-bright); flex-shrink: 0; }
+    .fact strong { display: block; font: 700 .95rem/1.2 var(--font-heading); font-stretch: 108%; text-transform: uppercase; letter-spacing: .04em; }
+    .fact span { font-size: .85rem; color: #a9bbb8; }
+
+    /* Secciones */
+    section.block { padding: clamp(4rem, 8vw, 6.5rem) 0; }
+    .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; margin-bottom: 3rem; padding-bottom: 1.75rem; border-bottom: 2px solid var(--ink); }
+    h2 { font: 800 clamp(2rem, 2.8vw + 1rem, 3.25rem)/1.02 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: -.005em; margin-top: .75rem; }
+    .section-head p { color: var(--ink-muted); font-size: 1.1rem; }
+
+    .service-row { display: grid; grid-template-columns: 300px 1fr 1fr auto; gap: 2rem; align-items: center; padding: 1.75rem 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
+    .service-row img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); filter: saturate(.9); transition: filter .25s; }
+    .service-row:hover img { filter: saturate(1.1); }
+    h3 { font: 700 1.5rem/1.1 var(--font-heading); font-stretch: 108%; text-transform: uppercase; letter-spacing: .01em; display: flex; align-items: center; gap: .6rem; }
+    h3 iconify-icon { color: var(--primary); font-size: 1.6rem; }
+    .service-row p { color: var(--ink-muted); margin-top: .5rem; }
+    .service-row ul { list-style: none; padding: 0; display: grid; gap: .45rem; font-size: .98rem; }
+    .service-row li { display: flex; gap: .5rem; align-items: center; }
+    .service-row li iconify-icon { color: var(--primary); }
+    .arrow { width: 52px; height: 52px; border: 1.5px solid var(--ink); border-radius: var(--radius); display: grid; place-items: center; font-size: 1.4rem; transition: background-color .2s, color .2s; }
+    .service-row:hover .arrow { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .process { background: var(--ink); color: #fff; }
+    .process .section-head { border-color: rgba(255, 255, 255, .5); }
+    .process .section-head p { color: #b9c8c6; }
+    .process .kicker { color: var(--primary-bright); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255, 255, 255, .14); }
+    .step { padding: 2rem 1.5rem 0 0; }
+    .step + .step { padding-left: 1.5rem; border-left: 1px solid rgba(255, 255, 255, .14); }
+    .step-tag { font: 700 .8rem/1 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: .14em; color: var(--primary-bright); }
+    .step iconify-icon { display: block; margin: 1.25rem 0 .75rem; font-size: 2rem; color: #fff; }
+    .step h3 { font-size: 1.15rem; }
+    .step p { color: #b9c8c6; margin-top: .5rem; font-size: 1rem; }
+
+    .cta { display: grid; grid-template-columns: 1.2fr 1fr; border: 2px solid var(--ink); border-radius: var(--radius); }
+    .cta > div { padding: clamp(2rem, 4vw, 3rem); }
+    .cta > div + div { background: var(--primary); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: .75rem; }
+    .cta p { color: var(--ink-muted); margin-top: .75rem; }
+    .cta .phone { font: 800 clamp(1.8rem, 2vw + 1rem, 2.6rem)/1 var(--font-heading); font-stretch: 112%; text-decoration: none; letter-spacing: .01em; }
+    .cta .btn-light { background: #fff; color: var(--primary); align-self: flex-start; }
+
+    footer { margin-top: clamp(3rem, 6vw, 5rem); background: var(--ink); color: #b9c8c6; padding: 3.5rem 0 2rem; font-size: .98rem; }
+    .foot { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 2rem; }
+    footer h4 { color: #fff; font: 700 .85rem/1.2 var(--font-heading); font-stretch: 112%; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; }
+    footer ul { list-style: none; padding: 0; display: grid; gap: .5rem; }
+    footer a { text-decoration: none; }
+    footer a:hover { color: #fff; }
+    .legal { border-top: 1px solid rgba(255, 255, 255, .12); margin-top: 2.5rem; padding-top: 1.5rem; font-size: .85rem; }
+
+    @media (max-width: 1000px) {
+      .nav-links, .topbar .hide-sm { display: none; }
+      .service-row { grid-template-columns: 220px 1fr; }
+      .service-row ul, .arrow { display: none; }
+      .facts .wrap, .steps { grid-template-columns: repeat(2, 1fr); }
+      .fact:nth-child(3) { border-left: 0; padding-left: 0; }
+      .step:nth-child(3) { border-left: 0; padding-left: 0; }
+      .section-head, .cta, .foot { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .service-row { grid-template-columns: 1fr; gap: 1rem; }
+      .facts .wrap, .steps { grid-template-columns: 1fr; }
+      .fact, .step + .step { border-left: 0; padding-left: 0; }
+      .fact { border-top: 1px solid rgba(255, 255, 255, .14); }
+      .nav .btn span { display: none; }
+      h1 { font-size: 2.15rem; font-stretch: 100%; }
+      h2 { font-stretch: 100%; }
+      .brand { font-size: 1.05rem; white-space: nowrap; }
+    }
+    .section-head > div, .cta > div, .service-row > div { min-width: 0; }
+    h1, h2, h3 { overflow-wrap: break-word; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="proposal-flag">PROPUESTA B — Técnica y sólida · baja fidelidad, para elegir dirección</div>
+
+  <div class="topbar">
+    <div class="wrap">
+      <span><iconify-icon icon="tabler:map-pin" aria-hidden="true"></iconify-icon>Barcelona y área metropolitana</span>
+      <span class="hide-sm"><iconify-icon icon="tabler:clock" aria-hidden="true"></iconify-icon>L-V 9:00-18:00 · S 9:00-14:00</span>
+    </div>
+  </div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#"><span class="brand-mark">IS</span> IS Instalaciones</a>
+      <ul class="nav-links">
+        <li><a href="#">Servicios</a></li>
+        <li><a href="#">Planificador 3D</a></li>
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+      <a class="btn btn-primary" href="tel:+34637591736"><iconify-icon icon="tabler:phone" aria-hidden="true"></iconify-icon><span>637 591 736</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img src="../../../public/trabajos/montaje_fusibles.jpeg" alt="" />
+      <div class="wrap">
+        <span class="kicker">Instalaciones y reformas · Barcelona</span>
+        <h1>Instalaciones y reformas <em>con garantía</em></h1>
+        <p class="lead">Electricidad, fontanería, climatización y reformas integrales. Un solo equipo de técnicos autorizados, presupuesto gratuito y 2 años de garantía en cada trabajo.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#"><iconify-icon icon="tabler:file-description" aria-hidden="true"></iconify-icon>Pedir presupuesto gratis</a>
+          <a class="btn btn-line" href="#"><iconify-icon icon="tabler:brand-whatsapp" aria-hidden="true"></iconify-icon>Escribir por WhatsApp</a>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="wrap">
+          <div class="fact"><iconify-icon icon="tabler:certificate" aria-hidden="true"></iconify-icon><div><strong>Técnicos autorizados</strong><span>Boletines y CIE</span></div></div>
+          <div class="fact"><iconify-icon icon="tabler:shield-check" aria-hidden="true"></iconify-icon><div><strong>2 años de garantía</strong><span>En cada trabajo</span></div></div>
+          <div class="fact"><iconify-icon icon="tabler:receipt" aria-hidden="true"></iconify-icon><div><strong>Presupuesto gratis</strong><span>Sin compromiso</span></div></div>
+          <div class="fact"><iconify-icon icon="tabler:calendar-check" aria-hidden="true"></iconify-icon><div><strong>Desde 2016</strong><span>En Barcelona</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="wrap">
+        <div class="section-head">
+          <div><span class="kicker">Servicios</span><h2>Todo lo que necesita tu casa o tu local</h2></div>
+          <p>Cuatro especialidades bajo el mismo techo: coordinamos los oficios para que no tengas que hacerlo tú.</p>
+        </div>
+        <a class="service-row" href="#">
+          <img src="../../../public/trabajos/instalacion-electrica-cuadro-cableado.jpeg" alt="Cuadro eléctrico renovado" />
+          <div><h3><iconify-icon icon="tabler:bolt" aria-hidden="true"></iconify-icon>Instalaciones eléctricas</h3><p>Instalaciones seguras y eficientes para tu hogar o negocio.</p></div>
+          <ul><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Cuadros eléctricos y protecciones</li><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Boletines eléctricos (CIE)</li></ul>
+          <span class="arrow"><iconify-icon icon="tabler:arrow-right" aria-hidden="true"></iconify-icon></span>
+        </a>
+        <a class="service-row" href="#">
+          <img src="../../../public/trabajos/fontaneria-tuberias.jpeg" alt="Instalación de tuberías" />
+          <div><h3><iconify-icon icon="tabler:droplet" aria-hidden="true"></iconify-icon>Fontanería y saneamiento</h3><p>Agua, desagües y detección de fugas sin obras innecesarias.</p></div>
+          <ul><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Detección y reparación de fugas</li><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Calderas y termos</li></ul>
+          <span class="arrow"><iconify-icon icon="tabler:arrow-right" aria-hidden="true"></iconify-icon></span>
+        </a>
+        <a class="service-row" href="#">
+          <img src="../../../public/trabajos/climatizacion-split-aire-acondicionado.jpeg" alt="Split de aire acondicionado instalado" />
+          <div><h3><iconify-icon icon="tabler:snowflake" aria-hidden="true"></iconify-icon>Climatización y calefacción</h3><p>Confort todo el año con equipos eficientes y bien dimensionados.</p></div>
+          <ul><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Split, multisplit y conductos</li><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Mantenimiento preventivo</li></ul>
+          <span class="arrow"><iconify-icon icon="tabler:arrow-right" aria-hidden="true"></iconify-icon></span>
+        </a>
+        <a class="service-row" href="#">
+          <img src="../../../public/trabajos/reforma-cocina-moderna-marmol.jpeg" alt="Cocina reformada con encimera de mármol" />
+          <div><h3><iconify-icon icon="tabler:home-cog" aria-hidden="true"></iconify-icon>Reformas integrales</h3><p>Cocinas, baños y viviendas completas, llave en mano.</p></div>
+          <ul><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Presupuesto cerrado</li><li><iconify-icon icon="tabler:check" aria-hidden="true"></iconify-icon>Un solo interlocutor</li></ul>
+          <span class="arrow"><iconify-icon icon="tabler:arrow-right" aria-hidden="true"></iconify-icon></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="block process">
+      <div class="wrap">
+        <div class="section-head">
+          <div><span class="kicker">Método</span><h2>Así trabajamos contigo</h2></div>
+          <p>Sin sorpresas: sabes qué se hace, cuánto cuesta y cuándo terminamos.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><span class="step-tag">Paso 1</span><iconify-icon icon="tabler:message-2" aria-hidden="true"></iconify-icon><h3>Nos cuentas</h3><p>Por teléfono, WhatsApp o el formulario. Respuesta rápida y sin compromiso.</p></div>
+          <div class="step"><span class="step-tag">Paso 2</span><iconify-icon icon="tabler:clipboard-list" aria-hidden="true"></iconify-icon><h3>Visita y presupuesto</h3><p>Revisamos el caso y te damos un presupuesto detallado y gratuito.</p></div>
+          <div class="step"><span class="step-tag">Paso 3</span><iconify-icon icon="tabler:tool" aria-hidden="true"></iconify-icon><h3>Ejecución</h3><p>Técnicos autorizados de cada oficio, coordinados por un responsable.</p></div>
+          <div class="step"><span class="step-tag">Paso 4</span><iconify-icon icon="tabler:rosette-discount-check" aria-hidden="true"></iconify-icon><h3>Entrega con garantía</h3><p>Revisamos el trabajo contigo y queda cubierto 2 años.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <span class="kicker">Presupuesto sin compromiso</span>
+            <h2>¿Tienes una avería o una reforma en mente?</h2>
+            <p>Cuéntanosla y te damos presupuesto sin compromiso.</p>
+          </div>
+          <div>
+            <a class="phone" href="tel:+34637591736">637 591 736</a>
+            <a class="btn btn-light" href="#"><iconify-icon icon="tabler:brand-whatsapp" aria-hidden="true"></iconify-icon>Escribir por WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <h4>IS Instalaciones</h4>
+          <p>Instalaciones y reformas en Barcelona y área metropolitana desde 2016.</p>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <ul><li><a href="tel:+34637591736">637 591 736</a></li><li><a href="#">isinstalacionesbcn@gmail.com</a></li><li>L-V 9:00-18:00 · S 9:00-14:00</li></ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul><li><a href="#">Política de privacidad</a></li><li><a href="#">Configurar cookies</a></li></ul>
+        </div>
+      </div>
+      <div class="legal">© 2026 IS Instalaciones</div>
+    </div>
+  </footer>
+</body>
+</html>

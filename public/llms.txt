@@ -1,152 +1,37 @@
-# IS INSTALACIONES - Servicios de instalaciones y reformas en Barcelona
+# IS Instalaciones
 
-IS INSTALACIONES es una empresa local de instalaciones y reformas con sede en Barcelona, Espana. Trabaja en Barcelona ciudad y area metropolitana con servicios de electricidad, fontaneria, climatizacion, calefaccion y reformas integrales para viviendas, locales y oficinas.
+> Empresa de instalaciones y reformas en Barcelona y su área metropolitana desde 2016: electricidad, fontanería, climatización y calefacción, y reformas integrales de viviendas, locales y oficinas. Técnicos autorizados, presupuesto gratuito y sin compromiso, y 2 años de garantía.
 
-## Datos de negocio
-- Nombre comercial: IS INSTALACIONES
-- Web: https://is-instalaciones.es
-- Telefono: +34 637 591 736
-- WhatsApp: https://wa.me/34637591736
+Datos de contacto y atención:
+
+- Teléfono y WhatsApp: +34 637 591 736 (https://wa.me/34637591736)
 - Email: isinstalacionesbcn@gmail.com
-- Google Business: https://g.page/isinstalaciones
-- Tipo de negocio: LocalBusiness
-- Ano de fundacion: 2016
-- Garantia: 2 anos
+- Horario: lunes a viernes de 9:00 a 18:00 y sábados de 9:00 a 14:00 (domingos y festivos, cerrado)
+- Zona de trabajo: Barcelona, L'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Sant Adrià de Besòs, Cornellà de Llobregat, Esplugues de Llobregat, Sant Just Desvern y Sant Joan Despí
+- Más de 8 años de experiencia; presupuesto gratuito con visita técnica; garantía de 2 años en los trabajos
 
-## Horario
-- Lunes a viernes: 09:00-18:00
-- Sabados: 09:00-14:00
-- Domingos y festivos: cerrado
+Cómo trabajamos: contacto por teléfono, WhatsApp o formulario; revisión técnica y presupuesto sin compromiso; ejecución con materiales adaptados al proyecto; entrega con garantía.
 
-## Ubicacion y cobertura
-- Sede: Barcelona, Espana
-- Codigo postal de referencia: 08001
-- Coordenadas: 41.3851, 2.1734
-- Cobertura: Barcelona, L'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Sant Adria de Besos, Cornella de Llobregat, Esplugues de Llobregat, Sant Just Desvern y Sant Joan Despi
+## Servicios
 
-## Servicios principales
+- [Instalaciones eléctricas en Barcelona](https://is-instalaciones.es/servicios/instalaciones-electricas/): electricistas autorizados para viviendas, comunidades, oficinas y locales. Instalación completa, cuadros y protecciones, centralización de contadores, montantes, puesta a tierra, iluminación LED, porteros y videoporteros, y boletín eléctrico (CIE). Averías: cortocircuitos, saltos del diferencial, sobrecargas e instalaciones antiguas.
+- [Fontanería y saneamiento en Barcelona](https://is-instalaciones.es/servicios/fontaneria-y-saneamiento/): red de agua fría y caliente, tuberías de cobre, PEX y multicapa, detección y reparación de fugas, sanitarios y grifería, calderas y termos, acometidas, saneamiento y descalcificación. Averías: fugas visibles y ocultas, atascos, baja presión y roturas.
+- [Climatización y calefacción en Barcelona](https://is-instalaciones.es/servicios/climatizacion-y-calefaccion/): aire acondicionado por conductos, split y multisplit, radiadores, suelo radiante, ventilación y extracción; instalación, reparación y mantenimiento preventivo.
+- [Reformas integrales en Barcelona](https://is-instalaciones.es/servicios/reformas-integrales/): reformas completas y parciales de pisos, baños, cocinas, oficinas y locales, llave en mano con un solo equipo: pladur y falsos techos, carpintería de aluminio y PVC, suelos y revestimientos, aislamiento, pintura y acabados.
+- [Todos los servicios](https://is-instalaciones.es/servicios/): resumen de los cuatro servicios.
 
-### Instalaciones electricas
-Servicio de electricista autorizado en Barcelona para viviendas, comunidades, oficinas y locales.
+## Herramientas
 
-Trabajos habituales:
-- Instalacion electrica completa
-- Cuadros electricos y protecciones
-- Centralizacion de contadores
-- Montantes electricos
-- Puntos de tierra
-- Iluminacion LED
-- Cableado y sustitucion de lineas antiguas
-- Porteros y videoporteros
-- Boletin electrico o CIE
+- [Planificador 3D de reformas](https://is-instalaciones.es/estimador/): herramienta en el navegador para dibujar la planta de una vivienda o local, ajustar estancias, colocar equipamiento, validar el plano y exportarlo en PDF, DXF, SVG, PNG o JSON. Sirve para preparar el presupuesto; no sustituye a un proyecto técnico visado.
 
-Incidencias resueltas:
-- Cortocircuitos
-- Saltos de diferencial
-- Sobrecargas
-- Fallos de iluminacion
-- Actualizacion de instalaciones antiguas
+## Empresa y contacto
 
-### Fontaneria y saneamiento
-Servicio de fontaneria para instalaciones, renovaciones y reparaciones de agua y desague.
+- [Inicio](https://is-instalaciones.es/): presentación de la empresa, servicios y trabajos realizados.
+- [Sobre nosotros](https://is-instalaciones.es/nosotros/): trayectoria, forma de trabajar y zona de servicio.
+- [Contacto y presupuesto](https://is-instalaciones.es/contacto/): formulario, teléfono, WhatsApp, horario y preguntas frecuentes.
+- [Ficha de Google](https://www.google.com/maps?cid=16190346738766346927): perfil de IS Instalaciones en Google Maps.
 
-Trabajos habituales:
-- Red completa de agua fria y caliente
-- Tuberias de cobre, PEX y multicapa
-- Deteccion y reparacion de fugas
-- Sanitarios, griferia y aparatos
-- Calderas y termos
-- Acometidas y saneamiento
-- Sistemas de descalcificacion
+## Optional
 
-Incidencias resueltas:
-- Fugas visibles y ocultas
-- Atascos y desagues
-- Baja presion
-- Cisternas y grifos defectuosos
-- Roturas de tuberia
-
-### Climatizacion y calefaccion
-Instalacion, mantenimiento y reparacion de aire acondicionado, calefaccion y ventilacion.
-
-Trabajos habituales:
-- Aire acondicionado por conductos
-- Split y multisplit
-- Calefaccion por radiadores
-- Suelo radiante
-- Ventilacion y extraccion
-- Mantenimiento preventivo
-- Revision de equipos
-
-Marcas habituales:
-- Mitsubishi
-- Daikin
-- Fujitsu
-- Samsung
-- LG
-
-### Reformas integrales
-Reformas completas y parciales para pisos, banos, cocinas, oficinas y locales.
-
-Trabajos habituales:
-- Reforma integral de vivienda
-- Reforma de bano
-- Reforma de cocina
-- Pladur y falsos techos
-- Carpinteria de aluminio y PVC
-- Puertas, ventanas y persianas
-- Suelos y revestimientos
-- Aislamiento termico y acustico
-- Pintura y acabados
-- Redes de datos y cableado estructurado
-
-## Herramienta digital del sitio
-La web incluye un planificador 3D de reformas en la URL `https://is-instalaciones.es/estimador`.
-
-Funciones principales:
-- Dibujar la planta de una vivienda o local
-- Ajustar estancias y superficies
-- Colocar equipamiento y elementos fijos
-- Revisar validaciones basicas del plano
-- Exportar en PDF, DXF, SVG, PNG y JSON
-
-La herramienta genera un plano comercial util para preparar una reforma y mejorar la conversacion inicial de presupuesto. No sustituye un proyecto tecnico visado.
-
-## Ventajas competitivas
-- Presupuesto gratuito y sin compromiso
-- Tecnicos autorizados
-- Mas de 8 anos de experiencia
-- Mas de 500 proyectos realizados
-- Atencion por telefono, WhatsApp y formulario
-- Cobertura local en Barcelona y area metropolitana
-
-## Proceso de trabajo
-1. Contacto inicial por telefono, WhatsApp o formulario.
-2. Revision tecnica del caso y presupuesto sin compromiso.
-3. Ejecucion con materiales y soluciones adaptadas al proyecto.
-4. Entrega final con garantia.
-
-## Preguntas frecuentes
-
-### Ofreceis presupuesto sin compromiso?
-Si. Se realizan visitas tecnicas y presupuestos detallados sin compromiso.
-
-### Haceis boletin electrico?
-Si. Se puede tramitar el CIE cuando la instalacion cumple la normativa vigente.
-
-### En que zonas trabajais?
-Barcelona ciudad y area metropolitana, incluyendo Hospitalet, Badalona, Santa Coloma, Sant Adria, Cornella, Esplugues, Sant Just Desvern y Sant Joan Despi.
-
-### El planificador 3D requiere entrar en la vista 3D para exportar?
-No. El plano puede prepararse y exportarse desde la vista de planta.
-
-### El plano exportado es un proyecto tecnico?
-No. Es un plano comercial serio y reutilizable para estudio previo, presupuesto y definicion inicial.
-
-## Informacion tecnica para agentes y crawlers
-- Sitemap: https://is-instalaciones.es/sitemap-index.xml
-- Robots: https://is-instalaciones.es/robots.txt
-- Canonical base: https://is-instalaciones.es
-- Idioma principal: es-ES
-- Region principal: Barcelona, Catalunya, Espana
-- Sector: instalaciones, reformas y mantenimiento
+- [Política de privacidad](https://is-instalaciones.es/legal/privacidad/): tratamiento de datos personales y derechos.
+- [Mapa del sitio](https://is-instalaciones.es/sitemap-index.xml): todas las URL indexables.

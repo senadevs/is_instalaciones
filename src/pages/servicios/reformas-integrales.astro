@@ -1,9 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/reforma-salon-led.jpeg';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
 import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import { Icon } from 'astro-icon/components';
 
@@ -79,6 +82,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Reformas integrales en Barcelona',
+  serviceType: 'Reformas integrales',
+  description: 'Reformas integrales y parciales en Barcelona: baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado y 2 años de garantía.',
+  path: '/servicios/reformas-integrales/',
+});
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -94,14 +104,16 @@ const faqSchema = {
 ---
 
 <Layout
-  title="Reformas Integrales en Barcelona | Baños, Cocinas y Viviendas - IS.INSTALACIONES"
-  description="Reformas integrales y parciales en Barcelona: reforma de baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado gratuito y 2 años de garantía."
-  additionalSchema={faqSchema}
+  title="Reformas Integrales en Barcelona | IS Instalaciones"
+  image="/og/reformas-integrales.jpg"
+  description="Reformas integrales y parciales en Barcelona: baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado y 2 años de garantía."
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-20">
     <Panoramic
-      imagen="/trabajos/reforma-salon-led.jpeg"
+      nivel="p"
+      imagen={heroImagen}
       texto="Reformas Integrales"
     />
 
@@ -127,7 +139,7 @@ const faqSchema = {
               Realizamos tanto <strong>reformas integrales</strong> como reformas parciales: <strong>reforma de baños</strong>, <strong>reforma de cocinas</strong>, cambio de suelos, montaje de pladur, aislamiento o el acondicionamiento de un local. Trabajamos con materiales de primera calidad y acabados de gama alta, cumpliendo siempre los plazos acordados y entregando la obra limpia y terminada.
             </p>
             <p class="text-gray-600 text-base md:text-lg leading-relaxed">
-              Con más de 8 años de experiencia y más de 500 proyectos realizados, somos la <strong>empresa de reformas de confianza</strong> de cientos de familias en Barcelona. Solicita tu <strong>presupuesto gratuito y cerrado</strong>, sin sorpresas ni compromiso, y da el primer paso para transformar tu hogar.
+              Con más de 8 años de experiencia, somos la <strong>empresa de reformas de confianza</strong> de cientos de familias en Barcelona. Solicita tu <strong>presupuesto gratuito y cerrado</strong>, sin sorpresas ni compromiso, y da el primer paso para transformar tu hogar.
             </p>
           </div>
         </div>
@@ -250,6 +262,8 @@ const faqSchema = {
         </div>
       </div>
     </section>
+
+    <RelatedServices actual="reformas-integrales" />
 
     <ContactSection />
   </main>

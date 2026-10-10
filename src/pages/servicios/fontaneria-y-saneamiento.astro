@@ -1,6 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/fontaneria-contadores.jpeg';
+import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
@@ -68,6 +71,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Fontanería y saneamiento en Barcelona',
+  serviceType: 'Fontanería',
+  description: 'Fontaneros profesionales en Barcelona: instalaciones de agua, detección de fugas, cambio de tuberías y calderas. Más de 8 años de experiencia.',
+  path: '/servicios/fontaneria-y-saneamiento/',
+});
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -83,14 +93,16 @@ const faqSchema = {
 ---
 
 <Layout
-  title="Servicios de Fontanería y Saneamiento en Barcelona - IS.INSTALACIONES"
+  title="Fontanería y Saneamiento en Barcelona | IS Instalaciones"
+  image="/og/fontaneria-y-saneamiento.jpg"
   description="Fontaneros profesionales en Barcelona: instalaciones de agua, detección de fugas, cambio de tuberías y calderas. Más de 8 años de experiencia."
-  additionalSchema={faqSchema}
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-20">
     <Panoramic
-    imagen="/trabajos/fontaneria-contadores.jpeg"
+    nivel="p"
+    imagen={heroImagen}
     texto="Servicios de Fontanería"/>
 
     <section class="py-12 md:py-16" aria-label="Sección de servicios">
@@ -234,6 +246,8 @@ const faqSchema = {
       title="¿Tienes una fuga o necesitas un fontanero?"
       text="Pide tu presupuesto de fontanería gratuito y sin compromiso. Fontaneros autorizados, respuesta rápida y 2 años de garantía en cada trabajo."
     />
+
+    <RelatedServices actual="fontaneria-y-saneamiento" />
 
     <ContactSection />
   </main>

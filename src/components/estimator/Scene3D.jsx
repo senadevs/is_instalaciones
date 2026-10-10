@@ -264,7 +264,7 @@ function Room({ room, wall, entrance, selected, onSelect, onEnter }) {
       )}
 
       <Html position={[0, (shape === 'room' ? h : 1) + 0.3, 0]} center distanceFactor={16} zIndexRange={[20, 0]}>
-        <div style={{ background: selected ? '#4f46e5' : 'rgba(255,255,255,.94)', color: selected ? '#fff' : '#1f2937', padding: '3px 9px', borderRadius: '8px', fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 2px 8px rgba(0,0,0,.18)', pointerEvents: 'none' }}>
+        <div style={{ background: selected ? '#046a53' : 'rgba(255,255,255,.94)', color: selected ? '#fff' : '#1f2937', padding: '3px 9px', borderRadius: '8px', fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 2px 8px rgba(0,0,0,.18)', pointerEvents: 'none' }}>
           {t.label} · {(w * l).toFixed(1)} m²
         </div>
       </Html>

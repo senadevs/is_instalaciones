@@ -29,15 +29,20 @@ const SEARCH_INDEX = [
 function Node({ icon, iconColor, title, badge, open, onToggle, children, right }) {
   return (
     <div className="rounded-xl border border-gray-100 bg-gray-50 overflow-hidden">
-      <button type="button" onClick={onToggle} className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-gray-100 transition-colors text-left">
-        <span className="grid place-items-center w-6 h-6 rounded-md shrink-0" style={{ background: (iconColor || '#64748b') + '22', color: iconColor || '#475569' }}>
-          <Icon name={icon} size={14} />
-        </span>
-        <span className="text-sm font-semibold text-slate-800 truncate flex-1">{title}</span>
-        {badge && <span className="text-[10px] text-gray-400 shrink-0">{badge}</span>}
+      {/* Cabecera: el botón de abrir/cerrar y las acciones extra (right) son hermanos, nunca anidados. */}
+      <div className="flex items-center gap-2 pr-3 hover:bg-gray-100 transition-colors">
+        <button type="button" onClick={onToggle} aria-expanded={open} className="flex min-w-0 flex-1 items-center gap-2 py-2.5 pl-3 text-left focus-visible:outline-2 focus-visible:outline-emerald-700">
+          <span className="grid place-items-center w-6 h-6 rounded-md shrink-0" style={{ background: (iconColor || '#64748b') + '22', color: iconColor || '#475569' }}>
+            <Icon name={icon} size={14} />
+          </span>
+          <span className="text-sm font-semibold text-slate-800 truncate flex-1">{title}</span>
+          {badge && <span className="text-[10px] text-gray-500 shrink-0">{badge}</span>}
+        </button>
         {right}
-        <Icon name={open ? 'chevron-down' : 'chevron-right'} size={15} className="text-gray-400 shrink-0" />
-      </button>
+        <button type="button" onClick={onToggle} tabIndex={-1} aria-hidden="true" className="shrink-0 text-gray-400">
+          <Icon name={open ? 'chevron-down' : 'chevron-right'} size={15} />
+        </button>
+      </div>
       {open && <div className="px-3 pb-3 pt-1 border-t border-gray-100 space-y-3 bg-white/40">{children}</div>}
     </div>
   );
@@ -186,7 +191,7 @@ export default function Panel({
                 title={t.label} badge={`${(r.width * r.length).toFixed(1)} m²`}
                 open={open} onToggle={() => setSelectedId(open ? null : r.id)}
                 right={
-                  <button onClick={(e) => { e.stopPropagation(); onRemove(r.id); }} className="text-gray-300 hover:text-red-500 shrink-0" aria-label="Eliminar">
+                  <button type="button" onClick={() => onRemove(r.id)} className="text-gray-400 hover:text-red-500 shrink-0" aria-label={`Eliminar ${t.label}`}>
                     <Icon name="trash-2" size={14} />
                   </button>
                 }>

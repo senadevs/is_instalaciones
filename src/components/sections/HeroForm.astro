@@ -1,5 +1,14 @@
 ---
 import { Icon } from 'astro-icon/components';
+
+// El hero pinta este formulario dos veces (escritorio y móvil): cada copia necesita ids propios para que
+// cada <label for> apunte a su campo. Sin anotaciones WebMCP: la herramienta de presupuesto de la página
+// es el formulario de contacto (X-T11), así los agentes no ven dos herramientas iguales.
+interface Props {
+  variante: 'escritorio' | 'movil';
+}
+const { variante } = Astro.props;
+const id = (campo: string) => `hero-${variante}-${campo}`;
 ---
 <div
   class="hero-form-card backdrop-blur-lg p-5 rounded-xl shadow-2xl w-full border border-white/20"
@@ -7,7 +16,7 @@ import { Icon } from 'astro-icon/components';
   <div class="text-center mb-4">
     <h2
       class="text-2xl font-bold text-gray-800 dark:text-white mb-2"
-      id="hero-form-title"
+      id={id('form-title')}
     >
       Pide tu Presupuesto
     </h2>
@@ -25,7 +34,7 @@ import { Icon } from 'astro-icon/components';
       name="accessKey"
       value="14567cc6-f537-40ba-9af8-ff56d30fa0a2"
     />
-    <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
+    <input type="hidden" name="subject" value="Contacto IS Instalaciones" />
     <input type="hidden" name="replyTo" value="isinstalacionesbcn@gmail.com" />
     <input
       type="hidden"
@@ -35,9 +44,9 @@ import { Icon } from 'astro-icon/components';
 
     <div class="relative">
       <Icon name="lucide:user" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-      <label for="hero-nombre" class="sr-only">Nombre y apellidos</label>
+      <label for={id('nombre')} class="sr-only">Nombre y apellidos</label>
       <input
-        id="hero-nombre"
+        id={id('nombre')}
         name="name"
         type="text"
         placeholder="Nombre y apellidos"
@@ -47,9 +56,9 @@ import { Icon } from 'astro-icon/components';
     </div>
     <div class="relative">
       <Icon name="lucide:mail" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-      <label for="hero-email" class="sr-only">Email</label>
+      <label for={id('email')} class="sr-only">Email</label>
       <input
-        id="hero-email"
+        id={id('email')}
         name="email"
         type="email"
         placeholder="Email"
@@ -60,9 +69,9 @@ import { Icon } from 'astro-icon/components';
     <div class="grid grid-cols-2 gap-4">
       <div class="relative">
         <Icon name="lucide:phone" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-        <label for="hero-telefono" class="sr-only">Teléfono</label>
+        <label for={id('telefono')} class="sr-only">Teléfono</label>
         <input
-          id="hero-telefono"
+          id={id('telefono')}
           name="phone"
           type="tel"
           placeholder="Teléfono"
@@ -71,9 +80,9 @@ import { Icon } from 'astro-icon/components';
       </div>
       <div class="relative">
         <Icon name="lucide:map-pin" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-        <label for="hero-codigo-postal" class="sr-only">C.P.</label>
+        <label for={id('codigo-postal')} class="sr-only">C.P.</label>
         <input
-          id="hero-codigo-postal"
+          id={id('codigo-postal')}
           name="postal_code"
           type="text"
           pattern="[0-9]{5}"
@@ -85,9 +94,9 @@ import { Icon } from 'astro-icon/components';
     </div>
     <div class="relative">
       <Icon name="lucide:file-text" class="w-5 h-5 absolute left-3 top-4 text-gray-400" />
-      <label for="hero-mensaje" class="sr-only">Mensaje</label>
+      <label for={id('mensaje')} class="sr-only">Mensaje</label>
       <textarea
-        id="hero-mensaje"
+        id={id('mensaje')}
         name="message"
         placeholder="¿En qué podemos ayudarte?"
         rows="3"

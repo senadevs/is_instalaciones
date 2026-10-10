@@ -1,0 +1,70 @@
+---
+import { Icon } from 'astro-icon/components';
+
+// Enlazado interno entre páginas de servicio (F6-T2): cada servicio enlaza a los otros tres
+// con un anchor descriptivo, no "ver más".
+interface Props {
+  actual: 'instalaciones-electricas' | 'fontaneria-y-saneamiento' | 'climatizacion-y-calefaccion' | 'reformas-integrales';
+}
+const { actual } = Astro.props;
+
+const servicios = [
+  {
+    slug: 'instalaciones-electricas',
+    nombre: 'Instalaciones eléctricas en Barcelona',
+    texto: 'Cuadros, boletines (CIE), iluminación LED y renovación de la instalación.',
+    icono: 'lucide:zap',
+  },
+  {
+    slug: 'fontaneria-y-saneamiento',
+    nombre: 'Fontanería y saneamiento en Barcelona',
+    texto: 'Detección de fugas, cambio de tuberías y calderas.',
+    icono: 'lucide:droplets',
+  },
+  {
+    slug: 'climatizacion-y-calefaccion',
+    nombre: 'Climatización y calefacción en Barcelona',
+    texto: 'Aire acondicionado y calefacción: instalación y reparación.',
+    icono: 'lucide:snowflake',
+  },
+  {
+    slug: 'reformas-integrales',
+    nombre: 'Reformas integrales en Barcelona',
+    texto: 'Baños, cocinas y viviendas llave en mano con un solo equipo.',
+    icono: 'lucide:hammer',
+  },
+].filter((s) => s.slug !== actual);
+---
+
+<section class="py-12 md:py-16" aria-labelledby="otros-servicios-titulo">
+  <div class="container mx-auto px-4">
+    <div class="max-w-5xl mx-auto">
+      <h2 id="otros-servicios-titulo" data-animate="fade-up" class="text-2xl md:text-3xl font-bold text-center mb-8">
+        Otros servicios que hacemos
+      </h2>
+      <ul data-stagger class="grid gap-5 md:grid-cols-3">
+        {servicios.map((s) => (
+          <li data-animate="fade-up">
+            <a
+              href={`/servicios/${s.slug}`}
+              class="cta-service-card group flex h-full flex-col bg-white p-6 rounded-2xl shadow-md border border-gray-100 border-l-4 border-l-primary relative overflow-hidden transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <div class="cta-stat-shine"></div>
+              <div class="relative z-[1] flex h-full flex-col">
+                <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                  <Icon name={s.icono} class="w-5 h-5 text-primary" aria-hidden="true" />
+                </div>
+                <h3 class="font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">{s.nombre}</h3>
+                <p class="text-gray-600 text-sm leading-snug mb-4">{s.texto}</p>
+                <span class="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                  Ver el servicio
+                  <Icon name="lucide:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

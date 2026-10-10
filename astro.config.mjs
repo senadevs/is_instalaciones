@@ -10,6 +10,7 @@ import react from '@astrojs/react';
 
 import netlify from '@astrojs/netlify';
 import icon from 'astro-icon';
+import { PUBLICAR_ESCOMBROS } from './src/data/escombrocero';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,7 +33,12 @@ export default defineConfig({
     },
   },
 
-  integrations: [sitemap(), react(), icon()],
+  integrations: [
+    // /escombros fuera del sitemap mientras no se publique (X-T9).
+    sitemap({ filter: (page) => PUBLICAR_ESCOMBROS || !page.includes('/escombros') }),
+    react(),
+    icon(),
+  ],
   adapter: netlify(),
   output: 'server'
 });

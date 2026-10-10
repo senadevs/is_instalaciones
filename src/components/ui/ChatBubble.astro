@@ -58,10 +58,20 @@ import { immersiveContent } from '../../data/immersiveContent';
     </div>
 
     <div class="p-3 border-t border-gray-200 bg-white shrink-0">
-      <form id="chat-form" class="flex items-center gap-2">
+      <form
+        id="chat-form"
+        class="flex items-center gap-2"
+        toolname="preguntar_asistente"
+        tooldescription="Hace una pregunta breve al asistente virtual de IS Instalaciones y devuelve su respuesta: servicios, horario, zonas de trabajo, presupuesto o cómo contactar. No sirve para enviar datos personales; para pedir presupuesto usa el formulario de contacto."
+        toolautosubmit
+      >
         <input
           id="chat-input"
+          name="mensaje"
           type="text"
+          aria-label="Escribe tu mensaje al asistente"
+          toolparamdescription="La pregunta para el asistente, en español."
+          required
           placeholder="Escribe tu mensaje..."
           class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           autocomplete="off"
@@ -98,7 +108,9 @@ import { immersiveContent } from '../../data/immersiveContent';
       </div>
       <input
         id="immersive-chat-input"
+        name="mensaje"
         type="text"
+        aria-label="Pregunta al agente en modo inmersivo"
         placeholder="Pregunta al agente..."
         class="flex-1 rounded-full border border-transparent bg-transparent px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-emerald-200 focus:bg-white"
         autocomplete="off"
@@ -643,7 +655,7 @@ import { immersiveContent } from '../../data/immersiveContent';
           chips = theme === 'electricidad'
             ? ['Averias', 'Cuadros', 'Iluminacion']
             : theme === 'climatizacion'
-              ? ['Aire acondicionado', 'Conductos', 'Calefaccion']
+              ? ['Aire acondicionado', 'Conductos', 'Calefacción']
               : theme === 'fontaneria'
                 ? ['Fugas', 'Tuberias', 'Saneamiento']
                 : ['Reformas', 'Pladur', 'Acabados'];
@@ -1112,7 +1124,14 @@ import { immersiveContent } from '../../data/immersiveContent';
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
-        sendMessage(input.value);
+        var enviado = sendMessage(input.value);
+        // WebMCP (X-T11): si el formulario lo invoca un agente de IA, se le devuelve la respuesta del asistente.
+        if (event.agentInvoked && typeof event.respondWith === 'function') {
+          event.respondWith(enviado.then(function () {
+            var ultimo = chatHistory[chatHistory.length - 1];
+            return ultimo && ultimo.role === 'assistant' ? ultimo.content : 'El asistente no ha podido responder. Teléfono: 637 59 17 36.';
+          }));
+        }
       });
 
       if (immersiveForm) {

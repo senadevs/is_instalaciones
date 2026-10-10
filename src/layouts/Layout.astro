@@ -1,73 +1,60 @@
 ---
+import { AREA_SERVED, BUSINESS_ID, GOOGLE_BUSINESS_URL, SITE_URL } from '../data/negocio';
+
+interface Crumb {
+  name: string;
+  path: string;
+}
+
 interface Props {
   title: string;
   description?: string;
   image?: string;
-  keywords?: string[];
   noindex?: boolean;
-  additionalSchema?: object;
+  additionalSchema?: object | object[];
+  /** Migas para BreadcrumbList. Si no se pasan, se deducen de la URL y del title. */
+  breadcrumbs?: Crumb[];
   hideFooter?: boolean;
   hideBanner?: boolean;
 }
 
-const defaultKeywords = [
-  'instalaciones barcelona',
-  'reformas barcelona',
-  'electricista barcelona',
-  'fontanero barcelona',
-  'aire acondicionado barcelona',
-  'calefaccion barcelona',
-  'instalador autorizado barcelona',
-  'reformas integrales barcelona',
-  'mantenimiento instalaciones barcelona',
-  'presupuesto reformas barcelona',
-  'servicios de instalaciones barcelona',
-  'servicios de reformas barcelona',
-  'servicios de electricidad barcelona',
-  'servicios de fontaneria barcelona',
-  'servicios de climatizacion barcelona',
-  'reformas pisos barcelona',
-  'planificador de reformas',
-  'estimador 3d reformas'
-];
-
+// Sin <meta name="keywords">: Google la ignora y solo enseña las keywords a la competencia (F6-T2).
 const {
-  title = 'Servicios de Instalaciones y Reformas en Barcelona | IS INSTALACIONES',
-  description = 'Servicios profesionales de instalaciones y reformas en Barcelona. Electricidad, fontaneria, climatizacion y reformas integrales con tecnicos autorizados, presupuesto gratuito y 2 anos de garantia.',
-  image = '/img/logo.webp',
-  keywords = defaultKeywords,
+  title = 'Instalaciones y Reformas en Barcelona | IS Instalaciones',
+  description = 'Instalaciones y reformas en Barcelona: electricidad, fontanería, climatización y reformas integrales. Técnicos autorizados y 2 años de garantía.',
+  image = '/og/home.jpg',
   noindex = false,
   additionalSchema,
+  breadcrumbs,
   hideFooter = false,
   hideBanner = false
 } = Astro.props;
 
-const siteUrl = 'https://is-instalaciones.es';
+const siteUrl = SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const imageUrl = new URL(image, siteUrl).toString();
+// Las de /og/ salen de scripts/generate-social-images.mjs a 1200x630 (F6-T4).
+const isOgImage = image.startsWith('/og/');
+const imageAlt = `${title.split(' | ')[0].trim()} | IS Instalaciones`;
 
+// Negocio de zona de servicio (sin local): dirección solo con localidad, sin calle, CP ni coordenadas.
 const businessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${siteUrl}#localbusiness`,
-  name: 'IS INSTALACIONES',
-  image: imageUrl,
-  url: canonicalURL.toString(),
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': BUSINESS_ID,
+  name: 'IS Instalaciones',
+  image: new URL('/img/logo.webp', siteUrl).toString(),
+  logo: new URL('/img/logo.webp', siteUrl).toString(),
+  url: `${siteUrl}/`,
   telephone: '+34637591736',
   email: 'isinstalacionesbcn@gmail.com',
-  priceRange: 'EUR',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Barcelona',
-    postalCode: '08001',
-    addressRegion: 'Barcelona',
+    addressRegion: 'Cataluña',
     addressCountry: 'ES'
   },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 41.3851,
-    longitude: 2.1734
-  },
+  hasMap: GOOGLE_BUSINESS_URL,
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -82,17 +69,8 @@ const businessSchema = {
       closes: '14:00'
     }
   ],
-  areaServed: [
-    { '@type': 'City', name: 'Barcelona' },
-    { '@type': 'City', name: "L'Hospitalet de Llobregat" },
-    { '@type': 'City', name: 'Badalona' },
-    { '@type': 'City', name: 'Santa Coloma de Gramenet' },
-    { '@type': 'City', name: 'Cornella de Llobregat' }
-  ],
-  sameAs: [
-    'https://g.page/isinstalaciones',
-    'https://wa.me/34637591736'
-  ],
+  areaServed: AREA_SERVED,
+  sameAs: [GOOGLE_BUSINESS_URL],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Servicios de instalaciones y reformas',
@@ -101,24 +79,24 @@ const businessSchema = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Instalaciones electricas',
-          description: 'Instalaciones electricas, cuadros, boletines y modernizacion de viviendas y locales en Barcelona.'
+          name: 'Instalaciones eléctricas',
+          description: 'Instalaciones eléctricas, cuadros, boletines y modernización de viviendas y locales en Barcelona.'
         }
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Fontaneria y saneamiento',
-          description: 'Fontaneria, fugas, tuberias, calderas y saneamiento para viviendas y negocios.'
+          name: 'Fontanería y saneamiento',
+          description: 'Fontanería, fugas, tuberías, calderas y saneamiento para viviendas y negocios.'
         }
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Climatizacion y calefaccion',
-          description: 'Instalacion y mantenimiento de aire acondicionado, calefaccion y ventilacion.'
+          name: 'Climatización y calefacción',
+          description: 'Instalación y mantenimiento de aire acondicionado, calefacción y ventilación.'
         }
       },
       {
@@ -126,7 +104,7 @@ const businessSchema = {
         itemOffered: {
           '@type': 'Service',
           name: 'Reformas integrales',
-          description: 'Reformas completas de pisos, cocinas, banos, oficinas y locales comerciales.'
+          description: 'Reformas completas de pisos, cocinas, baños, oficinas y locales comerciales.'
         }
       }
     ]
@@ -138,10 +116,40 @@ const websiteSchema = {
   '@type': 'WebSite',
   '@id': `${siteUrl}#website`,
   url: siteUrl,
-  name: 'IS INSTALACIONES',
+  name: 'IS Instalaciones',
   inLanguage: 'es-ES',
-  publisher: { '@id': `${siteUrl}#localbusiness` }
+  publisher: { '@id': BUSINESS_ID }
 };
+
+// BreadcrumbList: Inicio > secciones intermedias que existen como página > página actual (con el title
+// sin la marca). Ni en la home ni en páginas noindex.
+const SECCIONES: Record<string, string> = { servicios: 'Servicios' };
+const segmentos = Astro.url.pathname.split('/').filter(Boolean);
+const migas: Crumb[] =
+  breadcrumbs ??
+  [
+    { name: 'Inicio', path: '/' },
+    ...segmentos
+      .slice(0, -1)
+      .map((seg, i) => ({ seg, path: `/${segmentos.slice(0, i + 1).join('/')}/` }))
+      .filter(({ seg }) => SECCIONES[seg])
+      .map(({ seg, path }) => ({ name: SECCIONES[seg], path })),
+    { name: title.split(' | ')[0].trim(), path: Astro.url.pathname }
+  ];
+const breadcrumbSchema =
+  segmentos.length && !noindex
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: migas.map((miga, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: miga.name,
+          item: new URL(miga.path, siteUrl).toString()
+        }))
+      }
+    : undefined;
+const extraSchemas = additionalSchema ? [additionalSchema].flat() : [];
 
 import Footer from '../components/ui/Footer.astro';
 import Header from '../components/ui/Header.astro';
@@ -149,6 +157,9 @@ import ChatBubble from '../components/ui/ChatBubble.astro';
 import AnnouncementBanner from '../components/ui/AnnouncementBanner.astro';
 import CookieBanner from '../components/ui/CookieBanner.astro';
 import AnalyticsEvents from '../components/ui/AnalyticsEvents.astro';
+// Solo el eje de peso (35 KB frente a 90 KB del eje de anchura, que la web no usa).
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/source-sans-3';
 import '../styles/global.css';
 ---
 
@@ -166,50 +177,52 @@ import '../styles/global.css';
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords.join(', ')} />
-    <meta name="author" content="IS INSTALACIONES" />
+    <meta name="author" content="IS Instalaciones" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="theme-color" content="#046a53" />
 
-    <link rel="alternate" type="text/plain" title="LLM Context" href="/llm.txt" />
-    <link rel="alternate" type="text/plain" title="LLMs Context" href="/llms.txt" />
+    <link rel="alternate" type="text/markdown" title="Contexto para asistentes de IA (llms.txt)" href="/llms.txt" />
     <meta name="ai-content" content="Professional renovation and installation services in Barcelona. Licensed technicians, free quotes and 2-year warranty." />
 
     <meta name="geo.region" content="ES-CT" />
     <meta name="geo.placename" content="Barcelona" />
-    <meta name="geo.position" content="41.3851;2.1734" />
-    <meta name="ICBM" content="41.3851, 2.1734" />
 
     <meta property="og:locale" content="es_ES" />
     <link rel="alternate" hreflang="es-ES" href={canonicalURL} />
     <link rel="canonical" href={canonicalURL} />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/webp" sizes="any" href="/img/logo.webp" />
-    <link rel="apple-touch-icon" href="/img/logo.webp" />
-    <link rel="manifest" href="/site.manifest" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:alt" content="IS INSTALACIONES, servicios de instalaciones y reformas en Barcelona" />
-    <meta property="og:site_name" content="IS.INSTALACIONES" />
+    {isOgImage && <meta property="og:image:type" content="image/jpeg" />}
+    {isOgImage && <meta property="og:image:width" content="1200" />}
+    {isOgImage && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:site_name" content="IS Instalaciones" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <meta name="twitter:image:alt" content="IS INSTALACIONES, servicios de instalaciones y reformas en Barcelona" />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
-    {additionalSchema && (
-      <script type="application/ld+json" set:html={JSON.stringify(additionalSchema)} />
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     )}
+    {extraSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body>
     <Header />

@@ -1,21 +1,39 @@
 ---
-const { imagen, texto } = Astro.props;
+// `nivel`: la página que ya tiene su propio h1 con la keyword pasa "p" para no duplicar el h1.
+const { imagen, texto, nivel = 'h1' } = Astro.props;
+const Titulo = nivel === 'p' ? 'p' : 'h1';
 const isString = typeof imagen === 'string';
-import Image from "astro/components/Image.astro";
+import { Picture } from 'astro:assets';
 ---
 <section class="relative py-20 border-b border-primary/20">
     <div class="absolute inset-0 bg-black/50 z-10"></div>
 
     {isString ? (
-      <img src={imagen} alt={texto} class="absolute inset-0 w-full h-full object-cover" loading="eager" />
+      <img src={imagen} alt={texto} class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" decoding="async" />
     ) : (
-      <Image src={imagen} alt={texto} class="absolute inset-0 w-full h-full object-cover" width={1920} height={600} quality={80} />
+      <Picture
+        src={imagen}
+        alt={texto}
+        class="absolute inset-0 w-full h-full object-cover"
+        formats={['avif', 'webp']}
+        widths={[640, 828, 1080, 1600]}
+        sizes="100vw"
+        quality={58}
+        loading="eager"
+        fetchpriority="high"
+      />
     )}
     <div class="container mx-auto px-4 relative z-20">
       <div class="max-w-4xl mx-auto text-center text-white">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+        <Titulo
+          class:list={[
+            'text-4xl md:text-5xl lg:text-6xl font-bold mb-6',
+            // Como <p> no hereda el estilo base de h1 (Archivo en mayúsculas): se lo damos igual.
+            nivel === 'p' && 'font-heading uppercase tracking-[-0.005em]',
+          ]}
+        >
           {texto}
-        </h1>
+        </Titulo>
         <p class="text-lg md:text-xl mb-8">
           Un camino de dedicación y excelencia en el sector de las
           Instalaciones

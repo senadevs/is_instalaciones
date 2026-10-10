@@ -129,11 +129,13 @@ import { Icon } from 'astro-icon/components';
             aria-labelledby="contact-form-title"
             action="https://api.staticforms.xyz/submit"
             method="POST"
+            toolname="solicitar_presupuesto"
+            tooldescription="Envía una consulta o solicitud de presupuesto a IS Instalaciones (electricidad, fontanería, climatización y reformas en Barcelona y área metropolitana). Úsala cuando el usuario quiera contactar, pedir presupuesto o describir una avería u obra. El usuario revisa los datos y confirma el envío."
           >
             <input type="hidden" name="accessKey" value="14567cc6-f537-40ba-9af8-ff56d30fa0a2">
-            <input type="hidden" name="subject" value="Contacto IS.INSTALACIONES" />
+            <input type="hidden" name="subject" value="Contacto IS Instalaciones" />
             <input type="hidden" name="replyTo" value="isinstalacionesbcn@gmail.com">
-            <input type="hidden" name="redirectTo" value="https://thejornalia.es">
+            <input type="hidden" name="redirectTo" value="https://is-instalaciones.es">
 
             <div class="grid sm:grid-cols-2 gap-4">
               <div class="relative">
@@ -144,6 +146,7 @@ import { Icon } from 'astro-icon/components';
                   name="name"
                   type="text"
                   placeholder="Nombre y apellidos"
+                  toolparamdescription="Nombre y apellidos de la persona que contacta."
                   class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
                   required
                 >
@@ -156,6 +159,7 @@ import { Icon } from 'astro-icon/components';
                   name="email"
                   type="email"
                   placeholder="Email"
+                  toolparamdescription="Email de contacto donde responder."
                   class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
                   required
                 >
@@ -171,6 +175,7 @@ import { Icon } from 'astro-icon/components';
                   name="phone"
                   type="tel"
                   placeholder="Teléfono"
+                  toolparamdescription="Teléfono de contacto (opcional), por ejemplo 600 123 456."
                   class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
                 >
               </div>
@@ -183,6 +188,7 @@ import { Icon } from 'astro-icon/components';
                   type="text"
                   pattern="[0-9]{5}"
                   placeholder="Código postal"
+                  toolparamdescription="Código postal español de 5 cifras donde está la obra o la avería (por ejemplo 08001)."
                   class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
                   required
                 >
@@ -196,6 +202,7 @@ import { Icon } from 'astro-icon/components';
                 id="contact-mensaje"
                 name="message"
                 placeholder="Cuéntanos tu proyecto o incidencia..."
+                toolparamdescription="Descripción del trabajo, obra o avería: qué servicio necesita, dónde y cualquier detalle útil para el presupuesto."
                 rows="4"
                 class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none text-sm"
                 required

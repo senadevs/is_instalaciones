@@ -2,6 +2,9 @@
 import Image from "astro/components/Image.astro";
 
 const currentYear = new Date().getFullYear();
+// Antes: /favicon.svg de 277 KB servido tal cual para un icono de 24 px (F6-T5).
+import logoFooter from '../../assets/logo.png';
+import { PUBLICAR_ESCOMBROS } from '../../data/escombrocero';
 ---
 
 <footer aria-label="Footer" class="bg-primary text-white py-12">
@@ -14,12 +17,12 @@ const currentYear = new Date().getFullYear();
 
           <p class="flex font-bold items-center">
             <Image
-            src="/favicon.svg"
-            alt="IS.INSTALACIONES"
+            src={logoFooter}
+            alt="IS Instalaciones"
             class="w-6 h-6 mr-2 rounded-full"
-            width={400}
-            height={400}
-            quality={100}
+            width={48}
+            height={48}
+            format="webp"
           />
             IS INSTALACIONES</p>
 
@@ -95,6 +98,14 @@ const currentYear = new Date().getFullYear();
               class="hover:text-gray-200 transition-colors"
               >Reformas Generales</a>
           </li>
+          {PUBLICAR_ESCOMBROS && (
+            <li>
+              <a
+                href="/escombros"
+                class="hover:text-gray-200 transition-colors"
+                >Escombros y limpieza de obra</a>
+            </li>
+          )}
         </ul>
       </div>
 
@@ -125,7 +136,13 @@ const currentYear = new Date().getFullYear();
               class="hover:text-gray-200 transition-colors"
               >Política de Privacidad</a>
           </li>
-         
+          <li>
+            <button
+              type="button"
+              data-cookie-settings
+              class="hover:text-gray-200 transition-colors underline-offset-4 hover:underline"
+              >Configurar cookies</button>
+          </li>
         </ul>
       </div>
     </div>
@@ -136,7 +153,7 @@ const currentYear = new Date().getFullYear();
       <p>
         &copy; {currentYear}
         <a href="/" class="hover:text-gray-200 transition-colors"
-          >IS.INSTALACIONES</a
+          >IS Instalaciones</a
         >. Todos los derechos reservados.
       </p>
     </div>

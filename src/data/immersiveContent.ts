@@ -28,6 +28,7 @@ export const immersiveContent = {
   ] satisfies ImmersiveTool[],
   servicePacks: {
     electricidad: {
+      id: 'electricidad',
       title: 'Instalaciones Eléctricas',
       description: 'Cuadros eléctricos, averías, porteros automáticos, iluminación y mantenimiento profesional.',
       icon: '⚡',
@@ -42,6 +43,7 @@ export const immersiveContent = {
       cta: { label: 'Hablar de electricidad', href: 'tel:+34637591736' },
     },
     fontaneria: {
+      id: 'fontaneria',
       title: 'Fontanería y Saneamiento',
       description: 'Fugas, tuberías, contadores, fregaderos, atascos y saneamiento para viviendas y locales.',
       icon: '💧',
@@ -54,6 +56,7 @@ export const immersiveContent = {
       cta: { label: 'Consultar fontanería', href: 'tel:+34637591736' },
     },
     climatizacion: {
+      id: 'climatizacion',
       title: 'Climatización y Calefacción',
       description: 'Instalación, reparación y mantenimiento de aire acondicionado, conductos y calefacción.',
       icon: '❄️',
@@ -71,6 +74,7 @@ export const immersiveContent = {
       cta: { label: 'Ver climatización', href: 'tel:+34637591736' },
     },
     reformas: {
+      id: 'reformas',
       title: 'Reformas Integrales',
       description: 'Reformas de cocinas, baños, salones, pladur, iluminación y renovación integral.',
       icon: '🔨',

@@ -2,15 +2,21 @@
 import { Icon } from 'astro-icon/components';
 ---
 
-<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[60] hidden">
+<div
+  id="cookie-banner"
+  class="fixed bottom-0 left-0 right-0 z-[80] hidden"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="cookie-banner-title"
+>
   <div class="bg-white border-t border-primary/20 shadow-2xl">
     <div class="container mx-auto px-4 py-4 md:py-5">
       <div class="flex flex-col md:flex-row md:items-center gap-4 max-w-6xl mx-auto">
 
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-1">
-            <Icon name="lucide:cookie" class="w-5 h-5 text-primary" />
-            <p class="font-semibold text-slate-800 text-sm">Uso de cookies</p>
+            <Icon name="lucide:cookie" class="w-5 h-5 text-primary" aria-hidden="true" />
+            <p id="cookie-banner-title" class="font-semibold text-slate-800 text-sm">Uso de cookies</p>
           </div>
           <p class="text-gray-600 text-xs leading-relaxed">
             Utilizamos cookies propias y de terceros para analizar el uso de la web y mejorar nuestros servicios. Puedes aceptar todas, rechazarlas o configurar tus preferencias. Más info en nuestra
@@ -19,21 +25,27 @@ import { Icon } from 'astro-icon/components';
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <!-- Rechazar y Aceptar con el mismo peso visual (guía de cookies de la AEPD). -->
           <button
-            id="cookie-reject"
-            class="px-4 py-2 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-          >
-            Rechazar
-          </button>
-          <button
+            type="button"
             id="cookie-config-btn"
-            class="px-4 py-2 text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors"
+            aria-expanded="false"
+            aria-controls="cookie-config"
+            class="px-4 py-2 text-xs font-medium text-primary underline-offset-4 hover:underline rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Configurar
           </button>
           <button
+            type="button"
+            id="cookie-reject"
+            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            Rechazar todo
+          </button>
+          <button
+            type="button"
             id="cookie-accept"
-            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors"
+            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Aceptar todo
           </button>
@@ -51,7 +63,7 @@ import { Icon } from 'astro-icon/components';
             </div>
           </label>
           <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-            <input type="checkbox" id="cookie-analytics" checked class="w-4 h-4 accent-primary" />
+            <input type="checkbox" id="cookie-analytics" class="w-4 h-4 accent-primary" />
             <div>
               <p class="text-xs font-semibold text-slate-800">Analíticas</p>
               <p class="text-[10px] text-gray-500">Google Analytics</p>
@@ -67,8 +79,9 @@ import { Icon } from 'astro-icon/components';
         </div>
         <div class="flex justify-end mt-3">
           <button
+            type="button"
             id="cookie-save"
-            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors"
+            class="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-secondary rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Guardar preferencias
           </button>
@@ -100,7 +113,7 @@ import { Icon } from 'astro-icon/components';
       try { return JSON.parse(localStorage.getItem(COOKIE_KEY)); } catch(e) { return null; }
     }
     function saveConsent(consent) {
-      localStorage.setItem(COOKIE_KEY, JSON.stringify(consent));
+      try { localStorage.setItem(COOKIE_KEY, JSON.stringify(consent)); } catch(e) {}
     }
     // Aplica la elección del usuario a las señales de consentimiento.
     function applyConsent(c) {
@@ -121,8 +134,23 @@ import { Icon } from 'astro-icon/components';
       })(window,document,'script','dataLayer','GTM-5L2DX9HF');
     }
 
+    // Al retirar el consentimiento analítico se borran las cookies de GA ya creadas.
+    function clearAnalyticsCookies() {
+      var host = location.hostname.replace(/^www\./, '');
+      document.cookie.split(';').forEach(function(part) {
+        var name = part.split('=')[0].trim();
+        if (!/^(_ga|_gid|_gat)/.test(name)) return;
+        ['', host, '.' + host].forEach(function(domain) {
+          document.cookie = name + '=; Max-Age=0; path=/' + (domain ? '; domain=' + domain : '');
+        });
+      });
+    }
+
     function initCookieBanner() {
       var banner = document.getElementById('cookie-banner');
+      if (!banner || banner.dataset.ready) return;
+      banner.dataset.ready = 'true';
+
       var acceptBtn = document.getElementById('cookie-accept');
       var rejectBtn = document.getElementById('cookie-reject');
       var configBtn = document.getElementById('cookie-config-btn');
@@ -131,41 +159,57 @@ import { Icon } from 'astro-icon/components';
       var analyticsCheck = document.getElementById('cookie-analytics');
       var marketingCheck = document.getElementById('cookie-marketing');
 
-      if (!banner) return;
+      function setConfigOpen(open) {
+        configPanel.classList.toggle('hidden', !open);
+        configBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      function decide(c) {
+        var prev = getConsent();
+        saveConsent(c); applyConsent(c);
+        if (c.analytics || c.marketing) loadGTM();
+        if (prev && prev.analytics && !c.analytics) clearAnalyticsCookies();
+        banner.classList.add('hidden');
+      }
+
+      // Reabre el banner con el panel de preferencias y la elección actual (enlace del footer).
+      function openSettings() {
+        var current = getConsent() || {};
+        analyticsCheck.checked = !!current.analytics;
+        marketingCheck.checked = !!current.marketing;
+        banner.classList.remove('hidden');
+        setConfigOpen(true);
+        analyticsCheck.focus();
+      }
+      window.openCookieSettings = openSettings;
+
+      acceptBtn.addEventListener('click', function() {
+        decide({ necessary: true, analytics: true, marketing: true });
+      });
+      rejectBtn.addEventListener('click', function() {
+        decide({ necessary: true, analytics: false, marketing: false });
+      });
+      configBtn.addEventListener('click', function() {
+        setConfigOpen(configPanel.classList.contains('hidden'));
+      });
+      saveBtn.addEventListener('click', function() {
+        decide({ necessary: true, analytics: analyticsCheck.checked, marketing: marketingCheck.checked });
+      });
+      document.addEventListener('click', function(e) {
+        var trigger = e.target && e.target.closest ? e.target.closest('[data-cookie-settings]') : null;
+        if (!trigger) return;
+        e.preventDefault();
+        openSettings();
+      });
 
       var consent = getConsent();
-
       // Ya eligió antes: aplica su consentimiento y carga GTM si autorizó algo.
       if (consent) {
         applyConsent(consent);
         if (consent.analytics || consent.marketing) loadGTM();
         return;
       }
-
       banner.classList.remove('hidden');
-
-      acceptBtn.addEventListener('click', function() {
-        var c = { necessary: true, analytics: true, marketing: true };
-        saveConsent(c); applyConsent(c); loadGTM();
-        banner.classList.add('hidden');
-      });
-
-      rejectBtn.addEventListener('click', function() {
-        var c = { necessary: true, analytics: false, marketing: false };
-        saveConsent(c); applyConsent(c); // queda todo denegado, GTM no se carga
-        banner.classList.add('hidden');
-      });
-
-      configBtn.addEventListener('click', function() {
-        configPanel.classList.toggle('hidden');
-      });
-
-      saveBtn.addEventListener('click', function() {
-        var c = { necessary: true, analytics: analyticsCheck.checked, marketing: marketingCheck.checked };
-        saveConsent(c); applyConsent(c);
-        if (c.analytics || c.marketing) loadGTM();
-        banner.classList.add('hidden');
-      });
     }
 
     if (document.readyState === 'loading') {
