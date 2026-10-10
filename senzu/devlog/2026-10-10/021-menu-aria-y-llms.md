@@ -15,7 +15,7 @@ El usuario pasó el informe de Lighthouse «Navegación agéntica»: (1) «Certa
 - `public/llm.txt` (duplicado) retirado; `public/_redirects` lo redirige con 301 a `/llms.txt` (el build lo copia a `dist/_redirects`). En el `<head>`, un solo `<link rel="alternate" type="text/markdown">` a `/llms.txt`.
 
 ## Commits
-- (ver siguiente commit) fix(seo): menu sin roles aria de menu y llms.txt con enlaces
+- `e5af958` fix(seo): menu sin roles aria de menu y llms.txt con enlaces
 
 ## Verificación
 - Lighthouse accesibilidad de la home (local): 96; `aria-required-children` ya no aplica (sin `menubar`), `aria-allowed-role` y `aria-allowed-attr` OK.
