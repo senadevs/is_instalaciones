@@ -4,6 +4,7 @@ import Image from "astro/components/Image.astro";
 const currentYear = new Date().getFullYear();
 // Antes: /favicon.svg de 277 KB servido tal cual para un icono de 24 px (F6-T5).
 import logoFooter from '../../assets/logo.png';
+import { PUBLICAR_ESCOMBROS } from '../../data/escombrocero';
 ---
 
 <footer aria-label="Footer" class="bg-primary text-white py-12">
@@ -97,12 +98,14 @@ import logoFooter from '../../assets/logo.png';
               class="hover:text-gray-200 transition-colors"
               >Reformas Generales</a>
           </li>
-          <li>
-            <a
-              href="/escombros"
-              class="hover:text-gray-200 transition-colors"
-              >Escombros y limpieza de obra</a>
-          </li>
+          {PUBLICAR_ESCOMBROS && (
+            <li>
+              <a
+                href="/escombros"
+                class="hover:text-gray-200 transition-colors"
+                >Escombros y limpieza de obra</a>
+            </li>
+          )}
         </ul>
       </div>
 

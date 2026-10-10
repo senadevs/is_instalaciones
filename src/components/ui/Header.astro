@@ -16,7 +16,7 @@ const menuItems = [
       { href: "/servicios/fontaneria-y-saneamiento", text: "FONTANERÍA" },
       { href: "/servicios/climatizacion-y-calefaccion", text: "CLIMATIZACIÓN" },
       { href: "/servicios/reformas-integrales", text: "REFORMAS" },
-      { href: "/escombros", text: "ESCOMBROS Y LIMPIEZA DE OBRA" }
+      ...(PUBLICAR_ESCOMBROS ? [{ href: "/escombros", text: "ESCOMBROS Y LIMPIEZA DE OBRA" }] : [])
     ]
   },
   { href: "/estimador", text: "PLANIFICADOR" },
@@ -25,6 +25,7 @@ const menuItems = [
 
 const currentPath = Astro.url.pathname;
 const currentHash = Astro.url.hash;
+import { PUBLICAR_ESCOMBROS } from '../../data/escombrocero';
 ---
 
 <header class="bg-primary text-theme-light fixed w-full z-50 transition-all duration-300" role="banner">

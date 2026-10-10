@@ -8,6 +8,10 @@ export interface EscombroceroService {
   icon: string;
 }
 
+// /escombros aún NO se publica (decisión del cliente, 2026-10-10, X-T9). En false: sin enlaces en cabecera
+// y footer, fuera del sitemap y la página responde 404. Para publicarla, poner true.
+export const PUBLICAR_ESCOMBROS = false;
+
 // Subdominio confirmado por el cliente (2026-10-01). El repo de Escombrocero aún declara escombrocero.es: corregir allí (X-T4).
 export const ESCOMBROCERO_URL = "https://escombros.is-instalaciones.es";
 

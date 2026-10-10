@@ -9,7 +9,10 @@ import Layout from '../../layouts/Layout.astro';
 import EscombrosHero from '../../components/escombros/EscombrosHero.astro';
 import ServiciosEscombrocero from '../../components/escombros/ServiciosEscombrocero.astro';
 import Contadores from '../../components/escombros/Contadores.astro';
-import { ESCOMBROCERO_URL } from '../../data/escombrocero';
+import { ESCOMBROCERO_URL, PUBLICAR_ESCOMBROS } from '../../data/escombrocero';
+
+// Sin publicar todavía (X-T9): responde como cualquier página inexistente.
+if (!PUBLICAR_ESCOMBROS) return Astro.rewrite('/404');
 
 const serviceSchema = {
   '@context': 'https://schema.org',

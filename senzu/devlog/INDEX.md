@@ -27,3 +27,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 021 | 2026-10-10 | Menú sin roles de menú y llms.txt en formato llmstxt.org | fix | 017 | X-T10, X-T8 |
 | 022 | 2026-10-10 | El agente del chat no respondía: modelo retirado por NVIDIA | fix | — | X-T7 |
 | 023 | 2026-10-10 | WebMCP en los formularios y redirección del formulario de contacto | feature | 021 | X-T11, X-T12 |
+| 024 | 2026-10-10 | /escombros sin publicar: preparación del despliegue | infra | 011 | X-T9 |

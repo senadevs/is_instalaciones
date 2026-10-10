@@ -159,7 +159,7 @@
 - Hecho cuando: tras enviar, el usuario vuelve a is-instalaciones.es.
 - Verificar: `redirectTo` en el HTML de /, servicios y /contacto/.
 
-### X-T9 · Desplegar sin /escombros  [S] [todo]
+### X-T9 · Desplegar sin /escombros  [S] [doing]
 - Skill: deploy-ops
 - Archivos: `Header.astro`, `Footer.astro`, `src/pages/escombros/`, sitemap
 - Hecho cuando: al desplegar la rama, /escombros no se publica (ni enlace en menú y footer, ni URL en el sitemap) hasta que el cliente lo apruebe; decidir con el usuario el mecanismo (rama de despliegue sin la página o bandera de entorno).
