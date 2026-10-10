@@ -15,7 +15,8 @@
 - /escombros sin OG propia (usa la de la home): no sube a producción todavía (X-T9).
 
 ## Commits
-- `83b2a65` feat(seo): imagenes og por pagina y favicons
+- `83b2a65` renombrado de site.manifest (el git add del resto fallo)
+- `4a0579d` feat(seo): imagenes og por pagina, favicons y manifest
 
 ## Decisiones (resumen)
 - Fotos reales de obra en vez de imágenes generadas por IA: demuestran trabajo propio (E-E-A-T) y no inventan nada.
