@@ -19,7 +19,7 @@
 - **X-T12 · fallo encontrado**: el formulario de contacto tenía `redirectTo="https://thejornalia.es"`: tras enviar, el usuario acababa en otra web. Ahora `https://is-instalaciones.es` (como el del hero).
 
 ## Commits
-- (ver siguiente commit) feat(webmcp): formularios para agentes de ia y redireccion de contacto
+- `c32f2ad` feat(webmcp): formularios para agentes de ia y redireccion de contacto
 
 ## Verificación
 - Chrome 154 con `--enable-experimental-web-platform-features --enable-features=WebMCP,WebMCPTesting`: `document.modelContext.getTools()` en /contacto/ → `preguntar_asistente` (`mensaje`) y `solicitar_presupuesto` (`name`, `email`, `phone`, `postal_code` con `pattern [0-9]{5}`, `message`; obligatorios `name`, `email`, `postal_code`, `message`). Los campos ocultos (`accessKey`, `redirectTo`…) **no** se exponen.
