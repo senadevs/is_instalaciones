@@ -28,7 +28,7 @@
 - **Regresión de F6-T2 corregida:** el título de la cabecera de los servicios pasó de `h1` a `p` y perdió Archivo en mayúsculas (va ligado a h1/h2 en `global.css`). Ahora el `<p>` lleva `font-heading uppercase` (comprobado en los 3 temas, un solo h1).
 
 ## Commits
-- (ver siguiente commit) perf(web): imagenes lcp responsive, fotos recomprimidas y video diferido
+- `3f24bba` perf(web): imagenes lcp responsive, fotos recomprimidas y video diferido
 
 ## Verificación (Lighthouse móvil, mediana de 3, build de producción con brotli)
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO | FCP | LCP | TBT | CLS |
