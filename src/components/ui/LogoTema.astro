@@ -1,0 +1,51 @@
+---
+// Logo de la cabecera según el tema, SIN JavaScript (F6-T5). Sustituye a la isla React `Logo.tsx`
+// (`client:load`), que cargaba React en todas las páginas y el PNG original de 2250 px.
+// Mismas 3 imágenes por tema y misma transición de opacidad; solo cambia lo que se descarga.
+import { Image } from 'astro:assets';
+import logo from '../../assets/logo.png';
+import logoDark from '../../assets/bl.png';
+import white from '../../assets/whi.png';
+
+// La cabecera mide como mucho 112 px (lg:h-28) con py-2: 96 px de logo, 192 px para pantallas 2x.
+// `claro` = tema por defecto (sin data-theme oscuro).
+const variantes = [
+  { src: logo, tema: 'claro' },
+  { src: logoDark, tema: 'dark-green' },
+  { src: white, tema: 'dark' },
+];
+---
+
+<div class="logo-tema h-full aspect-square relative">
+  {variantes.map(({ src, tema }) => (
+    <Image
+      src={src}
+      alt={tema === 'claro' ? 'Logo IS Instalaciones' : ''}
+      aria-hidden={tema === 'claro' ? undefined : 'true'}
+      data-logo-tema={tema}
+      width={192}
+      height={192}
+      format="webp"
+      quality={85}
+      loading="eager"
+      class="absolute inset-0 h-full w-full object-contain"
+    />
+  ))}
+</div>
+
+<style>
+  .logo-tema :global(img) {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+  :global(html:not([data-theme='dark']):not([data-theme='dark-green'])) .logo-tema :global([data-logo-tema='claro']),
+  :global(html[data-theme='dark-green']) .logo-tema :global([data-logo-tema='dark-green']),
+  :global(html[data-theme='dark']) .logo-tema :global([data-logo-tema='dark']) {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-tema :global(img) {
+      transition: none;
+    }
+  }
+</style>

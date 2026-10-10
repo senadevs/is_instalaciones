@@ -286,7 +286,7 @@
 - Verificar: vista previa de OG de 2 URLs.
 - Depende de: F3-T1
 
-### F6-T5 · Core Web Vitals  [M] [doing] — avance en senzu/devlog/2026-10-10/019-core-web-vitals.md (falta el logo de cabecera)
+### F6-T5 · Core Web Vitals  [M] [done] → senzu/devlog/2026-10-10/019-core-web-vitals.md y 020-logo-sin-react.md (home 89: desviación justificada por el slider, D-005)
 - Skill: code-quality → references/performance.md
 - Archivos: según hallazgos (imágenes, JS de islas, fuentes)
 - Hecho cuando: Lighthouse móvil ≥90 en rendimiento, SEO y accesibilidad en home y una página de servicio (o desviación justificada).

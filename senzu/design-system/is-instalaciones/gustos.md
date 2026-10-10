@@ -6,7 +6,7 @@
 
 ## No (vetado — NUNCA proponer de nuevo sin preguntar)
 - 2026-10-01 · "no la veo tan profesional en la fuente y la forma en que lo mostramos": nada de la fuente del sistema (system-ui) como fuente PRINCIPAL de la marca (como respaldo en la pila de fuentes sí se permite), iconos de colores distintos por servicio ni iconos dentro del párrafo.
-- 2026-10-01 · "haz omitido todo lo que tenemos, los temas y los colores [...] solo queríamos mejorar algunas cosas, no que me cambies la web entera": NO rehacer estructura ni layouts. Se mejora sobre la web real conservando los 3 temas (`default`, `dark-green`, `dark`), la combinación de colores actual y la disposición de secciones. Cada mejora se enseña con antes/después en los 3 temas.
+- 2026-10-01 · "haz omitido todo lo que tenemos, los temas y los colores [...] solo queríamos mejorar algunas cosas, no que me cambies la web entera": NO rehacer estructura ni layouts. Se mejora sobre la web real conservando los 3 temas del selector TAL CUAL (claro, verde oscuro y oscuro: mismos colores, mismo logo por tema y mismo comportamiento), la combinación de colores actual y la disposición de secciones. Optimizar cómo se cargan (menos peso, menos JS) sí se permite si el resultado se ve idéntico (2026-10-10). Cada mejora se enseña con antes/después en los 3 temas.
 - (siembra por defecto) lista negra anti-IA de `ui-ux-pro-max/references/es/anti-ia.md`: badges de disponibilidad, numeración de secciones, "trusted by" gris, métricas sin respaldo, copy hinchado, emojis como iconos.
 
 ## Dudas / pendiente

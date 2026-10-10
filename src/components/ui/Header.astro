@@ -3,7 +3,7 @@ import ThemeSwitcher from './ThemeSwitcher.astro';
 import Image from 'astro/components/Image.astro';
 import logoDark from '../assets/bl.png';
 import logo from '../assets/logo.png';
-import Logo from './Logo';
+import LogoTema from './LogoTema.astro';
 
 const menuItems = [
   { href: "/", text: "INICIO" },
@@ -32,7 +32,7 @@ const currentHash = Astro.url.hash;
     <div class="flex justify-between items-center h-full">
       <div class="h-full flex items-center">
         <a href="/" class="text-base lg:text-xl font-bold flex items-center justify-center h-full py-2 transition-all duration-300" aria-label="IS Instalaciones - Ir a inicio">
-          <Logo client:load />
+          <LogoTema />
           <span class="hidden md:inline ml-2 text-sm lg:text-lg transition-all duration-300">IS.INSTALACIONES</span>
         </a>
       </div>

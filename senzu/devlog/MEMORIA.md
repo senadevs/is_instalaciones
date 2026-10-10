@@ -16,6 +16,7 @@
 - D-010 · SEO on-page: un h1 por página (Panoramic con `nivel="p"` donde la página ya tiene h1), titles ≤ 60 con «| IS Instalaciones», descriptions ≤ 155, sin `meta keywords`; cada servicio enlaza a los otros con `RelatedServices` · ver 015
 - D-011 · Negocio sin local (solo domicilio fiscal; no se dice en público): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
 - D-012 · OG 1200x630 por página con fotos reales de obra (no IA) y favicons desde el logo; se regeneran con `node scripts/generate-social-images.mjs` · ver 018
+- D-013 · Rendimiento: imágenes LCP con `<Picture>` responsive y `fetchpriority`, vídeo del hero sin autoplay, fotos de `/trabajos` ≤ 1600 px, logo de cabecera sin JS (`LogoTema.astro`); medir con build + brotli, no con `astro dev` · ver 019, 020
 
 ## Reglas del cliente
 - No decir en público que no hay local (resta prestigio): ni en textos, ni en `llms.txt`; el schema simplemente no publica dirección · ver 017
@@ -34,10 +35,9 @@
 
 - Medir rendimiento con `astro dev` o sin compresión falsea Lighthouse (HTML 232 KB frente a 40 KB): build con adaptador Node (`--no-save`) + servidor con brotli · ver 019
 - `astro check` se queda sin memoria si existe `dist-perf/` (lo analiza): borrarlo antes · ver 019
-- Hook `code-hygiene` de Senzu: bloquea los nombres de tema (`default`, `dark-green`) porque `gustos.md` los cita en «No» al pedir conservarlos (falso positivo) · ver 019
+- Hook `code-hygiene` de Senzu: bloqueaba los nombres internos de tema porque `gustos.md` los citaba en «No»; resuelto reformulando `gustos.md` sin citarlos (no volver a escribirlos allí) · ver 019, 020
 
 ## Pendientes abiertos
-- F6-T5: logo de cabecera sin isla React (bloqueado por el hook) para home ≥ 90 estable (hoy 85-90) · ver 019
 - X-T5 chat en móvil · X-T6 cookies en móvil · X-T7 el agente del chat no responde (¿modelo `meta/llama-3.1-8b-instruct` inexistente o retirado?) · X-T8 `llms.txt` con buenas prácticas · X-T9 desplegar sin /escombros · ver 017
 - X-T4: página "Instalaciones y reformas" en Escombrocero hacia IS y corregir allí `SITE.url` (declara escombrocero.es) · ver 011
 - Cliente: ¿móvil del planificador con pestañas "Plano / Ajustes"? y encuadre de la vista 3D · ver 010
