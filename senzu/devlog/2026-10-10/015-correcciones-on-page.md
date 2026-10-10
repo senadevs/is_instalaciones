@@ -16,7 +16,7 @@
 - Tildes en metas: revisadas; no quedan sin tilde (las únicas eran las keywords eliminadas). `/nosotros` ya tenía «Sobre nosotros» desde 006.
 
 ## Commits
-- (ver siguiente commit) fix(seo): un h1 por pagina, metas cortas y enlazado entre servicios
+- `8f449a9` fix(seo): un h1 por pagina, metas cortas y enlazado entre servicios
 
 ## Decisiones (resumen)
 - Degradar el título del Panoramic a `<p>` (no a h2) en servicios: un h2 antes del h1 rompe el orden de encabezados.
