@@ -4,8 +4,25 @@ import knowledgeBase from '../../data/knowledge.md?raw';
 
 const NVIDIA_API_KEY = import.meta.env.NVIDIA_API_KEY;
 const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1';
-const MODEL = 'meta/llama-3.1-8b-instruct';
+// NVIDIA retira modelos sin aviso: 'meta/llama-3.1-8b-instruct' empezó a devolver 410 Gone y el chat dejó
+// de responder (X-T7, 2026-10-10). Se prueba en orden; NVIDIA_CHAT_MODEL (lista separada por comas) manda.
+const DEFAULT_MODELS = ['openai/gpt-oss-20b'];
+const CONFIGURED_MODELS = ((import.meta.env.NVIDIA_CHAT_MODEL as string | undefined) ?? '')
+  .split(',')
+  .map((m) => m.trim())
+  .filter(Boolean);
+const MODELS = CONFIGURED_MODELS.length ? CONFIGURED_MODELS : DEFAULT_MODELS;
+// Modelos de razonamiento (gpt-oss): con 'low' el primer token llega en ~1 s en vez de 3-6 s.
+const REASONING_EFFORT = 'low';
+const REQUEST_TIMEOUT_MS = 20_000;
+const FALLBACK_REPLY =
+  'Ahora mismo no puedo responder. Llámanos al 637 59 17 36 o escríbenos por WhatsApp y te atendemos enseguida.';
 const TZ = 'Europe/Madrid';
+
+function isModelUnavailable(error: any) {
+  const status = error?.status;
+  return status === 404 || status === 410 || error?.name === 'APIConnectionTimeoutError';
+}
 
 function getHorarioContext() {
   const now = new Date();
@@ -172,28 +189,50 @@ export const POST: APIRoute = async ({ request }) => {
     const openai = new OpenAI({
       apiKey: NVIDIA_API_KEY,
       baseURL: NVIDIA_BASE_URL,
+      timeout: REQUEST_TIMEOUT_MS,
+      maxRetries: 1,
     });
 
-    const completion = await openai.chat.completions.create({
-      model: MODEL,
-      messages: [{ role: 'system', content: buildSystemPrompt(mode) }, ...messages],
-      temperature: mode === 'immersive' ? 0.45 : 0.3,
-      top_p: 0.95,
-      max_tokens: 4000,
-      stream: true,
-    } as any);
+    let completion: any = null;
+    let lastError: any = null;
+    for (const model of MODELS) {
+      try {
+        completion = await openai.chat.completions.create({
+          model,
+          messages: [{ role: 'system', content: buildSystemPrompt(mode) }, ...messages],
+          temperature: mode === 'immersive' ? 0.45 : 0.3,
+          top_p: 0.95,
+          max_tokens: 4000,
+          reasoning_effort: REASONING_EFFORT,
+          stream: true,
+        } as any);
+        break;
+      } catch (err: any) {
+        lastError = err;
+        if (!isModelUnavailable(err)) throw err;
+        console.error(`Chat: modelo ${model} no disponible (${err?.status ?? err?.name}); probando el siguiente`);
+      }
+    }
+    if (!completion) throw lastError ?? new Error('Sin modelos de chat disponibles');
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
+        let sent = false;
         try {
           for await (const chunk of completion as any) {
+            // Solo el contenido final: el razonamiento de gpt-oss llega aparte (reasoning_content).
             const content = chunk.choices?.[0]?.delta?.content;
-            if (content) controller.enqueue(encoder.encode(content));
+            if (content) {
+              sent = true;
+              controller.enqueue(encoder.encode(content));
+            }
           }
         } catch (err: any) {
           console.error('NVIDIA stream error:', err?.message || err);
         } finally {
+          // Sin esto, un stream vacío o cortado dejaba la burbuja del chat en blanco.
+          if (!sent) controller.enqueue(encoder.encode(FALLBACK_REPLY));
           controller.close();
         }
       },
@@ -204,7 +243,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (error: any) {
     console.error('Chat API error:', error?.message || error);
-    return new Response(JSON.stringify({ error: error?.message || 'Error processing request' }), {
+    // El detalle del proveedor va al log, no al navegador.
+    return new Response(JSON.stringify({ error: 'Error processing request' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

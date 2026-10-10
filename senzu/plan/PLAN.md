@@ -128,7 +128,7 @@
 - Verificar: ui-verify a 375/768/1440 con el banner y con «Configurar» abierto.
 - Depende de: —
 
-### X-T7 · El agente del chat no responde  [S] [todo]
+### X-T7 · El agente del chat no responde  [S] [done] → senzu/devlog/2026-10-10/022-chat-modelo-retirado.md
 - Skill: depurar + code-quality → references/llm-apps.md
 - Archivos: `src/pages/api/chat.ts` (`MODEL = 'meta/llama-3.1-8b-instruct'`, vía @openrouter/ai-sdk-provider)
 - Hecho cuando: causa reproducida y anotada (hipótesis: ese id no existe en OpenRouter, donde sería `meta-llama/...`, o el modelo se retiró); modelo vigente configurado, errores del proveedor registrados con `console.error` y mensaje amable al usuario si falla.
