@@ -34,4 +34,6 @@
 - Cliente: acceso a GTM/GA4 en su Chrome para F7-T3 (conversiones) · ver 005
 - Sin linter configurado (`npm run lint` no existe) · ver 004
 - ui-verify (2026-10-01): imágenes sin dimensiones, tap targets < 44 px, texto < 12 px, 2 h1 en servicios → F4/F5/F6 · ver 012
+- Producción va por detrás de la rama: `/escombros/` da 404 allí y está en el sitemap; titles antiguos «IS.INSTALACIONES» · ver 014
+- SEO: 2 h1 en servicios, titles/descriptions largos, `meta keywords`, sin BreadcrumbList, NAP sin calle; LCP móvil 3,8-4,3 s → F6-T2/T3/T5 · ver 014
 - El aviso "¿Tienes dudas? Abrir asistente" tapa el hero en escritorio (propuesta: moverlo a la derecha) · ver 011

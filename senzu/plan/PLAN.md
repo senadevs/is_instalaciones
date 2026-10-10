@@ -221,7 +221,7 @@
 
 ## F6 — SEO
 
-### F6-T1 · Auditoría SEO técnica con evidencia  [S] [todo]
+### F6-T1 · Auditoría SEO técnica con evidencia  [S] [done] → senzu/devlog/2026-10-10/014-auditoria-seo.md
 - Skill: marketing-seo → SKILL.md §SEO on-page (+ checklist técnico)
 - Archivos: — (informe en el devlog)
 - Hecho cuando: tabla por URL (title, description, h1, canonical, schema, indexable, OG) desde el build y `sitemap-index.xml`; Lighthouse SEO y rendimiento de home y una página de servicio.

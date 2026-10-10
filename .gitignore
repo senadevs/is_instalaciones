@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # caché de Python (buscador de ui-ux-pro-max)
 __pycache__/
+
+# Informes crudos de Lighthouse (pesados; el resumen va en senzu/auditoria/)
+senzu/auditoria/lighthouse/
