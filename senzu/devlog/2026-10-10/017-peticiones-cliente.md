@@ -12,7 +12,7 @@
 - Memoria: dos reglas del cliente nuevas y los pendientes.
 
 ## Commits
-- (ver siguiente commit) docs(plan): peticiones del usuario y llms sin mencionar el local
+- `1a49cac` docs(plan): peticiones del usuario y llms sin mencionar el local
 
 ## Decisiones (resumen)
 - /escombros no sube a producción hasta que el cliente lo apruebe (X-T9 decide el mecanismo con el usuario).
