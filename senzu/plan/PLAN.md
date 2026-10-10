@@ -235,7 +235,7 @@
 - Verificar: re-ejecutar la auditoría de F6-T1 sin errores.
 - Depende de: F6-T1
 
-### F6-T3 · Datos estructurados completos  [M] [todo]
+### F6-T3 · Datos estructurados completos  [M] [done] → senzu/devlog/2026-10-10/016-datos-estructurados.md (Rich Results Test pendiente de URL pública)
 - Skill: marketing-seo → §schema
 - Archivos: `Layout.astro`, páginas de servicio
 - Hecho cuando: LocalBusiness (HomeAndConstructionBusiness) con NAP real, BreadcrumbList en todas las páginas, Service por servicio y FAQPage válido.

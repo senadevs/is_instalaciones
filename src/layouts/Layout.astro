@@ -1,10 +1,19 @@
 ---
+import { AREA_SERVED, BUSINESS_ID, GOOGLE_BUSINESS_URL, SITE_URL } from '../data/negocio';
+
+interface Crumb {
+  name: string;
+  path: string;
+}
+
 interface Props {
   title: string;
   description?: string;
   image?: string;
   noindex?: boolean;
-  additionalSchema?: object;
+  additionalSchema?: object | object[];
+  /** Migas para BreadcrumbList. Si no se pasan, se deducen de la URL y del title. */
+  breadcrumbs?: Crumb[];
   hideFooter?: boolean;
   hideBanner?: boolean;
 }
@@ -16,36 +25,33 @@ const {
   image = '/img/logo.webp',
   noindex = false,
   additionalSchema,
+  breadcrumbs,
   hideFooter = false,
   hideBanner = false
 } = Astro.props;
 
-const siteUrl = 'https://is-instalaciones.es';
+const siteUrl = SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const imageUrl = new URL(image, siteUrl).toString();
 
+// Negocio de zona de servicio (sin local): dirección solo con localidad, sin calle, CP ni coordenadas.
 const businessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${siteUrl}#localbusiness`,
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': BUSINESS_ID,
   name: 'IS Instalaciones',
-  image: imageUrl,
-  url: canonicalURL.toString(),
+  image: new URL('/img/logo.webp', siteUrl).toString(),
+  logo: new URL('/img/logo.webp', siteUrl).toString(),
+  url: `${siteUrl}/`,
   telephone: '+34637591736',
   email: 'isinstalacionesbcn@gmail.com',
-  priceRange: 'EUR',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Barcelona',
-    postalCode: '08001',
-    addressRegion: 'Barcelona',
+    addressRegion: 'Cataluña',
     addressCountry: 'ES'
   },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 41.3851,
-    longitude: 2.1734
-  },
+  hasMap: GOOGLE_BUSINESS_URL,
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -60,17 +66,8 @@ const businessSchema = {
       closes: '14:00'
     }
   ],
-  areaServed: [
-    { '@type': 'City', name: 'Barcelona' },
-    { '@type': 'City', name: "L'Hospitalet de Llobregat" },
-    { '@type': 'City', name: 'Badalona' },
-    { '@type': 'City', name: 'Santa Coloma de Gramenet' },
-    { '@type': 'City', name: 'Cornellà de Llobregat' }
-  ],
-  sameAs: [
-    'https://g.page/isinstalaciones',
-    'https://wa.me/34637591736'
-  ],
+  areaServed: AREA_SERVED,
+  sameAs: [GOOGLE_BUSINESS_URL],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Servicios de instalaciones y reformas',
@@ -118,8 +115,38 @@ const websiteSchema = {
   url: siteUrl,
   name: 'IS Instalaciones',
   inLanguage: 'es-ES',
-  publisher: { '@id': `${siteUrl}#localbusiness` }
+  publisher: { '@id': BUSINESS_ID }
 };
+
+// BreadcrumbList: Inicio > secciones intermedias que existen como página > página actual (con el title
+// sin la marca). Ni en la home ni en páginas noindex.
+const SECCIONES: Record<string, string> = { servicios: 'Servicios' };
+const segmentos = Astro.url.pathname.split('/').filter(Boolean);
+const migas: Crumb[] =
+  breadcrumbs ??
+  [
+    { name: 'Inicio', path: '/' },
+    ...segmentos
+      .slice(0, -1)
+      .map((seg, i) => ({ seg, path: `/${segmentos.slice(0, i + 1).join('/')}/` }))
+      .filter(({ seg }) => SECCIONES[seg])
+      .map(({ seg, path }) => ({ name: SECCIONES[seg], path })),
+    { name: title.split(' | ')[0].trim(), path: Astro.url.pathname }
+  ];
+const breadcrumbSchema =
+  segmentos.length && !noindex
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: migas.map((miga, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: miga.name,
+          item: new URL(miga.path, siteUrl).toString()
+        }))
+      }
+    : undefined;
+const extraSchemas = additionalSchema ? [additionalSchema].flat() : [];
 
 import Footer from '../components/ui/Footer.astro';
 import Header from '../components/ui/Header.astro';
@@ -157,8 +184,6 @@ import '../styles/global.css';
 
     <meta name="geo.region" content="ES-CT" />
     <meta name="geo.placename" content="Barcelona" />
-    <meta name="geo.position" content="41.3851;2.1734" />
-    <meta name="ICBM" content="41.3851, 2.1734" />
 
     <meta property="og:locale" content="es_ES" />
     <link rel="alternate" hreflang="es-ES" href={canonicalURL} />
@@ -186,9 +211,12 @@ import '../styles/global.css';
 
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
-    {additionalSchema && (
-      <script type="application/ld+json" set:html={JSON.stringify(additionalSchema)} />
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     )}
+    {extraSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body>
     <Header />

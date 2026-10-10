@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
@@ -80,6 +81,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Reformas integrales en Barcelona',
+  serviceType: 'Reformas integrales',
+  description: 'Reformas integrales y parciales en Barcelona: baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado y 2 años de garantía.',
+  path: '/servicios/reformas-integrales/',
+});
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -97,7 +105,7 @@ const faqSchema = {
 <Layout
   title="Reformas Integrales en Barcelona | IS Instalaciones"
   description="Reformas integrales y parciales en Barcelona: baños, cocinas y viviendas llave en mano. Un solo equipo, presupuesto cerrado y 2 años de garantía."
-  additionalSchema={faqSchema}
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-20">

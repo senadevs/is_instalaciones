@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
 import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
@@ -69,6 +70,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Fontanería y saneamiento en Barcelona',
+  serviceType: 'Fontanería',
+  description: 'Fontaneros profesionales en Barcelona: instalaciones de agua, detección de fugas, cambio de tuberías y calderas. Más de 8 años de experiencia.',
+  path: '/servicios/fontaneria-y-saneamiento/',
+});
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -86,7 +94,7 @@ const faqSchema = {
 <Layout
   title="Fontanería y Saneamiento en Barcelona | IS Instalaciones"
   description="Fontaneros profesionales en Barcelona: instalaciones de agua, detección de fugas, cambio de tuberías y calderas. Más de 8 años de experiencia."
-  additionalSchema={faqSchema}
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-20">

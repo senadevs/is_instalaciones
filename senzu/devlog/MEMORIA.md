@@ -14,6 +14,7 @@
 - D-008 · /escombros es página puente a Escombrocero (empresa hermana, web propia en el subdominio escombros.is-instalaciones.es); no duplicar su contenido · ver 011
 - D-009 · Todo lo de Senzu vive en `senzu/` (devlog, plan, design-system, convenciones y marcador); push solo a ramas de trabajo, nunca a main · ver 013
 - D-010 · SEO on-page: un h1 por página (Panoramic con `nivel="p"` donde la página ya tiene h1), titles ≤ 60 con «| IS Instalaciones», descriptions ≤ 155, sin `meta keywords`; cada servicio enlaza a los otros con `RelatedServices` · ver 015
+- D-011 · Negocio de zona de servicio (sin local, solo domicilio fiscal): schema `HomeAndConstructionBusiness` sin calle, CP ni geo; ficha de Google = `maps?cid=16190346738766346927`; datos en `src/data/negocio.ts`; FAQ del schema siempre visible en la página · ver 016
 
 ## Reglas del cliente
 - Paleta verde (#046a53 / #156051 / #0d1e23) intocable; se mejora la presentación, no los colores · ver 008
@@ -36,6 +37,7 @@
 - Sin linter configurado (`npm run lint` no existe) · ver 004
 - ui-verify (2026-10-01): imágenes sin dimensiones, tap targets < 44 px, texto < 12 px, 2 h1 en servicios → F4/F5/F6 · ver 012
 - Producción va por detrás de la rama: `/escombros/` da 404 allí y está en el sitemap; titles antiguos «IS.INSTALACIONES» · ver 014
-- SEO: sin BreadcrumbList, NAP sin calle, `sameAs` con wa.me; LCP móvil 3,8-4,3 s → F6-T3/T5 (h1, metas y keywords ya corregidos en 015) · ver 014, 015
+- SEO: LCP móvil 3,8-4,3 s → F6-T5; Rich Results Test de home, servicio, contacto y estimador tras desplegar · ver 014, 016
+- Cliente: el nombre de la ficha de Google («IS Instalaciones | Reformas | Reparaciones») lleva palabras clave, que Google prohíbe; recomendar «IS Instalaciones» · ver 016
 - `legal/privacidad.astro:74`: enlace en Markdown dentro del HTML, sale literal · ver 015
 - El aviso "¿Tienes dudas? Abrir asistente" tapa el hero en escritorio (propuesta: moverlo a la derecha) · ver 011

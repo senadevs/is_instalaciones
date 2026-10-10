@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { serviceSchema } from '../../data/negocio';
 import Panoramic from "../../components/sections/Panoramic.astro";
 import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
@@ -69,6 +70,13 @@ const faqItems = [
   },
 ];
 
+const servicioSchema = serviceSchema({
+  name: 'Climatización y calefacción en Barcelona',
+  serviceType: 'Climatización y calefacción',
+  description: 'Instalación y reparación de aire acondicionado, calefacción y sistemas de climatización en Barcelona. Técnicos certificados y presupuesto gratuito.',
+  path: '/servicios/climatizacion-y-calefaccion/',
+});
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -86,7 +94,7 @@ const faqSchema = {
 <Layout
   title="Climatización y Calefacción en Barcelona | IS Instalaciones"
   description="Instalación y reparación de aire acondicionado, calefacción y sistemas de climatización en Barcelona. Técnicos certificados y presupuesto gratuito."
-  additionalSchema={faqSchema}
+  additionalSchema={[servicioSchema, faqSchema]}
 >
 
   <main class="pt-20">

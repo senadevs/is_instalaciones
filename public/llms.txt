@@ -8,8 +8,8 @@ IS Instalaciones es una empresa local de instalaciones y reformas con sede en Ba
 - Teléfono: +34 637 591 736
 - WhatsApp: https://wa.me/34637591736
 - Email: isinstalacionesbcn@gmail.com
-- Google Business: https://g.page/isinstalaciones
-- Tipo de negocio: LocalBusiness
+- Google Business: https://www.google.com/maps?cid=16190346738766346927
+- Tipo de negocio: HomeAndConstructionBusiness (negocio de zona de servicio, sin local abierto al público)
 - Año de fundación: 2016
 - Garantía: 2 años
 
@@ -19,9 +19,7 @@ IS Instalaciones es una empresa local de instalaciones y reformas con sede en Ba
 - Domingos y festivos: cerrado
 
 ## Ubicación y cobertura
-- Sede: Barcelona, España
-- Código postal de referencia: 08001
-- Coordenadas: 41.3851, 2.1734
+- Sede: Barcelona, España (sin local abierto al público: trabajamos a domicilio)
 - Cobertura: Barcelona, L'Hospitalet de Llobregat, Badalona, Santa Coloma de Gramenet, Sant Adrià de Besòs, Cornellà de Llobregat, Esplugues de Llobregat, Sant Just Desvern y Sant Joan Despí
 
 ## Servicios principales

@@ -19,3 +19,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 013 | 2026-10-10 | Actualización a Senzu y migración a senzu/ | infra | 003 | — |
 | 014 | 2026-10-10 | Auditoría SEO técnica con evidencia | docs | — | F6-T1 |
 | 015 | 2026-10-10 | Correcciones on-page: h1, titles, descriptions, keywords y enlazado interno | fix | 014 | F6-T2 |
+| 016 | 2026-10-10 | Datos estructurados: negocio de zona de servicio, migas, Service y FAQ visible | feature | 014 | F6-T3 |
