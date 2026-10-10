@@ -18,7 +18,7 @@
 - `scripts/schema-check.mjs`: validación estructural del JSON-LD por URL (propiedades exigidas, migas que acaban en la URL, FAQ visible, Service enlazado al negocio, sin calle/CP/geo).
 
 ## Commits
-- (ver siguiente commit) feat(seo): datos estructurados de negocio sin local, migas y service
+- `f61c74e` feat(seo): datos estructurados de negocio sin local, migas y service
 
 ## Decisiones (resumen)
 - Negocio de zona de servicio: no publicar el domicilio fiscal ni coordenadas inventadas; la cobertura va en `areaServed`.
