@@ -12,7 +12,7 @@
 - Informe completo: `senzu/auditoria/2026-10-10-seo.md`. JSON crudos de Lighthouse en `senzu/auditoria/lighthouse/` (ignorados en git, 3,7 MB).
 
 ## Commits
-- (ver INDEX / siguiente commit) docs(seo): auditoria seo tecnica con evidencia
+- `e82cc73` docs(seo): auditoria seo tecnica con evidencia
 
 ## Decisiones (resumen)
 - La auditoría se hace por HTTP (no sobre el build) porque `output: 'server'` no genera HTML estático.
