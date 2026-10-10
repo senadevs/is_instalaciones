@@ -20,7 +20,7 @@
 - `.env.example` nuevo con los nombres de las variables (`NVIDIA_API_KEY`, `NVIDIA_CHAT_MODEL`, `GOOGLE_API_KEY`, `GOOGLE_PLACE_ID`), sin valores.
 
 ## Commits
-- (ver siguiente commit) fix(chat): modelo vigente de nvidia con respaldo y respuesta amable
+- `3abca49` fix(chat): modelo vigente de nvidia con respaldo y respuesta amable
 
 ## Verificación
 - Con `NVIDIA_CHAT_MODEL="meta/llama-3.1-8b-instruct,openai/gpt-oss-20b"`: log `Chat: modelo meta/llama-3.1-8b-instruct no disponible (410); probando el siguiente` y respuesta 200.
