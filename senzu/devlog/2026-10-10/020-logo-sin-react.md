@@ -11,7 +11,7 @@
 - `src/components/ui/LogoTema.astro` sustituye a la isla React `Logo.tsx` (`client:load`, retirada): las mismas 3 imágenes (logo.png en claro, bl.png en verde oscuro, whi.png en oscuro), ahora a 192 px en WebP, apiladas, y el CSS muestra la del `data-theme` con el mismo fundido de 0,4 s (sin fundido con `prefers-reduced-motion`). Cero JS: React deja de cargarse en todas las páginas salvo el planificador.
 
 ## Commits
-- (ver siguiente commit) perf(web): logo de cabecera sin isla react
+- `e5c0280` perf(web): logo de cabecera sin isla react
 
 ## Verificación
 - Playwright en 375 y 1440 × 3 temas: se ve el logo de cada tema (192 px), cambio de tema en caliente correcto (oscuro → verde oscuro → claro) y **ningún recurso de React** en la home. Capturas en `senzu/ui-verify/f6-t5/logo-*.png`, idénticas a las anteriores.
