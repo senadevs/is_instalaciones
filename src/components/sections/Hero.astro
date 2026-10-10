@@ -1,6 +1,7 @@
 ---
 import HeroForm from "./HeroForm.astro";
-import Image from "astro/components/Image.astro";
+import { Picture } from 'astro:assets';
+import fusibles from '../../assets/trabajos/montaje_fusibles.jpeg';
 import reformas from "../../assets/reformas-integrales.jpg";
 import planificador from "../../../image.png";
 import { Icon } from 'astro-icon/components';
@@ -17,11 +18,16 @@ import { Icon } from 'astro-icon/components';
       <!-- Slide 1: Técnico montaje fusibles -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
-          <img
-            src="/trabajos/montaje_fusibles.jpeg"
+          <Picture
+            src={fusibles}
             alt="Técnico electricista montando cuadro de fusibles en Barcelona - IS Instalaciones"
             class="absolute inset-0 w-full h-full object-cover"
+            formats={['avif', 'webp']}
+            widths={[640, 828, 1080, 1600]}
+            sizes="100vw"
+            quality={58}
             loading="eager"
+            fetchpriority="high"
           />
           <div class="absolute inset-0 bg-black/60 z-[1]"></div>
           <div class="absolute inset-0 bg-grid opacity-50 z-[1]"></div>
@@ -77,14 +83,16 @@ import { Icon } from 'astro-icon/components';
       <!-- Slide 2: Planificador -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
-          <Image
+          <Picture
             src={planificador}
             alt="Planificador 3D de reformas con editor de planta y exportación de planos"
             class="absolute inset-0 w-full h-full object-cover object-center"
-            width={1912}
-            height={844}
-            quality={90}
-            format="webp"
+            formats={['avif', 'webp']}
+            widths={[640, 1080, 1912]}
+            sizes="100vw"
+            quality={70}
+            loading="lazy"
+            fetchpriority="low"
           />
           <div class="absolute inset-0 bg-black/50 z-[1]"></div>
           <div
@@ -137,12 +145,12 @@ import { Icon } from 'astro-icon/components';
       <!-- Slide 3: Video -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
+          <!-- Sin autoplay ni precarga: el vídeo (2,5 MB) solo se descarga cuando el slider llega a él (F6-T5). -->
           <video
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             class="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/is.mp4" type="video/mp4" />
@@ -178,14 +186,16 @@ import { Icon } from 'astro-icon/components';
       <!-- Slide 4: Reformas -->
       <div class="swiper-slide" style="height:100%;">
         <div class="relative w-full h-full">
-          <Image
+          <Picture
             src={reformas}
             alt="Reformas integrales en Barcelona - IS Instalaciones"
             class="absolute inset-0 w-full h-full object-cover"
-            width={1920}
-            height={1080}
-            quality={80}
-            format="webp"
+            formats={['avif', 'webp']}
+            widths={[640, 1080, 1600]}
+            sizes="100vw"
+            quality={58}
+            loading="lazy"
+            fetchpriority="low"
           />
           <div class="absolute inset-0 bg-black/60 z-[1]"></div>
 
@@ -278,7 +288,7 @@ import { Icon } from 'astro-icon/components';
           const activeSlide = swiper.slides[swiper.activeIndex];
           if (activeSlide) {
             const video = activeSlide.querySelector("video");
-            if (video) video.play();
+            if (video) video.play().catch(() => {});
           }
         },
       },

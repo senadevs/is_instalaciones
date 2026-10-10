@@ -157,7 +157,8 @@ import ChatBubble from '../components/ui/ChatBubble.astro';
 import AnnouncementBanner from '../components/ui/AnnouncementBanner.astro';
 import CookieBanner from '../components/ui/CookieBanner.astro';
 import AnalyticsEvents from '../components/ui/AnalyticsEvents.astro';
-import '@fontsource-variable/archivo/wdth.css';
+// Solo el eje de peso (35 KB frente a 90 KB del eje de anchura, que la web no usa).
+import '@fontsource-variable/archivo';
 import '@fontsource-variable/source-sans-3';
 import '../styles/global.css';
 ---
@@ -193,7 +194,6 @@ import '../styles/global.css';
     <link rel="canonical" href={canonicalURL} />
 
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />

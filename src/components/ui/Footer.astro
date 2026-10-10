@@ -2,6 +2,8 @@
 import Image from "astro/components/Image.astro";
 
 const currentYear = new Date().getFullYear();
+// Antes: /favicon.svg de 277 KB servido tal cual para un icono de 24 px (F6-T5).
+import logoFooter from '../../assets/logo.png';
 ---
 
 <footer aria-label="Footer" class="bg-primary text-white py-12">
@@ -14,12 +16,12 @@ const currentYear = new Date().getFullYear();
 
           <p class="flex font-bold items-center">
             <Image
-            src="/favicon.svg"
+            src={logoFooter}
             alt="IS Instalaciones"
             class="w-6 h-6 mr-2 rounded-full"
-            width={400}
-            height={400}
-            quality={100}
+            width={48}
+            height={48}
+            format="webp"
           />
             IS INSTALACIONES</p>
 

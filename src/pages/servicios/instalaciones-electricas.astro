@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/contadores-electricos.jpeg';
 import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
@@ -102,7 +103,7 @@ const faqSchema = {
     <!-- Hero Section -->
     <Panoramic
     nivel="p"
-    imagen="/trabajos/contadores-electricos.jpeg"
+    imagen={heroImagen}
     texto="Servicios de Electricidad"/>
 
     <!-- Services Section -->

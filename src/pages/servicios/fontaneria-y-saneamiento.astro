@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/fontaneria-contadores.jpeg';
 import RelatedServices from '../../components/services/RelatedServices.astro';
 import ContactSection from '../../components/contact/ContactSection.astro';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
@@ -101,7 +102,7 @@ const faqSchema = {
   <main class="pt-20">
     <Panoramic
     nivel="p"
-    imagen="/trabajos/fontaneria-contadores.jpeg"
+    imagen={heroImagen}
     texto="Servicios de Fontanería"/>
 
     <section class="py-12 md:py-16" aria-label="Sección de servicios">

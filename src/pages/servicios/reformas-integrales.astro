@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { serviceSchema } from '../../data/negocio';
 import Panoramic from '../../components/sections/Panoramic.astro';
+import heroImagen from '../../assets/trabajos/reforma-salon-led.jpeg';
 import ServiceDetail from '../../components/services/ServiceDetail.astro';
 import ServiceProcess from '../../components/services/ServiceProcess.astro';
 import ServiceCTABanner from '../../components/services/ServiceCTABanner.astro';
@@ -112,7 +113,7 @@ const faqSchema = {
   <main class="pt-20">
     <Panoramic
       nivel="p"
-      imagen="/trabajos/reforma-salon-led.jpeg"
+      imagen={heroImagen}
       texto="Reformas Integrales"
     />
 

@@ -22,3 +22,4 @@ Registro correlativo de todas las entradas del proyecto.
 | 016 | 2026-10-10 | Datos estructurados: negocio de zona de servicio, migas, Service y FAQ visible | feature | 014 | F6-T3 |
 | 017 | 2026-10-10 | Peticiones del usuario: sin mencionar el local, móvil, agente, /escombros y llms.txt | decisión | 016 | — |
 | 018 | 2026-10-10 | Imágenes sociales (OG) por página y favicons | feature | 014 | F6-T4 |
+| 019 | 2026-10-10 | Core Web Vitals: imágenes LCP responsive, fotos recomprimidas, vídeo diferido | perf | 014 | F6-T5 |

@@ -32,7 +32,12 @@
 - `verify-build` daba "types PASS" sin `@astrojs/check` instalado (el comando se quedaba en el prompt): ya instalado · ver 005
 - `vectorEffect="non-scaling-stroke"` con grosores < 1: líneas invisibles (el grosor pasa a píxeles de pantalla) · ver 010
 
+- Medir rendimiento con `astro dev` o sin compresión falsea Lighthouse (HTML 232 KB frente a 40 KB): build con adaptador Node (`--no-save`) + servidor con brotli · ver 019
+- `astro check` se queda sin memoria si existe `dist-perf/` (lo analiza): borrarlo antes · ver 019
+- Hook `code-hygiene` de Senzu: bloquea los nombres de tema (`default`, `dark-green`) porque `gustos.md` los cita en «No» al pedir conservarlos (falso positivo) · ver 019
+
 ## Pendientes abiertos
+- F6-T5: logo de cabecera sin isla React (bloqueado por el hook) para home ≥ 90 estable (hoy 85-90) · ver 019
 - X-T5 chat en móvil · X-T6 cookies en móvil · X-T7 el agente del chat no responde (¿modelo `meta/llama-3.1-8b-instruct` inexistente o retirado?) · X-T8 `llms.txt` con buenas prácticas · X-T9 desplegar sin /escombros · ver 017
 - X-T4: página "Instalaciones y reformas" en Escombrocero hacia IS y corregir allí `SITE.url` (declara escombrocero.es) · ver 011
 - Cliente: ¿móvil del planificador con pestañas "Plano / Ajustes"? y encuadre de la vista 3D · ver 010

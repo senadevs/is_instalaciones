@@ -29,3 +29,6 @@ __pycache__/
 
 # Informes crudos de Lighthouse (pesados; el resumen va en senzu/auditoria/)
 senzu/auditoria/lighthouse/
+
+# Build temporal para medir rendimiento en local (F6-T5)
+dist-perf/
