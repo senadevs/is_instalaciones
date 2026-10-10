@@ -40,6 +40,9 @@
 - Peso de la home: 3,85 MB → ~0,9 MB transferidos.
 - Playwright sobre el build: en móvil el hero sirve `w=828` avif; el vídeo no se descarga al cargar (`readyState` 0) y se reproduce al llegar a su slide (`readyState` 4); logo del footer bien; sin errores de consola.
 - `npm run build` OK; `npm test` 11/11.
+- Cierre (aviso del hook): `tsconfig.json` excluye `dist-perf` (salida de build; con él `astro check` se quedaba sin memoria) → `verify-build`: types PASS, build PASS (lint no configurado); `astro check` 0 errores, 0 avisos.
+- Fotos fuente de `src/assets/trabajos/` a 1600 px como máximo (Astro nunca sirve más): 171-286 KB en JPEG y `contadores-electricos` en WebP (565 KB → 237 KB).
+- `ui-verify` (375 primero) en `/` y `/servicios/instalaciones-electricas/`: 21 avisos, **todos previos** y con tarjeta. Scroll horizontal por `.cta-ticker`/cabecera y botón de menú de 40 px sin Escape → F3; banner de cookies del 25 % de la pantalla → X-T6; labels que desbordan, inputs de 14 px y campos sin label → formularios F4; `<img>` sin dimensiones → F4-T5; iconos desalineados 2 px. Las `<Picture>` nuevas llevan `width`/`height` (comprobado en el HTML).
 
 ## Próximos pasos
 - **Logo de la cabecera** sin JS (`LogoTema.astro`: 3 `<Image>` de 192 px y CSS por `data-theme`): bloqueado por el hook `code-hygiene` de Senzu, que trata los nombres de los temas citados en `gustos.md` («conservar los 3 temas») como vetados. Pendiente de decisión del usuario. Es lo que falta para dejar la home en ≥ 90 de forma estable.
